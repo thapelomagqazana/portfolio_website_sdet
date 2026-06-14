@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { ActiveMissionStatus } from "@/components/layout/active-mission-status";
 import { navigationCta, navigationItems } from "@/data/navigation";
+import { missionSectionIds } from "@/data/mission-status";
 
 /**
  * CommandDeckNavbar renders the sticky portfolio navigation shell.
@@ -11,7 +13,7 @@ import { navigationCta, navigationItems } from "@/data/navigation";
  * - Centralized navigation data.
  * - Sticky and readable over animated backgrounds.
  * - Mobile accessible menu.
- * - No duplicated nav copy.
+ * - Dynamic mission status based on scroll position.
  */
 export function CommandDeckNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -49,12 +51,7 @@ export function CommandDeckNavbar() {
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
-          <div
-            aria-label="System status"
-            className="border-accent-green/30 bg-accent-green/10 text-accent-green rounded-full border px-3 py-2 font-mono text-xs"
-          >
-            ● RELEASE READY
-          </div>
+          <ActiveMissionStatus sectionIds={missionSectionIds} />
 
           <a
             href={navigationCta.href}
@@ -77,8 +74,8 @@ export function CommandDeckNavbar() {
 
       {isMobileMenuOpen ? (
         <div className="bg-background-deep/95 border-t border-white/10 px-4 py-4 backdrop-blur-xl md:hidden">
-          <div className="border-accent-green/30 bg-accent-green/10 text-accent-green mb-3 rounded-full border px-3 py-2 font-mono text-xs">
-            ● RELEASE READY
+          <div className="mb-3">
+            <ActiveMissionStatus sectionIds={missionSectionIds} />
           </div>
 
           <div className="grid gap-2">

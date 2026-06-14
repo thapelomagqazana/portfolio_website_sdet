@@ -28,7 +28,7 @@ describe("CommandDeckNavbar", () => {
   it("renders system status indicator", () => {
     render(<CommandDeckNavbar />);
 
-    expect(screen.getAllByText("● RELEASE READY")[0]).toBeInTheDocument();
+    expect(screen.getAllByText("● Initializing")[0]).toBeInTheDocument();
   });
 
   it("renders contact CTA", () => {
