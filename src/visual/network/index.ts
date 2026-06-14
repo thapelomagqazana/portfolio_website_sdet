@@ -11,3 +11,8 @@ export * from "./telemetry-math";
 export * from "./telemetry-paths";
 export * from "./telemetry-packets";
 export * from "./telemetry-pulses";
+
+export * from "./interaction.types";
+export * from "./interaction.constants";
+export * from "./interaction-engine";
+export * from "./use-network-pointer-interaction";
