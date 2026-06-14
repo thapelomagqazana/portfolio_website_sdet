@@ -4,6 +4,7 @@ import {
   NODE_RADIUS,
   SIGNAL_SPEED,
 } from "./network.constants";
+import { clamp, toSafeCount } from "./network-math";
 import { createSeededRandom, pickRandom, randomBetween, randomInteger } from "./seeded-random";
 import type {
   NetworkConfig,
@@ -14,29 +15,22 @@ import type {
 } from "./network.types";
 
 /**
- * Keeps numeric values inside a safe range.
- */
-function clamp(value: number, min: number, max: number): number {
-  if (!Number.isFinite(value)) return min;
-
-  return Math.min(Math.max(value, min), max);
-}
-
-/**
- * Creates deterministic nodes inside the configured bounds.
+ * Generates deterministic nodes inside configured bounds.
  */
 function generateNodes(config: NetworkConfig): NetworkNode[] {
   const random = createSeededRandom(`${config.seed}:nodes`);
-  const nodeCount = Math.max(0, Math.floor(config.nodeCount));
+  const nodeCount = toSafeCount(config.nodeCount);
 
   return Array.from({ length: nodeCount }, (_, index) => {
     const radius = randomBetween(random, NODE_RADIUS.min, NODE_RADIUS.max);
+    const maxX = Math.max(radius, config.bounds.width - radius);
+    const maxY = Math.max(radius, config.bounds.height - radius);
 
     return {
       id: `node-${index}`,
       kind: pickRandom(random, NETWORK_NODE_KINDS),
-      x: randomBetween(random, radius, config.bounds.width - radius),
-      y: randomBetween(random, radius, config.bounds.height - radius),
+      x: randomBetween(random, radius, maxX),
+      y: randomBetween(random, radius, maxY),
       radius,
       intensity: clamp(randomBetween(random, 0.25, 1), 0, 1),
     };
@@ -44,17 +38,18 @@ function generateNodes(config: NetworkConfig): NetworkNode[] {
 }
 
 /**
- * Creates deterministic valid edges without self-edges or duplicates.
+ * Generates deterministic, undirected, non-duplicate edges.
  */
 function generateEdges(config: NetworkConfig, nodes: readonly NetworkNode[]): NetworkEdge[] {
   if (nodes.length < 2) return [];
 
   const random = createSeededRandom(`${config.seed}:edges`);
-  const edgeKeys = new Set<string>();
   const edges: NetworkEdge[] = [];
-  const maxEdges = Math.floor((nodes.length * Math.max(0, config.maxEdgesPerNode)) / 2);
+  const edgeKeys = new Set<string>();
+
+  const requestedMaxEdges = Math.floor((nodes.length * toSafeCount(config.maxEdgesPerNode)) / 2);
   const possibleMaxEdges = (nodes.length * (nodes.length - 1)) / 2;
-  const targetEdgeCount = Math.min(maxEdges, possibleMaxEdges);
+  const targetEdgeCount = Math.min(requestedMaxEdges, possibleMaxEdges);
   const maxAttempts = Math.max(targetEdgeCount * 8, 32);
 
   let attempts = 0;
@@ -67,17 +62,17 @@ function generateEdges(config: NetworkConfig, nodes: readonly NetworkNode[]): Ne
 
     if (sourceIndex === targetIndex) continue;
 
-    const [a, b] = [sourceIndex, targetIndex].sort((left, right) => left - right);
-    const key = `${a}:${b}`;
+    const [left, right] = [sourceIndex, targetIndex].sort((a, b) => a - b);
+    const edgeKey = `${left}:${right}`;
 
-    if (edgeKeys.has(key)) continue;
+    if (edgeKeys.has(edgeKey)) continue;
 
-    edgeKeys.add(key);
+    edgeKeys.add(edgeKey);
 
     edges.push({
-      id: `edge-${a}-${b}`,
-      sourceId: nodes[a].id,
-      targetId: nodes[b].id,
+      id: `edge-${left}-${right}`,
+      sourceId: nodes[left].id,
+      targetId: nodes[right].id,
       strength: clamp(randomBetween(random, 0.2, 1), 0, 1),
     });
   }
@@ -86,13 +81,13 @@ function generateEdges(config: NetworkConfig, nodes: readonly NetworkNode[]): Ne
 }
 
 /**
- * Creates deterministic signals attached to existing edges.
+ * Generates deterministic signals attached only to existing edges.
  */
 function generateSignals(config: NetworkConfig, edges: readonly NetworkEdge[]): NetworkSignal[] {
   if (edges.length === 0) return [];
 
   const random = createSeededRandom(`${config.seed}:signals`);
-  const signalCount = Math.max(0, Math.floor(config.signalCount));
+  const signalCount = toSafeCount(config.signalCount);
 
   return Array.from({ length: signalCount }, (_, index) => {
     const edge = edges[randomInteger(random, 0, edges.length - 1)];
@@ -108,7 +103,7 @@ function generateSignals(config: NetworkConfig, edges: readonly NetworkEdge[]): 
 }
 
 /**
- * Generates a deterministic, renderer-agnostic network topology.
+ * Generates renderer-agnostic topology for the command-center background.
  */
 export function generateNetworkTopology(config: NetworkConfig): NetworkTopology {
   const nodes = generateNodes(config);

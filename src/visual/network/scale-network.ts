@@ -2,17 +2,20 @@ import { DENSITY_PRESETS, MIN_NETWORK_HEIGHT, MIN_NETWORK_WIDTH } from "./networ
 import type { NetworkBounds, NetworkConfig, NetworkDensity } from "./network.types";
 
 /**
- * Clamps bounds so generation never receives zero or invalid dimensions.
+ * Converts arbitrary bounds into safe network bounds.
  */
 export function getSafeNetworkBounds(bounds: NetworkBounds): NetworkBounds {
+  const width = Number.isFinite(bounds.width) ? Math.round(bounds.width) : MIN_NETWORK_WIDTH;
+  const height = Number.isFinite(bounds.height) ? Math.round(bounds.height) : MIN_NETWORK_HEIGHT;
+
   return {
-    width: Math.max(Math.round(bounds.width), MIN_NETWORK_WIDTH),
-    height: Math.max(Math.round(bounds.height), MIN_NETWORK_HEIGHT),
+    width: Math.max(width, MIN_NETWORK_WIDTH),
+    height: Math.max(height, MIN_NETWORK_HEIGHT),
   };
 }
 
 /**
- * Resolves density from viewport width.
+ * Resolves visual density from viewport width.
  */
 export function getNetworkDensity(bounds: NetworkBounds): NetworkDensity {
   const safeBounds = getSafeNetworkBounds(bounds);
@@ -31,11 +34,12 @@ export function getResponsiveNetworkConfig(seed: string, bounds: NetworkBounds):
   const density = getNetworkDensity(safeBounds);
   const preset = DENSITY_PRESETS[density];
   const area = safeBounds.width * safeBounds.height;
+
   const nodeCount = Math.max(6, Math.round(area * preset.nodeDensityPerPixel));
   const signalCount = Math.max(3, Math.round(nodeCount * preset.signalMultiplier));
 
   return {
-    seed,
+    seed: seed.trim() || "portfolio-network",
     bounds: safeBounds,
     density,
     nodeCount,

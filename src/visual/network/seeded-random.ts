@@ -1,5 +1,5 @@
 /**
- * Creates a stable numeric hash from a string seed.
+ * Creates a stable unsigned integer hash from a seed string.
  */
 function hashSeed(seed: string): number {
   let hash = 2166136261;
@@ -13,13 +13,13 @@ function hashSeed(seed: string): number {
 }
 
 /**
- * Creates a deterministic pseudo-random generator returning values in [0, 1).
+ * Creates a deterministic pseudo-random generator.
  *
- * Same seed = same sequence.
- * Different seed = different sequence.
+ * Same seed produces the same sequence.
+ * Different seed produces a different sequence.
  */
 export function createSeededRandom(seed: string): () => number {
-  let state = hashSeed(seed || "default-seed");
+  let state = hashSeed(seed.trim() || "default-seed");
 
   return () => {
     state += 0x6d2b79f5;
@@ -33,7 +33,7 @@ export function createSeededRandom(seed: string): () => number {
 }
 
 /**
- * Returns a deterministic random number between min and max.
+ * Returns a deterministic decimal number between min and max.
  */
 export function randomBetween(random: () => number, min: number, max: number): number {
   if (max < min) {
@@ -44,14 +44,14 @@ export function randomBetween(random: () => number, min: number, max: number): n
 }
 
 /**
- * Returns a deterministic random integer between min and max, inclusive.
+ * Returns a deterministic integer between min and max, inclusive.
  */
 export function randomInteger(random: () => number, min: number, max: number): number {
   return Math.floor(randomBetween(random, min, max + 1));
 }
 
 /**
- * Picks one deterministic value from a readonly list.
+ * Picks one deterministic item from a non-empty readonly list.
  */
 export function pickRandom<T>(random: () => number, values: readonly T[]): T {
   if (values.length === 0) {

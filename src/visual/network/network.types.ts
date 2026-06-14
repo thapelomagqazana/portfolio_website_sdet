@@ -1,5 +1,8 @@
 /**
- * Supported semantic node types in the quality-command background network.
+ * Semantic categories for background nodes.
+ *
+ * These are intentionally domain-specific so the visual system represents
+ * quality engineering concepts instead of generic particles.
  */
 export type NetworkNodeKind =
   | "test"
@@ -11,7 +14,7 @@ export type NetworkNodeKind =
   | "system";
 
 /**
- * Supported moving signal types.
+ * Semantic categories for moving background signals.
  */
 export type NetworkSignalKind =
   | "test-result"
@@ -22,7 +25,7 @@ export type NetworkSignalKind =
   | "release-verdict";
 
 /**
- * One node in the generated network topology.
+ * One node in the deterministic background topology.
  */
 export type NetworkNode = {
   readonly id: string;
@@ -34,7 +37,7 @@ export type NetworkNode = {
 };
 
 /**
- * One connection between two valid nodes.
+ * One undirected connection between two different nodes.
  */
 export type NetworkEdge = {
   readonly id: string;
@@ -44,7 +47,7 @@ export type NetworkEdge = {
 };
 
 /**
- * One signal travelling along an edge.
+ * One moving signal attached to an existing edge.
  */
 export type NetworkSignal = {
   readonly id: string;
@@ -55,7 +58,7 @@ export type NetworkSignal = {
 };
 
 /**
- * Network rendering bounds in CSS pixels.
+ * Network viewport bounds in CSS pixels.
  */
 export type NetworkBounds = {
   readonly width: number;
@@ -65,7 +68,7 @@ export type NetworkBounds = {
 export type NetworkDensity = "low" | "medium" | "high";
 
 /**
- * Complete configuration used to generate a deterministic topology.
+ * Complete configuration used to generate network topology.
  */
 export type NetworkConfig = {
   readonly seed: string;

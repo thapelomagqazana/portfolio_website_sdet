@@ -1,18 +1,32 @@
 import type { NetworkDensity, NetworkNodeKind, NetworkSignalKind } from "./network.types";
 
+/**
+ * Minimum safe bounds prevent invalid zero-sized generation areas.
+ */
 export const MIN_NETWORK_WIDTH = 320;
 export const MIN_NETWORK_HEIGHT = 240;
 
+/**
+ * Node radius range in CSS pixels.
+ */
 export const NODE_RADIUS = {
   min: 1.4,
   max: 3.8,
 } as const;
 
+/**
+ * Signal speed range.
+ *
+ * Progress is normalized from 0 to 1, so speed means progress per millisecond.
+ */
 export const SIGNAL_SPEED = {
   min: 0.00008,
   max: 0.00024,
 } as const;
 
+/**
+ * All supported node kinds.
+ */
 export const NETWORK_NODE_KINDS: readonly NetworkNodeKind[] = [
   "test",
   "security",
@@ -23,6 +37,9 @@ export const NETWORK_NODE_KINDS: readonly NetworkNodeKind[] = [
   "system",
 ] as const;
 
+/**
+ * All supported signal kinds.
+ */
 export const NETWORK_SIGNAL_KINDS: readonly NetworkSignalKind[] = [
   "test-result",
   "security-check",
@@ -32,6 +49,9 @@ export const NETWORK_SIGNAL_KINDS: readonly NetworkSignalKind[] = [
   "release-verdict",
 ] as const;
 
+/**
+ * Density presets control visual complexity across screen sizes.
+ */
 export const DENSITY_PRESETS: Record<
   NetworkDensity,
   {
