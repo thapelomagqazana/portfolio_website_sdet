@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ActiveMissionStatus } from "@/components/layout/active-mission-status";
+import { CommandPalette } from "@/components/navigation/command-palette";
 import { navigationCta, navigationItems } from "@/data/navigation";
 import { missionSectionIds } from "@/data/mission-status";
 
@@ -14,10 +15,14 @@ import { missionSectionIds } from "@/data/mission-status";
  * - Sticky and readable over animated backgrounds.
  * - Mobile accessible menu.
  * - Dynamic mission status based on scroll position.
+ * - Keyboard-first command palette access.
  */
 export function CommandDeckNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  /**
+   * Closes the mobile navigation panel after a user selects a link.
+   */
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
@@ -51,6 +56,8 @@ export function CommandDeckNavbar() {
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
+          <CommandPalette />
+
           <ActiveMissionStatus sectionIds={missionSectionIds} />
 
           <a
@@ -74,6 +81,10 @@ export function CommandDeckNavbar() {
 
       {isMobileMenuOpen ? (
         <div className="bg-background-deep/95 border-t border-white/10 px-4 py-4 backdrop-blur-xl md:hidden">
+          <div className="mb-3">
+            <CommandPalette />
+          </div>
+
           <div className="mb-3">
             <ActiveMissionStatus sectionIds={missionSectionIds} />
           </div>
