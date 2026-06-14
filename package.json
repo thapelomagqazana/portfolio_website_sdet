@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
+    "tokens:generate": "tsx scripts/generate-design-system-css.ts",
+    "tokens:check": "pnpm tokens:generate && git diff --exit-code src/styles/design-system.generated.css",
+    "dev": "pnpm tokens:generate && next dev --turbopack",
+    "build": "pnpm tokens:generate && next build",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -13,7 +15,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "verify": "pnpm tokens:generate && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -31,7 +33,7 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/postcss": "^4.3.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -41,7 +43,8 @@
     "lint-staged": "^17.0.7",
     "prettier": "^3.8.4",
     "prettier-plugin-tailwindcss": "^0.8.0",
-    "tailwindcss": "^4",
+    "tailwindcss": "^4.3.1",
+    "tsx": "^4.22.4",
     "typescript": "^5",
     "vitest": "^4.1.8"
   }

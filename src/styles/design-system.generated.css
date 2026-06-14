@@ -1,0 +1,79 @@
+/**
+ * AUTO-GENERATED FILE.
+ *
+ * Do not edit manually.
+ * Source: src/styles/design-system.ts
+ */
+
+@theme {
+  --color-background-deep: #070b14;
+  --color-background-navy: #0d1321;
+  --color-background-surface: #111827;
+  --color-background-glass: rgba(255, 255, 255, 0.06);
+  --color-accent-blue: #00d4ff;
+  --color-accent-purple: #7b61ff;
+  --color-accent-green: #00f5a0;
+  --color-accent-orange: #ffb547;
+  --color-accent-red: #ff4d6d;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #aab4c3;
+  --color-text-muted: #6b7280;
+  --color-border-standard: rgba(255, 255, 255, 0.08);
+  --color-border-active: rgba(0, 212, 255, 0.45);
+  --color-border-success: rgba(0, 245, 160, 0.45);
+  --color-border-warning: rgba(255, 181, 71, 0.45);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+  --text-display-xl: clamp(4.5rem, 8vw, 6rem);
+  --text-display-lg: clamp(3.5rem, 6vw, 4.5rem);
+  --text-heading1: 3rem;
+  --text-heading2: 2.25rem;
+  --text-heading3: 1.5rem;
+  --text-body-lg: 1.125rem;
+  --text-body-md: 1rem;
+  --text-body-sm: 0.875rem;
+  --text-mono-sm: 0.75rem;
+  --leading-display: 0.95;
+  --leading-tight: 1.1;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.7;
+  --spacing-section-desktop: 8rem;
+  --spacing-section-tablet: 6rem;
+  --spacing-section-mobile: 4.5rem;
+  --spacing-container: 80rem;
+  --spacing-container-wide: 90rem;
+  --spacing-reading: 45rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+  --radius-full: 999px;
+  --shadow-glow-blue: 0 0 32px rgba(0, 212, 255, 0.18);
+  --shadow-glow-purple: 0 0 32px rgba(123, 97, 255, 0.18);
+  --shadow-glow-green: 0 0 32px rgba(0, 245, 160, 0.18);
+  --shadow-panel-soft: 0 24px 80px rgba(0, 0, 0, 0.35);
+  --duration-micro: 120ms;
+  --duration-fast: 200ms;
+  --duration-standard: 350ms;
+  --duration-section: 500ms;
+  --duration-major: 800ms;
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-system: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-linear: linear;
+  --z-background: 0;
+  --z-background-effects: 5;
+  --z-content: 10;
+  --z-floating-panels: 20;
+  --z-navbar: 50;
+  --z-command-palette: 80;
+  --z-modal: 90;
+  --z-toast: 100;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+}

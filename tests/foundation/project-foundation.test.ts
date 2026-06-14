@@ -55,7 +55,7 @@ describe("project foundation", () => {
     const scripts = packageJson.scripts as Record<string, string>;
 
     expect(scripts.dev).toContain("next dev");
-    expect(scripts.build).toBe("next build");
+    expect(scripts.build).toBe("pnpm tokens:generate && next build");
     expect(scripts.lint).toBe("eslint .");
     expect(scripts.format).toContain("prettier --write");
     expect(scripts["format:check"]).toContain("prettier --check");
