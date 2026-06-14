@@ -60,7 +60,7 @@ describe("project foundation", () => {
     expect(scripts.format).toContain("prettier --write");
     expect(scripts["format:check"]).toContain("prettier --check");
     expect(scripts.typecheck).toBe("tsc --noEmit");
-    expect(scripts.test).toBe("vitest run");
+    expect(scripts.test).toBe("vitest run --config vitest.config.ts");
     expect(scripts.verify).toContain("pnpm build");
   });
 

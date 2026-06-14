@@ -1,8 +1,8 @@
-import { DesignTokenPreview } from "@/components/ui/design-token-preview";
+import { MotionTestSection } from "@/sections/motion-test-section";
 
 /**
- * Temporary home page for WBS 0.3 validation.
+ * Temporary page for WBS 1.3 motion-system validation.
  */
 export default function Home() {
-  return <DesignTokenPreview />;
+  return <MotionTestSection />;
 }
