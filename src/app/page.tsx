@@ -1,8 +1,15 @@
-import { MotionTestSection } from "@/sections/motion-test-section";
+import { OpeningSequence } from "@/sections/opening-sequence";
+import { CommandDeckNavbar } from "@/components/layout/command-deck-navbar";
+// import { MotionTestSection } from "@/sections/motion-test-section";
 
 /**
- * Temporary page for WBS 1.3 motion-system validation.
+ * Home page wired to PHASE 3 Opening Animation.
  */
 export default function Home() {
-  return <MotionTestSection />;
+  return (
+    <OpeningSequence>
+      <CommandDeckNavbar />
+      {/* <MotionTestSection /> */}
+    </OpeningSequence>
+  );
 }
