@@ -1,3 +1,4 @@
+import { MissionStatement } from "@/components/hero/mission-statement";
 import { heroContent, heroDashboardStatus, heroMetrics } from "@/data/hero";
 
 /**
@@ -72,6 +73,8 @@ export function HeroSection() {
           <p className="border-accent-green/50 text-text-secondary mt-8 border-l pl-4 font-mono text-sm">
             {heroContent.proofLine}
           </p>
+
+          <MissionStatement />
         </div>
 
         <aside

@@ -2,6 +2,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { HeroSection } from "../../src/sections/hero-section";
 import { heroContent, heroDashboardStatus, heroMetrics } from "../../src/data/hero";
+import { missionStatement } from "../../src/data/mission";
 
 afterEach(() => {
   cleanup();
@@ -78,5 +79,12 @@ describe("HeroSection", () => {
     render(<HeroSection />);
 
     expect(screen.getByTestId("hero-section")).toHaveAttribute("id", "hero");
+  });
+
+  it("renders mission statement module inside hero", () => {
+    render(<HeroSection />);
+
+    expect(screen.getByText(missionStatement.eyebrow)).toBeInTheDocument();
+    expect(screen.getByText(missionStatement.headline)).toBeInTheDocument();
   });
 });
