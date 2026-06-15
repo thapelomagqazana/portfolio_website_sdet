@@ -1,15 +1,22 @@
-import { OpeningSequence } from "@/sections/opening-sequence";
 import { CommandDeckNavbar } from "@/components/layout/command-deck-navbar";
-// import { MotionTestSection } from "@/sections/motion-test-section";
+import { SiteBackground } from "@/components/layout/site-background";
+import { OpeningSequence } from "@/sections/opening-sequence";
+import { HeroSection } from "@/sections/hero-section";
 
 /**
- * Home page wired to PHASE 3 Opening Animation.
+ * Home page.
+ *
+ * The opening sequence runs first, then reveals the main portfolio experience.
  */
 export default function Home() {
   return (
     <OpeningSequence>
+      <SiteBackground />
       <CommandDeckNavbar />
-      {/* <MotionTestSection /> */}
+
+      <main>
+        <HeroSection />
+      </main>
     </OpeningSequence>
   );
 }
