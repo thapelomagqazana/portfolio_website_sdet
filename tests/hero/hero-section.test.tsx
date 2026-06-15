@@ -1,8 +1,12 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
-import { HeroSection } from "../../src/sections/hero-section";
-import { heroContent, heroDashboardStatus, heroMetrics } from "../../src/data/hero";
+import { heroContent } from "../../src/data/hero";
 import { missionStatement } from "../../src/data/mission";
+import {
+  releaseIntelligenceMetrics,
+  releaseIntelligenceSummary,
+} from "../../src/data/release-intelligence";
+import { HeroSection } from "../../src/sections/hero-section";
 
 afterEach(() => {
   cleanup();
@@ -48,24 +52,6 @@ describe("HeroSection", () => {
     );
   });
 
-  it("renders dashboard metrics", () => {
-    render(<HeroSection />);
-
-    for (const metric of heroMetrics) {
-      expect(screen.getByText(metric.label)).toBeInTheDocument();
-      expect(screen.getByText(metric.value)).toBeInTheDocument();
-      expect(screen.getByText(metric.detail)).toBeInTheDocument();
-    }
-  });
-
-  it("renders approved quality gate verdict", () => {
-    render(<HeroSection />);
-
-    expect(screen.getByText(heroDashboardStatus.label)).toBeInTheDocument();
-    expect(screen.getByText(heroDashboardStatus.verdict)).toBeInTheDocument();
-    expect(screen.getByText(heroDashboardStatus.detail)).toBeInTheDocument();
-  });
-
   it("has responsive layout classes", () => {
     render(<HeroSection />);
 
@@ -86,5 +72,29 @@ describe("HeroSection", () => {
 
     expect(screen.getByText(missionStatement.eyebrow)).toBeInTheDocument();
     expect(screen.getByText(missionStatement.headline)).toBeInTheDocument();
+  });
+
+  it("renders release intelligence dashboard inside hero", () => {
+    render(<HeroSection />);
+
+    expect(screen.getByText(releaseIntelligenceSummary.eyebrow)).toBeInTheDocument();
+  });
+
+  it("renders release intelligence metrics", () => {
+    render(<HeroSection />);
+
+    for (const metric of releaseIntelligenceMetrics) {
+      expect(screen.getByText(metric.label)).toBeInTheDocument();
+      expect(screen.getByText(metric.detail)).toBeInTheDocument();
+    }
+  });
+
+  it("renders release intelligence summary", () => {
+    render(<HeroSection />);
+
+    expect(screen.getByText(releaseIntelligenceSummary.eyebrow)).toBeInTheDocument();
+    expect(screen.getByText(releaseIntelligenceSummary.postureValue)).toBeInTheDocument();
+    expect(screen.getByText(releaseIntelligenceSummary.evidenceValue)).toBeInTheDocument();
+    expect(screen.getByText(releaseIntelligenceSummary.verdictValue)).toBeInTheDocument();
   });
 });

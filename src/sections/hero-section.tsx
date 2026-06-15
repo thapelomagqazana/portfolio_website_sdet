@@ -1,5 +1,6 @@
 import { MissionStatement } from "@/components/hero/mission-statement";
 import { heroContent, heroDashboardStatus, heroMetrics } from "@/data/hero";
+import { ReleaseIntelligenceDashboard } from "@/components/hero/release-intelligence-dashboard";
 
 /**
  * HeroSection renders the first major content section after the opening sequence.
@@ -77,61 +78,8 @@ export function HeroSection() {
           <MissionStatement />
         </div>
 
-        <aside
-          aria-label="Release confidence dashboard"
-          className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 shadow-[0_0_60px_rgba(0,212,255,0.12)] backdrop-blur-xl sm:p-6"
-        >
-          <div className="border-accent-green/30 bg-accent-green/10 rounded-2xl border p-5">
-            <p className="text-accent-green font-mono text-xs tracking-[0.24em] uppercase">
-              {heroDashboardStatus.label}
-            </p>
-
-            <div className="mt-4 flex items-end justify-between gap-4">
-              <div>
-                <p className="font-display text-accent-green text-4xl font-black">
-                  {heroDashboardStatus.verdict}
-                </p>
-                <p className="text-text-secondary mt-2 text-sm">{heroDashboardStatus.detail}</p>
-              </div>
-
-              <div className="border-accent-green/30 text-accent-green rounded-full border px-3 py-2 font-mono text-xs">
-                LIVE
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            {heroMetrics.map((metric) => (
-              <article
-                key={metric.label}
-                className="bg-background-deep/50 rounded-2xl border border-white/10 p-4"
-              >
-                <p className="text-text-muted font-mono text-[11px] uppercase">{metric.label}</p>
-                <p className="font-display text-text-primary mt-3 text-3xl font-bold">
-                  {metric.value}
-                </p>
-                <p className="text-text-secondary mt-2 text-xs">{metric.detail}</p>
-              </article>
-            ))}
-          </div>
-
-          <div className="bg-background-deep/50 mt-5 rounded-2xl border border-white/10 p-4">
-            <p className="text-text-muted font-mono text-xs uppercase">Pipeline Status</p>
-
-            <div className="mt-4 grid gap-2">
-              {heroDashboardStatus.pipeline.map((stage, index) => (
-                <div
-                  key={stage}
-                  className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2"
-                >
-                  <span className="text-text-secondary font-mono text-xs">
-                    {String(index + 1).padStart(2, "0")} / {stage}
-                  </span>
-                  <span className="text-accent-green font-mono text-xs">PASS</span>
-                </div>
-              ))}
-            </div>
-          </div>
+        <aside aria-label="Release confidence dashboard">
+          <ReleaseIntelligenceDashboard />
         </aside>
       </div>
     </section>
