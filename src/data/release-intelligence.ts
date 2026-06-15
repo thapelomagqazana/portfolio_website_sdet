@@ -10,7 +10,20 @@ export type ReleaseIntelligenceMetric = {
 };
 
 /**
- * Centralized release intelligence metrics.
+ * Dominant Hero KPI.
+ *
+ * This is the primary number visitors should notice first.
+ */
+export const releaseIntelligencePrimaryKpi = {
+  label: "Release Confidence",
+  value: 97.3,
+  suffix: "%",
+  verdict: "APPROVED",
+  detail: "Evidence-backed safe-to-ship signal",
+} as const;
+
+/**
+ * Centralized supporting release intelligence metrics.
  */
 export const releaseIntelligenceMetrics: readonly ReleaseIntelligenceMetric[] = [
   {
@@ -58,11 +71,13 @@ export const releaseIntelligenceSummary = {
 
 /**
  * Clamps metric values to the visual progress range.
+ *
+ * Decimals are preserved so dominant KPI values like 97.3 can render correctly.
  */
 export function clampMetricValue(value: number): number {
   if (!Number.isFinite(value)) {
     return 0;
   }
 
-  return Math.min(Math.max(Math.round(value), 0), 100);
+  return Math.min(Math.max(value, 0), 100);
 }

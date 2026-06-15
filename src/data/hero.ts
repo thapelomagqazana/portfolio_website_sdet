@@ -14,17 +14,19 @@ export type HeroCallToAction = {
  */
 export const heroContent = {
   eyebrow: "SDET Portfolio v2.0",
+  name: "Thapelo Magqazana",
   headline: "Building Confidence Into Every Release",
   subheadline:
-    "Software Development Engineer in Test focused on quality engineering, test automation, and release confidence systems.",
+    "Software Development Engineer in Test focused on quality engineering, automation, and release confidence systems.",
+  brikByteLine: "Creator of BrikByteOS — Release Confidence Infrastructure.",
   proofLine: "Software should not ship by assumption. It should ship by evidence.",
   primaryCta: {
-    label: "View Projects",
-    href: "#projects",
-  },
-  secondaryCta: {
     label: "Explore BrikByteOS",
     href: "#brikbyteos",
+  },
+  secondaryCta: {
+    label: "View Engineering Projects",
+    href: "#projects",
   },
   badges: ["SDET", "Quality Engineer", "Test Automation", "Release Engineering"],
 } as const;

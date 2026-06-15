@@ -1,5 +1,5 @@
-import { MissionStatement } from "@/components/hero/mission-statement";
-import { heroContent, heroDashboardStatus, heroMetrics } from "@/data/hero";
+import { heroContent } from "@/data/hero";
+import { QualityGateVisualization } from "@/components/hero/quality-gate-visualization";
 import { ReleaseIntelligenceDashboard } from "@/components/hero/release-intelligence-dashboard";
 
 /**
@@ -25,24 +25,29 @@ export function HeroSection() {
       />
 
       <div
-        className="mx-auto grid min-h-[calc(100vh-8rem)] max-w-7xl items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]"
+        className="mx-auto grid min-h-[calc(100vh-8rem)] max-w-7xl items-center gap-12 xl:grid-cols-[1.25fr_0.75fr]"
         data-testid="hero-responsive-grid"
       >
-        <div className="max-w-3xl">
+        <div className="max-w-4xl">
           <p className="text-accent-green font-mono text-xs tracking-[0.28em] uppercase">
             {heroContent.eyebrow}
           </p>
 
+          <p className="text-text-primary mt-4 font-mono text-sm tracking-[0.32em] uppercase sm:text-base">
+            {heroContent.name}
+          </p>
+
           <h1
             id="hero-heading"
-            className="font-display text-text-primary mt-5 max-w-4xl text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl"
+            className="font-display text-text-primary mt-5 max-w-5xl text-5xl font-black tracking-tight sm:text-6xl xl:text-7xl"
           >
             {heroContent.headline}
           </h1>
 
-          <p className="text-text-secondary mt-6 max-w-2xl text-lg leading-8">
-            {heroContent.subheadline}
-          </p>
+          <div className="text-text-secondary mt-6 max-w-3xl text-lg leading-8">
+            <p>{heroContent.subheadline}</p>
+            <p className="text-text-primary mt-3 font-mono text-sm">{heroContent.brikByteLine}</p>
+          </div>
 
           <div className="mt-7 flex flex-wrap gap-2" aria-label="Hero role badges">
             {heroContent.badges.map((badge) => (
@@ -74,11 +79,10 @@ export function HeroSection() {
           <p className="border-accent-green/50 text-text-secondary mt-8 border-l pl-4 font-mono text-sm">
             {heroContent.proofLine}
           </p>
-
-          <MissionStatement />
         </div>
 
-        <aside aria-label="Release confidence dashboard">
+        <aside aria-label="Release confidence dashboard" className="grid gap-5">
+          <QualityGateVisualization />
           <ReleaseIntelligenceDashboard />
         </aside>
       </div>

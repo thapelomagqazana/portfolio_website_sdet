@@ -6,11 +6,13 @@ import {
   clampMetricValue,
   releaseIntelligenceMetrics,
   releaseIntelligenceSummary,
+  releaseIntelligencePrimaryKpi,
 } from "@/data/release-intelligence";
 
 export type AnimatedMetricValueProps = {
   readonly value: number;
   readonly suffix: string;
+  readonly precision?: number;
 };
 
 /**
@@ -18,7 +20,7 @@ export type AnimatedMetricValueProps = {
  *
  * Reduced-motion users receive the final value immediately.
  */
-export function AnimatedMetricValue({ value, suffix }: AnimatedMetricValueProps) {
+export function AnimatedMetricValue({ value, suffix, precision = 0 }: AnimatedMetricValueProps) {
   const prefersReducedMotion = Boolean(useReducedMotion());
   const targetValue = clampMetricValue(value);
 
@@ -38,7 +40,7 @@ export function AnimatedMetricValue({ value, suffix }: AnimatedMetricValueProps)
       const progress = Math.min(elapsedMs / durationMs, 1);
       const easedProgress = 1 - Math.pow(1 - progress, 3);
 
-      setDisplayValue(Math.round(targetValue * easedProgress));
+      setDisplayValue(Number((targetValue * easedProgress).toFixed(precision)));
 
       if (progress < 1) {
         frameId = requestAnimationFrame(tick);
@@ -52,11 +54,13 @@ export function AnimatedMetricValue({ value, suffix }: AnimatedMetricValueProps)
         cancelAnimationFrame(frameId);
       }
     };
-  }, [prefersReducedMotion, targetValue]);
+  }, [prefersReducedMotion, precision, targetValue]);
+
+  const finalValue = prefersReducedMotion ? targetValue : displayValue;
 
   return (
     <span>
-      {prefersReducedMotion ? targetValue : displayValue}
+      {finalValue.toFixed(precision)}
       {suffix}
     </span>
   );
@@ -77,20 +81,41 @@ export function ReleaseIntelligenceDashboard() {
       className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 shadow-[0_0_60px_rgba(0,212,255,0.12)] backdrop-blur-xl sm:p-6"
       data-testid="release-intelligence-dashboard"
     >
-      <div className="border-accent-green/30 bg-accent-green/10 rounded-2xl border p-5">
-        <p className="text-accent-green font-mono text-xs tracking-[0.24em] uppercase">
-          {releaseIntelligenceSummary.eyebrow}
+      <div className="border-accent-green/30 bg-accent-green/10 rounded-3xl border p-6 text-center shadow-[0_0_50px_rgba(0,245,160,0.14)]">
+        <p className="text-text-muted font-mono text-xs tracking-[0.24em] uppercase">
+          {releaseIntelligencePrimaryKpi.verdict}
+        </p>
+
+        <p className="font-display text-accent-green mt-4 text-6xl font-black tracking-tight sm:text-7xl">
+          <AnimatedMetricValue
+            value={releaseIntelligencePrimaryKpi.value}
+            suffix={releaseIntelligencePrimaryKpi.suffix}
+            precision={1}
+          />
         </p>
 
         <h2
           id="release-intelligence-heading"
-          className="font-display text-text-primary mt-3 text-3xl font-black"
+          className="text-text-primary mt-3 font-mono text-sm tracking-[0.2em] uppercase"
         >
-          {releaseIntelligenceSummary.postureLabel}:{" "}
-          <span className="text-accent-green">{releaseIntelligenceSummary.postureValue}</span>
+          {releaseIntelligencePrimaryKpi.label}
         </h2>
 
+        <p className="text-text-secondary mx-auto mt-3 max-w-sm text-sm">
+          {releaseIntelligencePrimaryKpi.detail}
+        </p>
+      </div>
+
+      <div className="border-accent-green/30 bg-accent-green/10 mt-5 rounded-2xl border p-5">
+        <p className="text-accent-green font-mono text-xs tracking-[0.24em] uppercase">
+          {releaseIntelligenceSummary.eyebrow}
+        </p>
+
         <div className="text-text-secondary mt-4 grid gap-2 font-mono text-xs">
+          <p>
+            {releaseIntelligenceSummary.postureLabel}:{" "}
+            <span className="text-accent-green">{releaseIntelligenceSummary.postureValue}</span>
+          </p>
           <p>
             {releaseIntelligenceSummary.evidenceLabel}:{" "}
             <span className="text-accent-green">{releaseIntelligenceSummary.evidenceValue}</span>
@@ -121,7 +146,7 @@ export function ReleaseIntelligenceDashboard() {
                 </span>
               </div>
 
-              <p className="font-display text-text-primary mt-3 text-3xl font-bold">
+              <p className="font-display text-text-primary mt-3 text-2xl font-bold">
                 <AnimatedMetricValue value={metric.value} suffix={metric.suffix} />
               </p>
 

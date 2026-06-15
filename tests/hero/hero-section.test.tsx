@@ -1,7 +1,6 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { heroContent } from "../../src/data/hero";
-import { missionStatement } from "../../src/data/mission";
 import {
   releaseIntelligenceMetrics,
   releaseIntelligenceSummary,
@@ -58,20 +57,13 @@ describe("HeroSection", () => {
     const grid = screen.getByTestId("hero-responsive-grid");
 
     expect(grid).toHaveClass("grid");
-    expect(grid.className).toContain("lg:grid-cols");
+    expect(grid.className).toContain("xl:grid-cols");
   });
 
   it("uses the hero section id for navigation", () => {
     render(<HeroSection />);
 
     expect(screen.getByTestId("hero-section")).toHaveAttribute("id", "hero");
-  });
-
-  it("renders mission statement module inside hero", () => {
-    render(<HeroSection />);
-
-    expect(screen.getByText(missionStatement.eyebrow)).toBeInTheDocument();
-    expect(screen.getByText(missionStatement.headline)).toBeInTheDocument();
   });
 
   it("renders release intelligence dashboard inside hero", () => {
@@ -96,5 +88,11 @@ describe("HeroSection", () => {
     expect(screen.getByText(releaseIntelligenceSummary.postureValue)).toBeInTheDocument();
     expect(screen.getByText(releaseIntelligenceSummary.evidenceValue)).toBeInTheDocument();
     expect(screen.getByText(releaseIntelligenceSummary.verdictValue)).toBeInTheDocument();
+  });
+
+  it("renders the personal brand name", () => {
+    render(<HeroSection />);
+
+    expect(screen.getByText(heroContent.name)).toBeInTheDocument();
   });
 });

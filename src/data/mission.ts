@@ -1,13 +1,18 @@
 /**
  * Centralized mission statement copy.
  *
- * Keep this copy outside the component so future content edits do not require
- * layout or animation changes.
+ * The mission statement should communicate:
+ * - Release confidence
+ * - Evidence-driven engineering
+ * - Quality as a system
+ * - BrikByteOS thinking
  */
 export const missionStatement = {
   eyebrow: "Mission Statement",
-  headline: "I build software confidence before software release.",
-  body: "My work sits at the intersection of testing, automation, development, and release engineering — helping teams move from uncertainty to evidence-based delivery.",
+
+  headline: "I turn release decisions into evidence-based decisions.",
+
+  body: "My work sits at the intersection of software engineering, testing, automation, and release intelligence. I build systems that transform quality signals into actionable evidence, helping teams ship software with confidence rather than assumption.",
 } as const;
 
 /**

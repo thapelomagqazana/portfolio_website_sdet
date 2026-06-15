@@ -2,6 +2,7 @@ import { CommandDeckNavbar } from "@/components/layout/command-deck-navbar";
 import { SiteBackground } from "@/components/layout/site-background";
 import { OpeningSequence } from "@/sections/opening-sequence";
 import { HeroSection } from "@/sections/hero-section";
+import { MissionSection } from "@/sections/mission-section";
 
 /**
  * Home page.
@@ -16,6 +17,7 @@ export default function Home() {
 
       <main>
         <HeroSection />
+        <MissionSection />
       </main>
     </OpeningSequence>
   );
