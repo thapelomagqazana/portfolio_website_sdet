@@ -66,30 +66,6 @@ describe("HeroSection", () => {
     expect(screen.getByTestId("hero-section")).toHaveAttribute("id", "hero");
   });
 
-  it("renders release intelligence dashboard inside hero", () => {
-    render(<HeroSection />);
-
-    expect(screen.getByText(releaseIntelligenceSummary.eyebrow)).toBeInTheDocument();
-  });
-
-  it("renders release intelligence metrics", () => {
-    render(<HeroSection />);
-
-    for (const metric of releaseIntelligenceMetrics) {
-      expect(screen.getByText(metric.label)).toBeInTheDocument();
-      expect(screen.getByText(metric.detail)).toBeInTheDocument();
-    }
-  });
-
-  it("renders release intelligence summary", () => {
-    render(<HeroSection />);
-
-    expect(screen.getByText(releaseIntelligenceSummary.eyebrow)).toBeInTheDocument();
-    expect(screen.getByText(releaseIntelligenceSummary.postureValue)).toBeInTheDocument();
-    expect(screen.getByText(releaseIntelligenceSummary.evidenceValue)).toBeInTheDocument();
-    expect(screen.getByText(releaseIntelligenceSummary.verdictValue)).toBeInTheDocument();
-  });
-
   it("renders the personal brand name", () => {
     render(<HeroSection />);
 

@@ -3,6 +3,8 @@ import { SiteBackground } from "@/components/layout/site-background";
 import { OpeningSequence } from "@/sections/opening-sequence";
 import { HeroSection } from "@/sections/hero-section";
 import { MissionSection } from "@/sections/mission-section";
+// import { QualityMetricsSection } from "@/sections/quality-metrics-section";
+import { SkillsMatrixSection } from "@/sections/skills-matrix-section";
 
 /**
  * Home page.
@@ -18,6 +20,7 @@ export default function Home() {
       <main>
         <HeroSection />
         <MissionSection />
+        <SkillsMatrixSection />
       </main>
     </OpeningSequence>
   );

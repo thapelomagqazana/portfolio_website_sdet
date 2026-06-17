@@ -83,7 +83,7 @@ export function HeroSection() {
 
         <aside aria-label="Release confidence dashboard" className="grid gap-5">
           <QualityGateVisualization />
-          <ReleaseIntelligenceDashboard />
+          {/* <ReleaseIntelligenceDashboard /> */}
         </aside>
       </div>
     </section>
