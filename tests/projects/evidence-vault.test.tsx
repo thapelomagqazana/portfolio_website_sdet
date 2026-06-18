@@ -44,8 +44,8 @@ describe("EvidenceVault", () => {
     render(<EvidenceVault />);
 
     expect(screen.getByTestId("project-case-file-grid")).toHaveClass(
-      "md:grid-cols-2",
-      "xl:grid-cols-3"
+      "grid gap-5",
+      "md:grid-cols-2"
     );
   });
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { ProjectDetail } from "@/components/projects/project-detail";
 import {
   filterProjectCaseFiles,
   getProjectCategoryLabel,
@@ -17,25 +18,38 @@ export type EvidenceVaultProps = {
 /**
  * Interactive Project Evidence Vault.
  *
- * This component turns projects into engineering case files:
- * - categorized filtering
- * - evidence tags
- * - problem/solution framing
- * - stack metadata
- * - quality signals
- * - safe links
+ * Supports:
+ * - category filtering
+ * - case-file cards
+ * - selected project detail panel
+ * - accessible open/close interactions
  */
 export function EvidenceVault({ projects = projectCaseFiles }: EvidenceVaultProps) {
   const [selectedCategory, setSelectedCategory] = useState<ProjectCategoryFilter>("all");
+  const [selectedProject, setSelectedProject] = useState<ProjectCaseFile | undefined>();
 
   const visibleProjects = useMemo(
     () => filterProjectCaseFiles(projects, selectedCategory),
     [projects, selectedCategory]
   );
 
+  function openProject(project: ProjectCaseFile) {
+    setSelectedProject(project);
+  }
+
+  function closeProject() {
+    setSelectedProject(undefined);
+  }
+
   return (
     <div data-testid="evidence-vault">
-      <FilterBar selectedCategory={selectedCategory} onSelect={setSelectedCategory} />
+      <FilterBar
+        selectedCategory={selectedCategory}
+        onSelect={(category) => {
+          setSelectedCategory(category);
+          setSelectedProject(undefined);
+        }}
+      />
 
       {visibleProjects.length === 0 ? (
         <div
@@ -45,13 +59,34 @@ export function EvidenceVault({ projects = projectCaseFiles }: EvidenceVaultProp
           No project case files found for this category.
         </div>
       ) : (
-        <div
-          className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3"
-          data-testid="project-case-file-grid"
-        >
-          {visibleProjects.map((project, index) => (
-            <ProjectCaseFileCard key={project.id} project={project} index={index} />
-          ))}
+        <div className="mt-8 grid gap-5 xl:grid-cols-[1fr_0.78fr]">
+          <div className="grid gap-5 md:grid-cols-2" data-testid="project-case-file-grid">
+            {visibleProjects.map((project, index) => (
+              <ProjectCaseFileCard
+                key={project.id}
+                project={project}
+                index={index}
+                isSelected={selectedProject?.id === project.id}
+                onOpen={() => openProject(project)}
+              />
+            ))}
+          </div>
+
+          <div className="xl:sticky xl:top-24 xl:self-start" data-testid="project-detail-region">
+            {selectedProject ? (
+              <ProjectDetail project={selectedProject} onClose={closeProject} />
+            ) : (
+              <div className="text-text-secondary rounded-3xl border border-white/10 bg-white/[0.04] p-6">
+                <p className="text-text-muted font-mono text-xs tracking-[0.24em] uppercase">
+                  Select Case File
+                </p>
+                <p className="mt-3 text-sm leading-7">
+                  Open a project case file to inspect its problem, solution, architecture, lessons,
+                  evidence, stack, and quality signals.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
@@ -63,9 +98,6 @@ type FilterBarProps = {
   readonly onSelect: (category: ProjectCategoryFilter) => void;
 };
 
-/**
- * Accessible category filter controls.
- */
 function FilterBar({ selectedCategory, onSelect }: FilterBarProps) {
   return (
     <div
@@ -102,15 +134,19 @@ function FilterBar({ selectedCategory, onSelect }: FilterBarProps) {
 type ProjectCaseFileCardProps = {
   readonly project: ProjectCaseFile;
   readonly index: number;
+  readonly isSelected: boolean;
+  readonly onOpen: () => void;
 };
 
-/**
- * Dossier-style project card.
- */
-function ProjectCaseFileCard({ project, index }: ProjectCaseFileCardProps) {
+function ProjectCaseFileCard({ project, index, isSelected, onOpen }: ProjectCaseFileCardProps) {
   return (
     <article
-      className="group hover:border-accent-blue/30 flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl transition hover:-translate-y-1 hover:bg-white/[0.06]"
+      className={[
+        "group hover:border-accent-blue/30 flex h-full flex-col rounded-3xl border p-5 backdrop-blur-xl transition hover:-translate-y-1 hover:bg-white/[0.06]",
+        isSelected
+          ? "border-accent-green/50 bg-accent-green/10 shadow-[0_0_36px_rgba(52,211,153,0.14)]"
+          : "border-white/10 bg-white/[0.04]",
+      ].join(" ")}
       aria-labelledby={`${project.id}-title`}
       data-testid="project-case-file-card"
     >
@@ -135,51 +171,24 @@ function ProjectCaseFileCard({ project, index }: ProjectCaseFileCardProps) {
 
       <p className="text-text-secondary mt-4 text-sm leading-7">{project.summary}</p>
 
-      <EvidenceBlock title="Problem" items={[project.problem]} tone="neutral" />
-      <EvidenceBlock title="Solution" items={[project.solution]} tone="success" />
       <TagBlock title="Evidence" items={project.evidence} />
       <TagBlock title="Tech Stack" items={project.stack} />
       <TagBlock title="Quality Signals" items={project.qualitySignals} />
 
-      <ProjectLinks project={project} />
-    </article>
-  );
-}
+      <div className="mt-auto pt-6">
+        <button
+          type="button"
+          onClick={onOpen}
+          aria-label={`Open ${project.title} case file details`}
+          className="border-accent-green/30 bg-accent-green/10 text-accent-green hover:border-accent-blue/40 hover:text-accent-blue focus-visible:ring-accent-blue/70 w-full rounded-full border px-4 py-3 text-center font-mono text-xs font-semibold tracking-[0.16em] uppercase transition focus:outline-none focus-visible:ring-2"
+          data-testid={`open-project-detail-${project.id}`}
+        >
+          Open Case File
+        </button>
 
-type EvidenceBlockProps = {
-  readonly title: string;
-  readonly items: readonly string[];
-  readonly tone: "neutral" | "success";
-};
-
-/**
- * Text evidence block used for problem and solution statements.
- */
-function EvidenceBlock({ title, items, tone }: EvidenceBlockProps) {
-  const isSuccess = tone === "success";
-
-  return (
-    <section className="mt-5">
-      <h4
-        className={[
-          "font-mono text-[10px] tracking-[0.22em] uppercase",
-          isSuccess ? "text-accent-green" : "text-text-muted",
-        ].join(" ")}
-      >
-        {title}
-      </h4>
-
-      <div className="mt-2 grid gap-2">
-        {items.map((item) => (
-          <p
-            key={item}
-            className="bg-background-deep/50 text-text-secondary rounded-2xl border border-white/10 p-3 text-xs leading-6"
-          >
-            {item}
-          </p>
-        ))}
+        <ProjectLinks project={project} />
       </div>
-    </section>
+    </article>
   );
 }
 
@@ -188,9 +197,6 @@ type TagBlockProps = {
   readonly items: readonly string[];
 };
 
-/**
- * Renders evidence, stack, and quality signal metadata.
- */
 function TagBlock({ title, items }: TagBlockProps) {
   return (
     <section className="mt-5">
@@ -220,9 +226,6 @@ const projectLinkLabels: Record<ProjectLinkKey, string> = {
   docs: "Docs",
 } as const;
 
-/**
- * Renders safe project links only.
- */
 function ProjectLinks({ project }: ProjectLinksProps) {
   const entries = Object.entries(project.links ?? {}) as [ProjectLinkKey, string][];
 
@@ -233,8 +236,8 @@ function ProjectLinks({ project }: ProjectLinksProps) {
   if (safeLinks.length === 0) return null;
 
   return (
-    <nav className="mt-auto pt-6" aria-label={`${project.title} project links`}>
-      <div className="flex flex-wrap gap-3">
+    <nav className="mt-3" aria-label={`${project.title} project links`}>
+      <div className="flex flex-wrap gap-2">
         {safeLinks.map(([key, href]) => {
           const isExternal = href?.startsWith("http");
 
@@ -244,9 +247,9 @@ function ProjectLinks({ project }: ProjectLinksProps) {
               href={href}
               target={isExternal ? "_blank" : undefined}
               rel={isExternal ? "noreferrer noopener" : undefined}
-              className="border-accent-blue/30 bg-accent-blue/10 text-accent-blue hover:border-accent-green/40 hover:text-accent-green focus-visible:ring-accent-blue/70 rounded-full border px-4 py-2 font-mono text-xs font-semibold transition focus:outline-none focus-visible:ring-2"
+              className="border-accent-blue/30 bg-accent-blue/10 text-accent-blue hover:border-accent-green/40 hover:text-accent-green focus-visible:ring-accent-blue/70 rounded-full border px-3 py-2 font-mono text-[10px] font-semibold transition focus:outline-none focus-visible:ring-2"
             >
-              {projectLinkLabels[key]}: {project.title}
+              {projectLinkLabels[key]}
             </a>
           );
         })}

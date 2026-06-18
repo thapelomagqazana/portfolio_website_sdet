@@ -7,6 +7,8 @@ import {
   isProjectCategoryFilter,
   projectCaseFiles,
   projectCategories,
+  projectHasCompleteDetail,
+  getProjectById,
 } from "@/data/projects";
 
 describe("projects data", () => {
@@ -22,8 +24,6 @@ describe("projects data", () => {
       expect(project.id.trim()).not.toBe("");
       expect(project.title.trim()).not.toBe("");
       expect(project.summary.trim()).not.toBe("");
-      expect(project.problem.trim()).not.toBe("");
-      expect(project.solution.trim()).not.toBe("");
       expect(project.evidence.length).toBeGreaterThan(0);
       expect(project.stack.length).toBeGreaterThan(0);
       expect(project.qualitySignals.length).toBeGreaterThan(0);
@@ -57,5 +57,30 @@ describe("projects data", () => {
     expect(getSafeProjectHref("javascript:alert(1)")).toBeUndefined();
     expect(getSafeProjectHref("not-a-valid-url")).toBeUndefined();
     expect(getSafeProjectHref(undefined)).toBeUndefined();
+  });
+
+  it("ensures every project has complete detail", () => {
+    for (const project of projectCaseFiles) {
+      expect(projectHasCompleteDetail(project)).toBe(true);
+    }
+  });
+
+  it("detects incomplete project detail", () => {
+    const incomplete = {
+      ...projectCaseFiles[0],
+      detail: {
+        problem: "",
+        solution: "solution",
+        architecture: "architecture",
+        lessons: ["lesson"],
+      },
+    };
+
+    expect(projectHasCompleteDetail(incomplete)).toBe(false);
+  });
+
+  it("resolves project by id safely", () => {
+    expect(getProjectById("brikbyteos")?.title).toBe("BrikByteOS");
+    expect(getProjectById("unknown")).toBeUndefined();
   });
 });

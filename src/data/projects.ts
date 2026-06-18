@@ -19,13 +19,19 @@ export type ProjectCategoryFilter = ProjectCategory | "all";
 
 export type ProjectLinkKey = "github" | "demo" | "docs";
 
+export type ProjectDetail = {
+  readonly problem: string;
+  readonly solution: string;
+  readonly architecture: string;
+  readonly lessons: readonly string[];
+};
+
 export type ProjectCaseFile = {
   readonly id: string;
   readonly title: string;
   readonly category: ProjectCategory;
   readonly summary: string;
-  readonly problem: string;
-  readonly solution: string;
+  readonly detail: ProjectDetail;
   readonly evidence: readonly string[];
   readonly stack: readonly string[];
   readonly qualitySignals: readonly string[];
@@ -60,10 +66,19 @@ export const projectCaseFiles: readonly ProjectCaseFile[] = [
     category: "release-confidence",
     summary:
       "Release Confidence Infrastructure that turns scattered engineering signals into normalized evidence, quality gates, and reviewable release reports.",
-    problem:
-      "Quality evidence exists across tests, security scans, performance reports, CI logs, and dashboards, but release confidence is still difficult to measure.",
-    solution:
-      "BrikByteOS collects engineering signals, normalizes them into evidence, evaluates quality gates, and generates release confidence reports.",
+    detail: {
+      problem:
+        "Quality evidence exists across tests, security scans, performance reports, CI logs, and dashboards, but release confidence is still difficult to measure.",
+      solution:
+        "BrikByteOS collects engineering signals, normalizes them into evidence, evaluates quality gates, and generates release confidence reports.",
+      architecture:
+        "The system is structured around a CLI entry point, run orchestration, tool adapters, normalized evidence models, quality gate evaluation, reporting, and persistent run artifacts.",
+      lessons: [
+        "Quality is more valuable when evidence is normalized and reviewable.",
+        "Adapters reduce coupling between third-party tools and the core release decision engine.",
+        "Release confidence becomes stronger when decisions are traceable back to source artifacts.",
+      ],
+    },
     evidence: [
       "bb CLI",
       "Tool adapters",
@@ -89,10 +104,19 @@ export const projectCaseFiles: readonly ProjectCaseFile[] = [
     category: "backend",
     summary:
       "A software project focused on structured technical execution, reusable architecture, and practical product delivery.",
-    problem:
-      "Many software ideas fail because architecture, delivery flow, and implementation discipline are not clearly structured.",
-    solution:
-      "StackCraft demonstrates structured software building through clear components, maintainable code, and project-focused execution.",
+    detail: {
+      problem:
+        "Many software ideas fail because architecture, delivery flow, and implementation discipline are not clearly structured.",
+      solution:
+        "StackCraft demonstrates structured software building through clear components, maintainable code, and project-focused execution.",
+      architecture:
+        "StackCraft is organized around reusable application modules, clear data flow, separated UI/application concerns, and a maintainable project structure.",
+      lessons: [
+        "A clear project structure reduces confusion as features grow.",
+        "Reusable components are easier to maintain when their boundaries are explicit.",
+        "Technical planning improves execution speed and lowers rework.",
+      ],
+    },
     evidence: [
       "Project architecture",
       "Reusable components",
@@ -112,23 +136,34 @@ export const projectCaseFiles: readonly ProjectCaseFile[] = [
     title: "CaloriSee",
     category: "full-stack",
     summary:
-      "A health and nutrition-focused application concept for tracking, visualizing, and understanding calorie-related information.",
-    problem:
-      "Users often struggle to connect food choices with simple, understandable nutritional insight.",
-    solution:
-      "CaloriSee presents calorie information in a clearer interface, helping users reason about food data and daily intake patterns.",
+      "A full-stack health and nutrition application that uses pre-trained Hugging Face models to help users understand calorie and food-related information.",
+    detail: {
+      problem:
+        "Users often struggle to connect food choices with simple, understandable nutritional insight, especially when nutrition data is presented in a confusing or manual way.",
+      solution:
+        "CaloriSee combines a full-stack application interface with pre-trained Hugging Face models to help users reason about food data, calorie information, and daily intake patterns more clearly.",
+      architecture:
+        "The project is structured as a full-stack system with a frontend interface for user input and visualization, backend services for request handling and model integration, and pre-trained Hugging Face models for AI-assisted nutrition interpretation.",
+      lessons: [
+        "Full-stack applications need clear boundaries between frontend interaction, backend orchestration, and model integration.",
+        "Pre-trained models are powerful, but the user experience must explain outputs clearly and responsibly.",
+        "AI-assisted applications still need strong validation, readable states, and careful error handling.",
+      ],
+    },
     evidence: [
-      "User-focused interface",
+      "Full-stack architecture",
+      "Hugging Face model integration",
       "Nutrition data presentation",
       "Input-driven feedback",
-      "Visual tracking concept",
+      "AI-assisted interpretation",
     ],
-    stack: ["React", "TypeScript", "TailwindCSS", "FastAPI", "HuggingFace AI Models"],
+    stack: ["React", "TypeScript", "TailwindCSS", "FastAPI", "Python", "Hugging Face Models"],
     qualitySignals: [
-      "User-centered design",
+      "Frontend/backend separation",
+      "Model integration boundary",
       "Readable UI states",
       "Data presentation",
-      "Accessible interface planning",
+      "Error handling planning",
     ],
   },
   //   {
@@ -236,11 +271,28 @@ export function filterProjectCaseFiles(
 /**
  * Safely resolves a project case file by id.
  */
-export function getProjectCaseFileById(
+export function getProjectById(
   projectId: string,
   projects: readonly ProjectCaseFile[] = projectCaseFiles
 ): ProjectCaseFile | undefined {
   return projects.find((project) => project.id === projectId);
+}
+
+/**
+ * Backwards-compatible alias for earlier tests/components.
+ */
+export const getProjectCaseFileById = getProjectById;
+
+/**
+ * Validates that a project has complete structured case-file detail.
+ */
+export function projectHasCompleteDetail(project: ProjectCaseFile): boolean {
+  return (
+    project.detail.problem.trim().length > 0 &&
+    project.detail.solution.trim().length > 0 &&
+    project.detail.architecture.trim().length > 0 &&
+    project.detail.lessons.some((lesson) => lesson.trim().length > 0)
+  );
 }
 
 /**
