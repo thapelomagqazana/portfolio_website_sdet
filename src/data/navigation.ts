@@ -14,7 +14,7 @@ export type NavigationItem = {
  */
 export const navigationItems: readonly NavigationItem[] = [
   { label: "Mission", href: "#about" },
-  { label: "Metrics", href: "#quality-metrics" },
+  { label: "Skills", href: "#skills" },
   { label: "BrikByteOS", href: "#brikbyteos" },
   { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },

@@ -1,28 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { ActiveMissionStatus } from "@/components/layout/active-mission-status";
 import { CommandPalette } from "@/components/navigation/command-palette";
 import { navigationCta, navigationItems } from "@/data/navigation";
-import { missionSectionIds } from "@/data/mission-status";
+import { useScrollNarrative } from "@/hooks/use-scroll-narrative";
 
 /**
  * CommandDeckNavbar renders the sticky portfolio navigation shell.
  *
- * Design goals:
- * - Premium command-center feel.
- * - Centralized navigation data.
- * - Sticky and readable over animated backgrounds.
- * - Mobile accessible menu.
- * - Dynamic mission status based on scroll position.
- * - Keyboard-first command palette access.
+ * Uses the global Scroll Narrative Engine so navigation status reflects the
+ * current engineering story stage instead of using a separate scroll tracker.
  */
 export function CommandDeckNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { activeSection, progress, direction } = useScrollNarrative();
 
-  /**
-   * Closes the mobile navigation panel after a user selects a link.
-   */
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
@@ -58,7 +50,11 @@ export function CommandDeckNavbar() {
         <div className="hidden items-center gap-3 md:flex">
           <CommandPalette />
 
-          <ActiveMissionStatus sectionIds={missionSectionIds} />
+          <NarrativeStatus
+            activeSection={activeSection}
+            progress={progress}
+            direction={direction}
+          />
 
           <a
             href={navigationCta.href}
@@ -86,7 +82,11 @@ export function CommandDeckNavbar() {
           </div>
 
           <div className="mb-3">
-            <ActiveMissionStatus sectionIds={missionSectionIds} />
+            <NarrativeStatus
+              activeSection={activeSection}
+              progress={progress}
+              direction={direction}
+            />
           </div>
 
           <div className="grid gap-2">
@@ -112,5 +112,23 @@ export function CommandDeckNavbar() {
         </div>
       ) : null}
     </header>
+  );
+}
+
+type NarrativeStatusProps = {
+  readonly activeSection: string | undefined;
+  readonly progress: number;
+  readonly direction: string;
+};
+
+function NarrativeStatus({ activeSection, progress, direction }: NarrativeStatusProps) {
+  return (
+    <div
+      className="border-accent-green/30 bg-accent-green/10 text-accent-green rounded-full border px-3 py-2 font-mono text-[10px] tracking-[0.14em] uppercase"
+      aria-label={`Narrative progress ${progress} percent. Active section ${activeSection ?? "unknown"}. Scroll direction ${direction}.`}
+      data-testid="narrative-status"
+    >
+      {activeSection ?? "initializing"} · {progress}% · {direction}
+    </div>
   );
 }
