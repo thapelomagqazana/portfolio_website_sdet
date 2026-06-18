@@ -8,8 +8,8 @@ const nextConfig: NextConfig = {
 const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [],
-    rehypePlugins: [],
+    remarkPlugins: ["remark-gfm"],
+    rehypePlugins: ["rehype-slug", "rehype-autolink-headings"],
   },
 });
 

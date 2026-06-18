@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!article) {
     return {
-      title: "Article not found",
+      title: "Article not found | Engineering Intelligence",
     };
   }
 
@@ -33,6 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: article.title,
       description: article.description,
       type: "article",
+      publishedTime: article.publishedAt,
     },
     twitter: {
       card: "summary_large_image",
@@ -56,32 +57,57 @@ export default async function EngineeringArticlePage({ params }: PageProps) {
 
   return (
     <main className="px-4 py-20 sm:px-6 lg:px-8">
-      <article className="mx-auto max-w-3xl">
-        <p className="text-accent-green font-mono text-xs tracking-[0.24em] uppercase">
-          {articleCategoryLabels[article.category]}
-        </p>
+      <article className="mx-auto max-w-4xl">
+        <header>
+          <p className="text-accent-green font-mono text-xs tracking-[0.24em] uppercase">
+            {articleCategoryLabels[article.category]}
+          </p>
 
-        <h1 className="font-display text-text-primary mt-4 text-4xl font-black">{article.title}</h1>
+          <h1 className="font-display text-text-primary mt-4 max-w-3xl text-4xl leading-tight font-black tracking-tight sm:text-5xl">
+            {article.title}
+          </h1>
 
-        <p className="text-text-secondary mt-5 text-lg leading-8">{article.description}</p>
+          <p className="text-text-secondary mt-5 max-w-3xl text-lg leading-8">
+            {article.description}
+          </p>
 
-        <div className="mt-5 flex flex-wrap gap-2">
-          <span>{article.readingMinutes} min read</span>
-          <span>{difficultyLabels[article.difficulty]}</span>
-        </div>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <span className="text-text-secondary rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 font-mono text-xs">
+              {article.readingMinutes} min read
+            </span>
 
-        <div className="prose prose-invert mt-10 max-w-none">
+            <span className="text-text-secondary rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 font-mono text-xs">
+              {difficultyLabels[article.difficulty]}
+            </span>
+          </div>
+        </header>
+
+        <div className="prose prose-invert prose-headings:font-display prose-headings:font-black prose-headings:tracking-tight prose-headings:text-text-primary prose-h1:text-4xl prose-h2:mt-12 prose-h2:border-t prose-h2:border-white/10 prose-h2:pt-8 prose-h2:text-3xl prose-h3:text-2xl prose-p:text-text-secondary prose-p:leading-8 prose-li:text-text-secondary prose-li:leading-7 prose-strong:text-text-primary prose-a:text-accent-blue prose-blockquote:border-accent-green prose-blockquote:text-text-primary prose-hr:border-white/10 prose-code:text-accent-green prose-pre:border prose-pre:border-white/10 prose-pre:bg-background-deep mt-10 max-w-none">
           <ArticleContent />
         </div>
       </article>
 
       {related.length > 0 ? (
-        <section className="mx-auto mt-16 max-w-3xl">
-          <h2 className="font-display text-text-primary text-2xl font-black">Related Articles</h2>
-          <ul className="mt-4 grid gap-3">
+        <section className="mx-auto mt-16 max-w-4xl" aria-labelledby="related-articles-heading">
+          <h2
+            id="related-articles-heading"
+            className="font-display text-text-primary text-2xl font-black"
+          >
+            Related Articles
+          </h2>
+
+          <ul className="mt-4 grid gap-3 md:grid-cols-3">
             {related.map((item) => (
-              <li key={item.slug} className="text-text-secondary">
-                {item.title}
+              <li
+                key={item.slug}
+                className="rounded-2xl border border-white/10 bg-white/[0.04] p-4"
+              >
+                <p className="text-accent-blue font-mono text-[10px] tracking-[0.2em] uppercase">
+                  {articleCategoryLabels[item.category]}
+                </p>
+                <p className="font-display text-text-primary mt-2 text-sm font-bold">
+                  {item.title}
+                </p>
               </li>
             ))}
           </ul>
