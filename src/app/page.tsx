@@ -9,6 +9,7 @@ import { BrikByteOSShowcaseSection } from "@/sections/brikbyteos-showcase-sectio
 import { ProjectsSection } from "@/sections/projects-section";
 import { ExperienceSection } from "@/sections/experience-section";
 import { EngineeringIntelligenceSection } from "@/sections/engineering-intelligence-section";
+import { ContactSection } from "@/sections/contact-section";
 
 /**
  * Home page.
@@ -29,6 +30,7 @@ export default function Home() {
         <ProjectsSection />
         <ExperienceSection />
         <EngineeringIntelligenceSection />
+        <ContactSection />
       </main>
     </OpeningSequence>
   );

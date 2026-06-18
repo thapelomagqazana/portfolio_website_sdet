@@ -94,7 +94,7 @@ export const projectCaseFiles: readonly ProjectCaseFile[] = [
       "Adapter orchestration",
     ],
     links: {
-      github: "https://github.com/BrikByte-Studios/bb-cli",
+      github: "https://github.com/BrikByte-Studios/bb-cli-releases",
       docs: "#brikbyteos",
     },
   },
