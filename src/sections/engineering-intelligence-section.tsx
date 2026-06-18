@@ -1,5 +1,6 @@
 import { ResearchArchive } from "@/components/articles/research-archive";
 import { engineeringIntelligenceCopy } from "@/data/knowledge-base";
+import { IntelligenceSearch } from "@/components/search/intelligence-search";
 
 export function EngineeringIntelligenceSection() {
   return (
@@ -27,6 +28,7 @@ export function EngineeringIntelligenceSection() {
           </p>
         </div>
 
+        <IntelligenceSearch />
         <ResearchArchive />
       </div>
     </section>

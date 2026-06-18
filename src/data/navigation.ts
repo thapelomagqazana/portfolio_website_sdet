@@ -18,7 +18,7 @@ export const navigationItems: readonly NavigationItem[] = [
   { label: "BrikByteOS", href: "#brikbyteos" },
   { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },
-  { label: "Notes", href: "#blog" },
+  { label: "Notes", href: "#engineering-intelligence" },
   { label: "Contact", href: "#contact" },
 ] as const;
 

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
-  filterResearchReports,
+  filterResearchReportsByCategory,
   getResearchReportCategoryLabel,
   getResearchReportDifficultyLabel,
   getResearchReportStatusLabel,
@@ -20,16 +20,16 @@ export type ResearchArchiveProps = {
 /**
  * Research Archive UI.
  *
- * Presents Engineering Intelligence articles as structured research reports
- * with category, status, difficulty, focus, tags, and reading context.
+ * Presents Engineering Intelligence articles as structured research reports.
+ * Filtering is category-based only because global intelligence search already
+ * handles cross-portfolio query search above this section.
  */
 export function ResearchArchive({ reports = researchReports }: ResearchArchiveProps) {
   const [selectedCategory, setSelectedCategory] = useState<ResearchReportCategoryFilter>("all");
-  const [query, setQuery] = useState("");
 
   const visibleReports = useMemo(
-    () => filterResearchReports(reports, selectedCategory, query),
-    [reports, selectedCategory, query]
+    () => filterResearchReportsByCategory(reports, selectedCategory),
+    [reports, selectedCategory]
   );
 
   return (
@@ -55,49 +55,33 @@ export function ResearchArchive({ reports = researchReports }: ResearchArchivePr
         </p>
       </div>
 
-      <div className="mt-8 grid gap-4 lg:grid-cols-[0.7fr_1fr]">
-        <label className="block">
-          <span className="text-text-muted font-mono text-xs tracking-[0.2em] uppercase">
-            {researchArchiveCopy.searchLabel}
-          </span>
+      <div
+        className="mt-8 flex flex-wrap gap-2"
+        aria-label="Research report categories"
+        data-testid="research-category-filters"
+      >
+        {researchReportCategories.map((category) => {
+          const isSelected = selectedCategory === category.id;
 
-          <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder={researchArchiveCopy.searchPlaceholder}
-            className="text-text-primary placeholder:text-text-muted focus:border-accent-blue/50 focus:ring-accent-blue/20 mt-2 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 transition outline-none focus:ring-2"
-            data-testid="research-search-input"
-          />
-        </label>
-
-        <div
-          className="flex flex-wrap gap-2"
-          aria-label="Research report categories"
-          data-testid="research-category-filters"
-        >
-          {researchReportCategories.map((category) => {
-            const isSelected = selectedCategory === category.id;
-
-            return (
-              <button
-                key={category.id}
-                type="button"
-                aria-pressed={isSelected}
-                onClick={() => setSelectedCategory(category.id)}
-                className={[
-                  "rounded-full border px-4 py-2 font-mono text-xs font-semibold tracking-[0.14em] uppercase transition",
-                  "focus-visible:ring-accent-blue/70 focus:outline-none focus-visible:ring-2",
-                  isSelected
-                    ? "border-accent-green/50 bg-accent-green/10 text-accent-green"
-                    : "text-text-secondary hover:border-accent-blue/30 hover:text-text-primary border-white/10 bg-white/[0.03]",
-                ].join(" ")}
-                data-testid={`research-filter-${category.id}`}
-              >
-                {category.label}
-              </button>
-            );
-          })}
-        </div>
+          return (
+            <button
+              key={category.id}
+              type="button"
+              aria-pressed={isSelected}
+              onClick={() => setSelectedCategory(category.id)}
+              className={[
+                "rounded-full border px-4 py-2 font-mono text-xs font-semibold tracking-[0.14em] uppercase transition",
+                "focus-visible:ring-accent-blue/70 focus:outline-none focus-visible:ring-2",
+                isSelected
+                  ? "border-accent-green/50 bg-accent-green/10 text-accent-green"
+                  : "text-text-secondary hover:border-accent-blue/30 hover:text-text-primary border-white/10 bg-white/[0.03]",
+              ].join(" ")}
+              data-testid={`research-filter-${category.id}`}
+            >
+              {category.label}
+            </button>
+          );
+        })}
       </div>
 
       {visibleReports.length === 0 ? (
@@ -126,9 +110,6 @@ type ResearchReportCardProps = {
   readonly index: number;
 };
 
-/**
- * Report-style research card.
- */
 function ResearchReportCard({ report, index }: ResearchReportCardProps) {
   return (
     <article
@@ -161,6 +142,7 @@ function ResearchReportCard({ report, index }: ResearchReportCardProps) {
 
       <section className="mt-5">
         <p className="text-text-muted font-mono text-[10px] tracking-[0.22em] uppercase">Focus</p>
+
         <p className="bg-background-deep/50 text-text-secondary mt-2 rounded-2xl border border-white/10 p-3 text-xs leading-6">
           {report.focus}
         </p>
@@ -170,6 +152,7 @@ function ResearchReportCard({ report, index }: ResearchReportCardProps) {
         <span className="bg-background-deep/50 text-text-secondary rounded-full border border-white/10 px-3 py-1.5 font-mono text-[10px]">
           {report.readingMinutes} min read
         </span>
+
         <span className="bg-background-deep/50 text-text-secondary rounded-full border border-white/10 px-3 py-1.5 font-mono text-[10px]">
           {getResearchReportDifficultyLabel(report.difficulty)}
         </span>
