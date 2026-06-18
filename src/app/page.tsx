@@ -7,6 +7,8 @@ import { MissionSection } from "@/sections/mission-section";
 import { SkillsMatrixSection } from "@/sections/skills-matrix-section";
 import { BrikByteOSShowcaseSection } from "@/sections/brikbyteos-showcase-section";
 import { ProjectsSection } from "@/sections/projects-section";
+import { ExperienceSection } from "@/sections/experience-section";
+import { EngineeringIntelligenceSection } from "@/sections/engineering-intelligence-section";
 
 /**
  * Home page.
@@ -25,6 +27,8 @@ export default function Home() {
         <SkillsMatrixSection />
         <BrikByteOSShowcaseSection />
         <ProjectsSection />
+        <ExperienceSection />
+        <EngineeringIntelligenceSection />
       </main>
     </OpeningSequence>
   );
