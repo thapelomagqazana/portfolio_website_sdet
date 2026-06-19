@@ -2,18 +2,12 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
-import {
-  engineeringPrinciples,
-  MISSION_PRINCIPLE_ROTATION_MS,
-  missionStatement,
-} from "@/data/mission";
+import { engineeringPrinciples, MISSION_PRINCIPLE_ROTATION_MS } from "@/data/mission";
+import { engineerDossier, engineeringPosture } from "@/data/mission-profile";
+import { motionDuration, motionEase, motionDistance } from "@/lib/motion";
 
 /**
  * Safely resolves the next principle index.
- *
- * @param currentIndex - Current active principle index.
- * @param totalPrinciples - Total number of available principles.
- * @returns The next principle index, looping back to zero at the end.
  */
 export function getNextPrincipleIndex(currentIndex: number, totalPrinciples: number): number {
   if (!Number.isFinite(currentIndex) || !Number.isFinite(totalPrinciples) || totalPrinciples <= 0) {
@@ -25,13 +19,6 @@ export function getNextPrincipleIndex(currentIndex: number, totalPrinciples: num
 
 /**
  * MissionStatement renders the Hero mission module.
- *
- * Design goals:
- * - Communicate quality-engineering philosophy clearly.
- * - Rotate memorable engineering principles.
- * - Respect reduced motion.
- * - Avoid aggressive aria-live announcements.
- * - Keep all copy centralized in data files.
  */
 export function MissionStatement() {
   const prefersReducedMotion = Boolean(useReducedMotion());
@@ -40,9 +27,7 @@ export function MissionStatement() {
   const activePrinciple = engineeringPrinciples[activePrincipleIndex] ?? engineeringPrinciples[0];
 
   useEffect(() => {
-    if (prefersReducedMotion || engineeringPrinciples.length <= 1) {
-      return;
-    }
+    if (prefersReducedMotion || engineeringPrinciples.length <= 1) return;
 
     const intervalId = globalThis.setInterval(() => {
       setActivePrincipleIndex((currentIndex) =>
@@ -50,9 +35,7 @@ export function MissionStatement() {
       );
     }, MISSION_PRINCIPLE_ROTATION_MS);
 
-    return () => {
-      globalThis.clearInterval(intervalId);
-    };
+    return () => globalThis.clearInterval(intervalId);
   }, [prefersReducedMotion]);
 
   return (
@@ -62,19 +45,31 @@ export function MissionStatement() {
       data-testid="mission-statement"
     >
       <p className="text-accent-green font-mono text-[11px] tracking-[0.24em] uppercase">
-        {missionStatement.eyebrow}
+        {engineerDossier.eyebrow}
       </p>
 
       <h2
         id="mission-statement-heading"
         className="font-display text-text-primary mt-4 max-w-2xl text-2xl font-bold tracking-tight sm:text-3xl"
       >
-        {missionStatement.headline}
+        {engineerDossier.mission}
       </h2>
 
-      <p className="text-text-secondary mt-4 max-w-2xl text-sm leading-7 sm:text-base">
-        {missionStatement.body}
-      </p>
+      <div className="text-text-secondary mt-4 max-w-3xl space-y-4 text-sm leading-7 sm:text-base">
+        <p>{engineerDossier.narrative}</p>
+        <p className="text-text-primary font-mono text-sm">{engineerDossier.philosophy}</p>
+      </div>
+
+      <div className="mt-6 grid gap-3 md:grid-cols-2">
+        {engineeringPosture.map((statement) => (
+          <div
+            key={statement}
+            className="bg-background-deep/50 text-text-secondary rounded-2xl border border-white/10 p-4 text-sm leading-6"
+          >
+            {statement}
+          </div>
+        ))}
+      </div>
 
       <div className="border-accent-blue/20 bg-accent-blue/10 mt-6 rounded-2xl border p-4">
         <p className="text-text-muted font-mono text-[11px] tracking-[0.2em] uppercase">
@@ -88,14 +83,17 @@ export function MissionStatement() {
             <AnimatePresence mode="wait">
               <motion.p
                 key={activePrinciple}
-                initial={{ opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: motionDistance.sm }}
                 animate={{
                   opacity: 1,
                   y: 0,
                   textShadow: "0 0 18px rgba(0, 212, 255, 0.22)",
                 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
+                exit={{ opacity: 0, y: -motionDistance.sm }}
+                transition={{
+                  duration: motionDuration.normal,
+                  ease: motionEase.standard,
+                }}
                 className="text-accent-blue font-mono text-sm"
               >
                 {activePrinciple}

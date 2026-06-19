@@ -1,7 +1,8 @@
+import { ArchitectureExplorer } from "@/components/brikbyteos/architecture-explorer";
 import { ProblemSolutionStory } from "@/components/brikbyteos/problem-solution-story";
 import { ReleasePipelineVisualization } from "@/components/brikbyteos/release-pipeline-visualization";
-import { ArchitectureExplorer } from "@/components/brikbyteos/architecture-explorer";
 import { RoadmapVisualization } from "@/components/brikbyteos/roadmap-visualization";
+import { brikByteOsStory } from "@/data/brikbyteos-story";
 import { releasePipelineCopy } from "@/data/release-pipeline";
 
 export function BrikByteOSShowcaseSection() {
@@ -16,7 +17,7 @@ export function BrikByteOSShowcaseSection() {
         <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
             <p className="text-accent-green font-mono text-xs tracking-[0.28em] uppercase">
-              {releasePipelineCopy.eyebrow}
+              {brikByteOsStory.productEyebrow}
             </p>
 
             <p className="border-accent-blue/30 bg-accent-blue/10 text-accent-blue mt-5 inline-flex rounded-full border px-3 py-2 font-mono text-xs tracking-[0.18em] uppercase">
@@ -27,13 +28,14 @@ export function BrikByteOSShowcaseSection() {
               id="brikbyteos-heading"
               className="font-display text-text-primary mt-5 text-4xl font-black tracking-tight sm:text-5xl"
             >
-              {releasePipelineCopy.heading}
+              {brikByteOsStory.productHeading}
             </h2>
 
             <div className="text-text-secondary mt-5 space-y-4 text-lg leading-8">
-              <p>{releasePipelineCopy.description}</p>
+              <p>{brikByteOsStory.productStory}</p>
               <p className="text-text-primary font-mono text-sm">
-                {releasePipelineCopy.productDefinition}
+                {brikByteOsStory.productCategory} that converts engineering evidence into deployment
+                confidence.
               </p>
             </div>
 

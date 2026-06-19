@@ -1,8 +1,15 @@
 /**
  * Engineering Intelligence knowledge-base data model.
  *
- * Metadata is centralized and typed so article cards, search, filtering,
- * related articles, and SEO can share one reliable source of truth.
+ * This module is the single source of truth for article metadata used by:
+ * - article cards
+ * - article search
+ * - category filtering
+ * - related articles
+ * - dynamic article routes
+ * - SEO metadata
+ *
+ * Keep article metadata here in sync with files inside content/articles.
  */
 
 export type ArticleCategory =
@@ -54,6 +61,66 @@ export const engineeringIntelligenceCopy = {
 } as const;
 
 export const knowledgeArticles: readonly KnowledgeArticle[] = [
+  {
+    slug: "what-makes-releases-fail",
+    title: "What Makes Releases Fail?",
+    description:
+      "A field guide on release failure, missing evidence, quality blind spots, and why release confidence matters.",
+    category: "release-engineering",
+    difficulty: "intermediate",
+    publishedAt: "2026-06-18",
+    readingMinutes: 9,
+    featured: true,
+    tags: ["release engineering", "release confidence", "ci/cd", "quality evidence"],
+  },
+  {
+    slug: "quality-gates-explained",
+    title: "Quality Gates Explained",
+    description:
+      "A first-principles explanation of quality gates as engineering decision systems, not checklists.",
+    category: "quality-engineering",
+    difficulty: "foundation",
+    publishedAt: "2026-06-18",
+    readingMinutes: 8,
+    featured: true,
+    tags: ["quality gates", "policy", "automation", "release risk"],
+  },
+  {
+    slug: "building-brikbyteos",
+    title: "Building BrikByteOS",
+    description:
+      "The engineering story behind BrikByteOS, Release Confidence Infrastructure, and evidence-backed deployment decisions.",
+    category: "brikbyteos",
+    difficulty: "intermediate",
+    publishedAt: "2026-06-18",
+    readingMinutes: 10,
+    featured: true,
+    tags: ["brikbyteos", "release confidence", "architecture", "evidence normalization"],
+  },
+  {
+    slug: "testing-is-not-quality",
+    title: "Testing Is Not Quality",
+    description:
+      "Why testing produces evidence, but quality engineering decides what that evidence means.",
+    category: "quality-engineering",
+    difficulty: "foundation",
+    publishedAt: "2026-06-18",
+    readingMinutes: 8,
+    featured: false,
+    tags: ["software testing", "quality engineering", "automation", "observability"],
+  },
+  {
+    slug: "playwright-vs-cypress",
+    title: "Playwright vs Cypress",
+    description:
+      "A balanced engineering comparison of Playwright and Cypress for reliable browser automation.",
+    category: "testing",
+    difficulty: "intermediate",
+    publishedAt: "2026-06-18",
+    readingMinutes: 9,
+    featured: false,
+    tags: ["playwright", "cypress", "test automation", "browser testing"],
+  },
   {
     slug: "release-confidence",
     title: "Release Confidence: From Feeling to Evidence",

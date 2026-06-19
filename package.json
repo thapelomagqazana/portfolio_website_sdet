@@ -15,7 +15,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --config vitest.config.ts",
     "test:watch": "vitest",
-    "verify": "pnpm tokens:generate && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "verify": "pnpm tokens:check && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "ci": "pnpm verify",
     "prepare": "husky"
   },
   "lint-staged": {

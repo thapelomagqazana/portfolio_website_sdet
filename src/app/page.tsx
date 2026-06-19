@@ -1,22 +1,29 @@
+import { LazySection } from "@/components/lazy/lazy-section";
+import { CommandDeckNavbar } from "@/components/layout/command-deck-navbar";
 import { ScrollNarrativeProvider } from "@/components/motion/scroll-narrative-provider";
 import { SectionTransition } from "@/components/motion/section-transition";
-import { CommandDeckNavbar } from "@/components/layout/command-deck-navbar";
-import { OpeningSequence } from "@/sections/opening-sequence";
+import { BrikByteOSShowcaseSection } from "@/sections/brikbyteos-showcase-section";
+import { ContactSection } from "@/sections/contact-section";
+import { EngineeringIntelligenceSection } from "@/sections/engineering-intelligence-section";
+import { ExperienceSection } from "@/sections/experience-section";
+import { FooterSection } from "@/sections/footer-section";
 import { HeroSection } from "@/sections/hero-section";
 import { MissionSection } from "@/sections/mission-section";
-import { SkillsMatrixSection } from "@/sections/skills-matrix-section";
-import { BrikByteOSShowcaseSection } from "@/sections/brikbyteos-showcase-section";
+import { OpeningSequence } from "@/sections/opening-sequence";
 import { ProjectsSection } from "@/sections/projects-section";
-import { ExperienceSection } from "@/sections/experience-section";
-import { EngineeringIntelligenceSection } from "@/sections/engineering-intelligence-section";
-import { ContactSection } from "@/sections/contact-section";
-import { FooterSection } from "@/sections/footer-section";
+import { SkillsMatrixSection } from "@/sections/skills-matrix-section";
+// import { MotionDebugOverlay } from "@/components/dev/motion-debug-overlay";
+
+function SectionSkeleton() {
+  return <div className="min-h-[60vh]" aria-hidden="true" />;
+}
 
 export default function Home() {
   return (
     <OpeningSequence>
       <ScrollNarrativeProvider>
         <CommandDeckNavbar />
+        {/* <MotionDebugOverlay /> */}
 
         <main>
           <SectionTransition stage="hero">
@@ -27,34 +34,48 @@ export default function Home() {
             <MissionSection />
           </SectionTransition>
 
-          <SectionTransition stage="skills">
-            <SkillsMatrixSection />
-          </SectionTransition>
+          <LazySection fallback={<SectionSkeleton />}>
+            <SectionTransition stage="skills">
+              <SkillsMatrixSection />
+            </SectionTransition>
+          </LazySection>
 
-          <SectionTransition stage="brikbyteos" mode="reveal">
-            <BrikByteOSShowcaseSection />
-          </SectionTransition>
+          <LazySection fallback={<SectionSkeleton />}>
+            <SectionTransition stage="brikbyteos" mode="reveal">
+              <BrikByteOSShowcaseSection />
+            </SectionTransition>
+          </LazySection>
 
-          <SectionTransition stage="projects">
-            <ProjectsSection />
-          </SectionTransition>
+          <LazySection fallback={<SectionSkeleton />}>
+            <SectionTransition stage="projects">
+              <ProjectsSection />
+            </SectionTransition>
+          </LazySection>
 
-          <SectionTransition stage="experience">
-            <ExperienceSection />
-          </SectionTransition>
+          <LazySection fallback={<SectionSkeleton />}>
+            <SectionTransition stage="experience">
+              <ExperienceSection />
+            </SectionTransition>
+          </LazySection>
 
-          <SectionTransition stage="engineering-intelligence">
-            <EngineeringIntelligenceSection />
-          </SectionTransition>
+          <LazySection fallback={<SectionSkeleton />}>
+            <SectionTransition stage="engineering-intelligence">
+              <EngineeringIntelligenceSection />
+            </SectionTransition>
+          </LazySection>
 
-          <SectionTransition stage="contact">
-            <ContactSection />
-          </SectionTransition>
+          <LazySection fallback={<SectionSkeleton />}>
+            <SectionTransition stage="contact">
+              <ContactSection />
+            </SectionTransition>
+          </LazySection>
         </main>
 
-        <SectionTransition stage="footer" mode="reveal">
-          <FooterSection />
-        </SectionTransition>
+        <LazySection fallback={<SectionSkeleton />}>
+          <SectionTransition stage="footer" mode="reveal">
+            <FooterSection />
+          </SectionTransition>
+        </LazySection>
       </ScrollNarrativeProvider>
     </OpeningSequence>
   );

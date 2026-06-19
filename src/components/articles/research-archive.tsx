@@ -22,7 +22,7 @@ export type ResearchArchiveProps = {
  *
  * Presents Engineering Intelligence articles as structured research reports.
  * Filtering is category-based only because global intelligence search already
- * handles cross-portfolio query search above this section.
+ * handles cross-portfolio search above this section.
  */
 export function ResearchArchive({ reports = researchReports }: ResearchArchiveProps) {
   const [selectedCategory, setSelectedCategory] = useState<ResearchReportCategoryFilter>("all");
@@ -84,6 +84,10 @@ export function ResearchArchive({ reports = researchReports }: ResearchArchivePr
         })}
       </div>
 
+      <p className="text-text-muted mt-5 font-mono text-xs tracking-[0.18em] uppercase">
+        {visibleReports.length} report{visibleReports.length === 1 ? "" : "s"} found
+      </p>
+
       {visibleReports.length === 0 ? (
         <div
           className="text-text-secondary mt-8 rounded-3xl border border-white/10 bg-white/[0.04] p-6"
@@ -111,6 +115,8 @@ type ResearchReportCardProps = {
 };
 
 function ResearchReportCard({ report, index }: ResearchReportCardProps) {
+  const isExternal = /^https?:\/\//i.test(report.href);
+
   return (
     <article
       className="hover:border-accent-blue/30 flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl transition hover:-translate-y-1 hover:bg-white/[0.06]"
@@ -140,8 +146,13 @@ function ResearchReportCard({ report, index }: ResearchReportCardProps) {
 
       <p className="text-text-secondary mt-3 text-sm leading-7">{report.summary}</p>
 
-      <section className="mt-5">
-        <p className="text-text-muted font-mono text-[10px] tracking-[0.22em] uppercase">Focus</p>
+      <section className="mt-5" aria-labelledby={`${report.id}-focus`}>
+        <p
+          id={`${report.id}-focus`}
+          className="text-text-muted font-mono text-[10px] tracking-[0.22em] uppercase"
+        >
+          Focus
+        </p>
 
         <p className="bg-background-deep/50 text-text-secondary mt-2 rounded-2xl border border-white/10 p-3 text-xs leading-6">
           {report.focus}
@@ -172,6 +183,8 @@ function ResearchReportCard({ report, index }: ResearchReportCardProps) {
       <div className="mt-auto pt-6">
         <Link
           href={report.href}
+          target={isExternal ? "_blank" : undefined}
+          rel={isExternal ? "noopener noreferrer" : undefined}
           className="border-accent-green/30 bg-accent-green/10 text-accent-green hover:border-accent-blue/40 hover:text-accent-blue focus-visible:ring-accent-blue/70 inline-flex rounded-full border px-4 py-2 font-mono text-xs font-semibold transition focus:outline-none focus-visible:ring-2"
         >
           Read report: {report.title} →

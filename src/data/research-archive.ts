@@ -1,3 +1,5 @@
+// src/data/research-archive.ts
+
 /**
  * Engineering Intelligence research archive data model.
  *
@@ -79,6 +81,71 @@ export const researchReportDifficultyLabels: Record<ResearchReportDifficulty, st
 
 export const researchReports: readonly ResearchReport[] = [
   {
+    id: "what-makes-releases-fail",
+    title: "What Makes Releases Fail?",
+    category: "release-engineering",
+    status: "published",
+    difficulty: "intermediate",
+    summary:
+      "A field guide on release failure, missing evidence, quality blind spots, and why release confidence matters.",
+    focus: "Release failure, incomplete evidence, and deployment confidence",
+    tags: ["release engineering", "release confidence", "CI/CD", "quality evidence"],
+    readingMinutes: 9,
+    href: "/engineering/what-makes-releases-fail",
+  },
+  {
+    id: "quality-gates-explained",
+    title: "Quality Gates Explained",
+    category: "quality-engineering",
+    status: "published",
+    difficulty: "introductory",
+    summary:
+      "A first-principles explanation of quality gates as engineering decision systems, not checklists.",
+    focus: "Policy thresholds, quality gates, and engineering evidence",
+    tags: ["quality gates", "policy", "automation", "release risk"],
+    readingMinutes: 8,
+    href: "/engineering/quality-gates-explained",
+  },
+  {
+    id: "building-brikbyteos",
+    title: "Building BrikByteOS",
+    category: "brikbyteos",
+    status: "published",
+    difficulty: "intermediate",
+    summary:
+      "The engineering story behind BrikByteOS, Release Confidence Infrastructure, and evidence-backed deployment decisions.",
+    focus: "Evidence normalization, quality gates, and release confidence architecture",
+    tags: ["BrikByteOS", "release confidence", "architecture", "evidence normalization"],
+    readingMinutes: 10,
+    href: "/engineering/building-brikbyteos",
+  },
+  {
+    id: "testing-is-not-quality",
+    title: "Testing Is Not Quality",
+    category: "quality-engineering",
+    status: "published",
+    difficulty: "introductory",
+    summary:
+      "Why testing produces evidence, but quality engineering decides what that evidence means.",
+    focus: "Testing, quality engineering, automation, and release confidence",
+    tags: ["software testing", "quality engineering", "automation", "observability"],
+    readingMinutes: 8,
+    href: "/engineering/testing-is-not-quality",
+  },
+  {
+    id: "playwright-vs-cypress",
+    title: "Playwright vs Cypress",
+    category: "test-automation",
+    status: "published",
+    difficulty: "intermediate",
+    summary:
+      "A balanced engineering comparison of Playwright and Cypress for reliable browser automation.",
+    focus: "Browser automation, CI/CD reliability, debugging, and enterprise readiness",
+    tags: ["Playwright", "Cypress", "test automation", "browser testing"],
+    readingMinutes: 9,
+    href: "/engineering/playwright-vs-cypress",
+  },
+  {
     id: "release-confidence-infrastructure",
     title: "Release Confidence Infrastructure",
     category: "release-engineering",
@@ -141,32 +208,6 @@ export const researchReports: readonly ResearchReport[] = [
     tags: ["BrikByteOS", "release confidence", "evidence pipeline"],
     readingMinutes: 5,
     href: "/engineering/brikbyteos-introduction",
-  },
-  {
-    id: "brikbyteos-adapter-architecture",
-    title: "BrikByteOS Adapter Architecture",
-    category: "brikbyteos",
-    status: "researching",
-    difficulty: "advanced",
-    summary:
-      "An architecture note on how adapters normalize external quality tools into one evidence model.",
-    focus: "Tool adapters and normalized evidence",
-    tags: ["BrikByteOS", "adapters", "architecture"],
-    readingMinutes: 10,
-    href: "/engineering/brikbyteos-adapter-architecture",
-  },
-  {
-    id: "systems-thinking-for-release-risk",
-    title: "Systems Thinking for Release Risk",
-    category: "systems-thinking",
-    status: "draft",
-    difficulty: "advanced",
-    summary:
-      "A research draft on viewing release failures as system failures rather than isolated test failures.",
-    focus: "Risk, feedback loops, and engineering systems",
-    tags: ["systems thinking", "release risk", "feedback loops"],
-    readingMinutes: 9,
-    href: "/engineering/systems-thinking-for-release-risk",
   },
 ] as const;
 
@@ -236,6 +277,34 @@ export function researchReportHasValidMetadata(report: ResearchReport): boolean 
 }
 
 /**
+ * Detects duplicate research report IDs.
+ */
+export function hasDuplicateResearchReportIds(reports: readonly ResearchReport[]): boolean {
+  const seen = new Set<string>();
+
+  for (const report of reports) {
+    if (seen.has(report.id)) return true;
+    seen.add(report.id);
+  }
+
+  return false;
+}
+
+/**
+ * Detects duplicate research report hrefs.
+ */
+export function hasDuplicateResearchReportHrefs(reports: readonly ResearchReport[]): boolean {
+  const seen = new Set<string>();
+
+  for (const report of reports) {
+    if (seen.has(report.href)) return true;
+    seen.add(report.href);
+  }
+
+  return false;
+}
+
+/**
  * Safely resolves a category label.
  */
 export function getResearchReportCategoryLabel(category: ResearchReportCategory | string): string {
@@ -259,5 +328,5 @@ export function getResearchReportDifficultyLabel(
 }
 
 function normalizeResearchSearchValue(value: string): string {
-  return value.trim().toLowerCase();
+  return value.trim().toLowerCase().replace(/\s+/g, " ");
 }

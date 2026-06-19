@@ -1,10 +1,18 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { siteSeo } from "@/data/seo";
+import { buildPageMetadata } from "@/lib/seo";
+import {
+  buildOrganizationJsonLd,
+  buildPersonJsonLd,
+  buildWebsiteJsonLd,
+} from "@/lib/structured-data";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Thapelo Magqazana | SDET Portfolio",
-  description:
-    "Software Development Engineer in Test portfolio focused on quality engineering, test automation, and release confidence.",
+export const metadata: Metadata = buildPageMetadata();
+
+export const viewport: Viewport = {
+  themeColor: siteSeo.themeColor,
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -12,9 +20,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = [buildPersonJsonLd(), buildWebsiteJsonLd(), buildOrganizationJsonLd()];
+
   return (
-    <html lang="en" data-scroll-behavior="smooth" className="h-full antialiased">
-      <body className="flex min-h-full flex-col">{children}</body>
+    <html lang={siteSeo.language} data-scroll-behavior="smooth" className="h-full antialiased">
+      <body className="flex min-h-full flex-col">
+        {jsonLd.map((schema) => (
+          <script
+            key={String(schema["@type"])}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          />
+        ))}
+        {children}
+      </body>
     </html>
   );
 }

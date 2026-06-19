@@ -9,8 +9,8 @@ export type OperatorProfileItem = {
 /**
  * Centralized engineer dossier identity data.
  *
- * This keeps personal positioning, role, and mission language out of the UI
- * component so copy changes do not require layout changes.
+ * This keeps personal positioning, role, mission, and engineering philosophy
+ * outside the UI component so copy changes do not require layout changes.
  */
 export const engineerDossier = {
   eyebrow: "Mission Profile",
@@ -18,8 +18,14 @@ export const engineerDossier = {
   role: "Software Development Engineer in Test",
   positioning:
     "Quality engineer focused on automation, release confidence, and evidence-driven delivery.",
+  identity:
+    "Systems-oriented Software Development Engineer in Test focused on quality engineering, release engineering, test automation, and developer productivity.",
   mission: "I build systems that prove software is ready to ship.",
   location: "South Africa",
+  narrative:
+    "I believe software quality should be measurable, explainable, and repeatable. Rather than treating testing as the final stage of delivery, I design engineering systems that continuously collect, normalize, and evaluate evidence so teams can release software with confidence.",
+  philosophy:
+    "Good software engineering does not only build features. It builds the confidence to change, test, release, and improve software without guessing.",
 } as const;
 
 /**
@@ -35,7 +41,7 @@ export const operatorProfileItems: readonly OperatorProfileItem[] = [
   },
   {
     label: "Operating Domain",
-    value: "Test automation, release engineering, and quality gates",
+    value: "Test automation, release engineering, software testing, and quality gates",
   },
   {
     label: "Flagship System",
@@ -44,6 +50,10 @@ export const operatorProfileItems: readonly OperatorProfileItem[] = [
   {
     label: "Engineering Bias",
     value: "Evidence over assumptions",
+  },
+  {
+    label: "Delivery Focus",
+    value: "Continuous integration, measurable quality signals, and developer productivity",
   },
 ] as const;
 
@@ -58,4 +68,5 @@ export const engineeringPosture = [
   "I prefer measurable evidence over optimistic release opinions.",
   "I build automation that reduces repeat work and improves decision confidence.",
   "I care about developer experience, production safety, and maintainable delivery systems.",
+  "I believe release confidence should be engineered through evidence, not guessed through meetings.",
 ] as const;

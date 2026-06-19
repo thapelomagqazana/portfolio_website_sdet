@@ -28,11 +28,11 @@ Software architecture is the practice of organising a system so that it remains 
 
 Good architecture answers questions such as:
 
-* What are the responsibilities of each component?
-* How does information move through the system?
-* Which modules depend on one another?
-* Where should new functionality be added?
-* How can the system evolve without unnecessary risk?
+- What are the responsibilities of each component?
+- How does information move through the system?
+- Which modules depend on one another?
+- Where should new functionality be added?
+- How can the system evolve without unnecessary risk?
 
 Architecture is not measured by how many design patterns a project uses. It is measured by how easy the software is to understand, change and extend.
 
@@ -48,11 +48,11 @@ Architecture is really a collection of engineering decisions.
 
 Those decisions include:
 
-* where responsibilities belong,
-* how components communicate,
-* what should remain independent,
-* how failures are handled,
-* and how the system is expected to evolve.
+- where responsibilities belong,
+- how components communicate,
+- what should remain independent,
+- how failures are handled,
+- and how the system is expected to evolve.
 
 Every decision creates consequences.
 
@@ -68,11 +68,11 @@ One of the biggest mistakes junior developers make is thinking in terms of files
 
 They ask,
 
-*"Where should I put this class?"*
+_"Where should I put this class?"_
 
 A better question is,
 
-*"Whose responsibility is this?"*
+_"Whose responsibility is this?"_
 
 Responsibilities create boundaries.
 
@@ -104,11 +104,11 @@ Thinking about architecture as information flow is incredibly useful.
 
 Instead of focusing only on classes and folders, ask:
 
-* Where does information begin?
-* Where does it move next?
-* Who transforms it?
-* Who consumes it?
-* What is produced?
+- Where does information begin?
+- Where does it move next?
+- Who transforms it?
+- Who consumes it?
+- What is produced?
 
 Once these questions are answered, the architecture often becomes much clearer.
 
@@ -122,11 +122,11 @@ This happens more often than many developers realise.
 
 Imagine a class that:
 
-* reads configuration,
-* executes tests,
-* generates reports,
-* writes files,
-* and sends notifications.
+- reads configuration,
+- executes tests,
+- generates reports,
+- writes files,
+- and sends notifications.
 
 Technically, it works.
 
@@ -156,11 +156,11 @@ Good architecture accepts that change is inevitable.
 
 Instead of asking,
 
-*"How do we solve today's problem?"*
+_"How do we solve today's problem?"_
 
 ask,
 
-*"How will this design handle tomorrow's problem?"*
+_"How will this design handle tomorrow's problem?"_
 
 That mindset often leads to simpler, more modular systems.
 
@@ -174,9 +174,9 @@ A boundary protects one part of the system from unnecessary knowledge about anot
 
 For example, in BrikByteOS:
 
-* the CLI should not know how Playwright parses reports,
-* adapters should not know how quality policies are evaluated,
-* the reporting module should not know how security scans are executed.
+- the CLI should not know how Playwright parses reports,
+- adapters should not know how quality policies are evaluated,
+- the reporting module should not know how security scans are executed.
 
 Each layer performs one responsibility.
 
@@ -218,10 +218,10 @@ Readable software is easier to improve.
 
 When a new developer joins a project, they should quickly understand:
 
-* the purpose of each module,
-* the direction of data flow,
-* where new functionality belongs,
-* and how the parts fit together.
+- the purpose of each module,
+- the direction of data flow,
+- where new functionality belongs,
+- and how the parts fit together.
 
 If understanding the architecture requires hours of explanation, the design probably needs improvement.
 
@@ -323,14 +323,14 @@ Architecture should help engineers work faster, not impress them with cleverness
 
 ## Key Takeaways
 
-* Architecture is a collection of engineering decisions.
-* Think in responsibilities rather than files.
-* Software is easier to understand when viewed as information flow.
-* Separate concerns before complexity grows.
-* Design around stable models rather than temporary technologies.
-* Clear boundaries improve maintainability.
-* Good architecture naturally supports better testing and release confidence.
-* The best architecture is usually the one that future engineers can understand quickly.
+- Architecture is a collection of engineering decisions.
+- Think in responsibilities rather than files.
+- Software is easier to understand when viewed as information flow.
+- Separate concerns before complexity grows.
+- Design around stable models rather than temporary technologies.
+- Clear boundaries improve maintainability.
+- Good architecture naturally supports better testing and release confidence.
+- The best architecture is usually the one that future engineers can understand quickly.
 
 <ArticleCallout>
 
@@ -341,6 +341,6 @@ Good software architecture is not measured by how complicated it looks. It is me
 </ArticleCallout>
 
 <ArticleQuote
-quote="Architecture succeeds when developers spend their time building new capability instead of untangling yesterday's decisions."
-by="Thapelo Magqazana"
+  quote="Architecture succeeds when developers spend their time building new capability instead of untangling yesterday's decisions."
+  by="Thapelo Magqazana"
 />

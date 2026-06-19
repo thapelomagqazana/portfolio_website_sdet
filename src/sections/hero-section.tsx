@@ -1,15 +1,8 @@
-import { heroContent } from "@/data/hero";
+import { heroBadges, heroContent, heroIdentity } from "@/data/hero";
 import { QualityGateVisualization } from "@/components/hero/quality-gate-visualization";
-import { ReleaseIntelligenceDashboard } from "@/components/hero/release-intelligence-dashboard";
 
 /**
  * HeroSection renders the first major content section after the opening sequence.
- *
- * Design goals:
- * - Communicate SDET positioning within 10 seconds.
- * - Present BrikByteOS/release-confidence thinking visually.
- * - Keep content data-driven.
- * - Remain responsive from mobile to large desktop.
  */
 export function HeroSection() {
   return (
@@ -34,7 +27,7 @@ export function HeroSection() {
           </p>
 
           <p className="text-text-primary mt-4 font-mono text-sm tracking-[0.32em] uppercase sm:text-base">
-            {heroContent.name}
+            {heroIdentity.name}
           </p>
 
           <h1
@@ -44,13 +37,14 @@ export function HeroSection() {
             {heroContent.headline}
           </h1>
 
-          <div className="text-text-secondary mt-6 max-w-3xl text-lg leading-8">
-            <p>{heroContent.subheadline}</p>
-            <p className="text-text-primary mt-3 font-mono text-sm">{heroContent.brikByteLine}</p>
+          <div className="text-text-secondary mt-6 max-w-3xl space-y-3 text-lg leading-8">
+            <p>{heroContent.positioning}</p>
+            <p>{heroContent.description}</p>
+            <p className="text-text-primary font-mono text-sm">{heroContent.brikByteLine}</p>
           </div>
 
           <div className="mt-7 flex flex-wrap gap-2" aria-label="Hero role badges">
-            {heroContent.badges.map((badge) => (
+            {heroBadges.map((badge) => (
               <span
                 key={badge}
                 className="border-accent-blue/30 bg-accent-blue/10 text-accent-blue rounded-full border px-3 py-2 font-mono text-xs"
@@ -63,6 +57,7 @@ export function HeroSection() {
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <a
               href={heroContent.primaryCta.href}
+              data-analytics-id={heroContent.primaryCta.analyticsId}
               className="border-accent-blue/50 bg-accent-blue/15 text-accent-blue hover:bg-accent-blue/25 rounded-full border px-6 py-3 text-center font-mono text-sm font-semibold transition"
             >
               {heroContent.primaryCta.label}
@@ -70,6 +65,7 @@ export function HeroSection() {
 
             <a
               href={heroContent.secondaryCta.href}
+              data-analytics-id={heroContent.secondaryCta.analyticsId}
               className="text-text-primary rounded-full border border-white/10 bg-white/[0.03] px-6 py-3 text-center font-mono text-sm font-semibold transition hover:bg-white/[0.07]"
             >
               {heroContent.secondaryCta.label}
@@ -83,7 +79,6 @@ export function HeroSection() {
 
         <aside aria-label="Release confidence dashboard" className="grid gap-5">
           <QualityGateVisualization />
-          {/* <ReleaseIntelligenceDashboard /> */}
         </aside>
       </div>
     </section>

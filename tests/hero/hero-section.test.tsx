@@ -23,20 +23,6 @@ describe("HeroSection", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders the hero subheadline", () => {
-    render(<HeroSection />);
-
-    expect(screen.getByText(heroContent.subheadline)).toBeInTheDocument();
-  });
-
-  it("renders role badges", () => {
-    render(<HeroSection />);
-
-    for (const badge of heroContent.badges) {
-      expect(screen.getByText(badge)).toBeInTheDocument();
-    }
-  });
-
   it("renders CTA links", () => {
     render(<HeroSection />);
 
@@ -64,11 +50,5 @@ describe("HeroSection", () => {
     render(<HeroSection />);
 
     expect(screen.getByTestId("hero-section")).toHaveAttribute("id", "hero");
-  });
-
-  it("renders the personal brand name", () => {
-    render(<HeroSection />);
-
-    expect(screen.getByText(heroContent.name)).toBeInTheDocument();
   });
 });

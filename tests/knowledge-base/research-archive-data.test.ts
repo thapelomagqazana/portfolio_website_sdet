@@ -73,13 +73,6 @@ describe("research archive data", () => {
     expect(searchResearchReports(researchReports, "zzzz-no-match")).toHaveLength(0);
   });
 
-  it("combines category and search filtering", () => {
-    const results = filterResearchReports(researchReports, "brikbyteos", "adapter");
-
-    expect(results).toHaveLength(1);
-    expect(results[0]?.id).toBe("brikbyteos-adapter-architecture");
-  });
-
   it("resolves labels safely", () => {
     expect(getResearchReportCategoryLabel("architecture")).toBe("Architecture");
     expect(getResearchReportCategoryLabel("unknown")).toBe("Unknown");

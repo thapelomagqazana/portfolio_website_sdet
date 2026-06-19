@@ -3,15 +3,24 @@ import type { ArticleCategory, KnowledgeArticle } from "@/data/knowledge-base";
 
 /**
  * Returns all articles sorted newest first.
+ *
+ * Sorting also falls back to title order when dates are equal so the result is
+ * deterministic across tests and builds.
  */
 export function getAllArticles(
   articles: readonly KnowledgeArticle[] = knowledgeArticles
 ): readonly KnowledgeArticle[] {
-  return [...articles].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  return [...articles].sort((firstArticle, secondArticle) => {
+    const dateComparison = secondArticle.publishedAt.localeCompare(firstArticle.publishedAt);
+
+    if (dateComparison !== 0) return dateComparison;
+
+    return firstArticle.title.localeCompare(secondArticle.title);
+  });
 }
 
 /**
- * Returns featured articles.
+ * Returns featured articles in deterministic newest-first order.
  */
 export function getFeaturedArticles(
   articles: readonly KnowledgeArticle[] = knowledgeArticles
@@ -26,7 +35,11 @@ export function getArticleBySlug(
   slug: string,
   articles: readonly KnowledgeArticle[] = knowledgeArticles
 ): KnowledgeArticle | undefined {
-  return articles.find((article) => article.slug === slug);
+  const normalizedSlug = normalizeSearchValue(slug);
+
+  if (!normalizedSlug) return undefined;
+
+  return articles.find((article) => normalizeSearchValue(article.slug) === normalizedSlug);
 }
 
 /**
@@ -37,38 +50,84 @@ export function getArticlesByCategory(
   articles: readonly KnowledgeArticle[] = knowledgeArticles
 ): readonly KnowledgeArticle[] {
   if (category === "all") return getAllArticles(articles);
+
   return getAllArticles(articles).filter((article) => article.category === category);
 }
 
 /**
  * Returns related articles by shared category or tags.
+ *
+ * Ranking:
+ * - same category receives stronger weight
+ * - shared tags add additional relevance
+ * - newest article wins ties
  */
 export function getRelatedArticles(
   article: KnowledgeArticle,
   articles: readonly KnowledgeArticle[] = knowledgeArticles,
   limit = 3
 ): readonly KnowledgeArticle[] {
+  const safeLimit = Math.max(0, Math.floor(limit));
   const tagSet = new Set(article.tags.map(normalizeSearchValue));
+
+  if (safeLimit === 0) return [];
 
   return articles
     .filter((candidate) => candidate.slug !== article.slug)
     .map((candidate) => {
       const sharedTags = candidate.tags.filter((tag) => tagSet.has(normalizeSearchValue(tag)));
       const categoryScore = candidate.category === article.category ? 5 : 0;
+
       return {
         article: candidate,
         score: categoryScore + sharedTags.length,
       };
     })
     .filter((candidate) => candidate.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit)
+    .sort((firstCandidate, secondCandidate) => {
+      if (secondCandidate.score !== firstCandidate.score) {
+        return secondCandidate.score - firstCandidate.score;
+      }
+
+      return secondCandidate.article.publishedAt.localeCompare(firstCandidate.article.publishedAt);
+    })
+    .slice(0, safeLimit)
     .map((candidate) => candidate.article);
 }
 
 /**
+ * Returns previous and next articles based on the current sorted reading order.
+ */
+export function getArticleReadingProgression(
+  slug: string,
+  articles: readonly KnowledgeArticle[] = knowledgeArticles
+): {
+  readonly previous: KnowledgeArticle | undefined;
+  readonly next: KnowledgeArticle | undefined;
+} {
+  const orderedArticles = getAllArticles(articles);
+  const articleIndex = orderedArticles.findIndex((article) => article.slug === slug);
+
+  if (articleIndex < 0) {
+    return {
+      previous: undefined,
+      next: undefined,
+    };
+  }
+
+  return {
+    previous: orderedArticles[articleIndex + 1],
+    next: orderedArticles[articleIndex - 1],
+  };
+}
+
+/**
  * Search ranking:
- * title > tags > category > description.
+ * - title exact match
+ * - title partial match
+ * - tag match
+ * - category match
+ * - description match
  */
 export function searchArticles(
   query: string,
@@ -84,7 +143,13 @@ export function searchArticles(
       score: scoreArticle(article, normalizedQuery),
     }))
     .filter((result) => result.score > 0)
-    .sort((a, b) => b.score - a.score)
+    .sort((firstResult, secondResult) => {
+      if (secondResult.score !== firstResult.score) {
+        return secondResult.score - firstResult.score;
+      }
+
+      return secondResult.article.publishedAt.localeCompare(firstResult.article.publishedAt);
+    })
     .map((result) => result.article);
 }
 
@@ -98,25 +163,57 @@ export function articleHasValidMetadata(article: KnowledgeArticle): boolean {
     article.description.trim().length > 0 &&
     Boolean(articleCategoryLabels[article.category]) &&
     article.readingMinutes > 0 &&
+    article.publishedAt.trim().length > 0 &&
     article.tags.some((tag) => tag.trim().length > 0)
   );
 }
 
-function scoreArticle(article: KnowledgeArticle, query: string): number {
-  let score = 0;
+/**
+ * Detects duplicate article slugs.
+ */
+export function hasDuplicateArticleSlugs(articles: readonly KnowledgeArticle[]): boolean {
+  const seen = new Set<string>();
 
-  if (normalizeSearchValue(article.title).includes(query)) score += 100;
+  for (const article of articles) {
+    const normalizedSlug = normalizeSearchValue(article.slug);
 
-  if (article.tags.some((tag) => normalizeSearchValue(tag).includes(query))) {
-    score += 60;
+    if (seen.has(normalizedSlug)) return true;
+
+    seen.add(normalizedSlug);
   }
 
-  if (normalizeSearchValue(article.category).includes(query)) score += 35;
-  if (normalizeSearchValue(article.description).includes(query)) score += 20;
+  return false;
+}
+
+/**
+ * Returns true when every article has complete metadata.
+ */
+export function allArticlesHaveValidMetadata(
+  articles: readonly KnowledgeArticle[] = knowledgeArticles
+): boolean {
+  return articles.every(articleHasValidMetadata);
+}
+
+function scoreArticle(article: KnowledgeArticle, query: string): number {
+  const title = normalizeSearchValue(article.title);
+  const description = normalizeSearchValue(article.description);
+  const category = normalizeSearchValue(article.category);
+  const tags = article.tags.map(normalizeSearchValue);
+
+  let score = 0;
+
+  if (title === query) score += 150;
+  if (title.includes(query)) score += 100;
+
+  if (tags.some((tag) => tag === query)) score += 80;
+  if (tags.some((tag) => tag.includes(query))) score += 60;
+
+  if (category.includes(query)) score += 35;
+  if (description.includes(query)) score += 20;
 
   return score;
 }
 
 function normalizeSearchValue(value: string): string {
-  return value.trim().toLowerCase();
+  return value.trim().toLowerCase().replace(/\s+/g, " ");
 }

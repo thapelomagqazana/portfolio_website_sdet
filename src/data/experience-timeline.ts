@@ -37,6 +37,34 @@ export const experienceTimelineCopy = {
     "From technical foundations to software engineering, then toward quality automation and release confidence systems. The journey shows a consistent movement toward disciplined engineering, evidence-driven delivery, and leadership.",
 } as const;
 
+export const experienceNarrativeContent = {
+  eyebrow: "Engineering Experience",
+  heading: "A journey from structured problem solving to release confidence systems.",
+  narrative:
+    "My engineering journey began with a fascination for solving structured problems through mathematics and systems thinking. That curiosity evolved into software engineering, where I discovered that quality is not a final activity — it is an architectural capability.",
+  progression:
+    "Through professional engineering experience at Steinweg Bridge and Alula Technologies, software training through WeThinkCode_, part-time Computer Science and Mathematics studies at UNISA, and projects spanning backend engineering, systems integration, full-stack development, test automation, CI/CD, performance testing, and developer tooling, I developed an engineering mindset focused on reducing uncertainty.",
+  currentFocus:
+    "Today I continue building BrikByteOS, an engineering platform that transforms software quality signals into measurable release confidence, while expanding my expertise across quality engineering, release engineering, cloud fundamentals, and developer productivity.",
+  leadership:
+    "Beyond technical execution, my experience includes youth leadership, facilitation, planning, and community service — strengthening the communication and responsibility required for engineering collaboration.",
+  technicalEvolution: [
+    "Mathematics and systems thinking",
+    "Construction and technical studies",
+    "Professional engineering experience",
+    "Software engineering training",
+    "Computer Science and Mathematics studies",
+    "Backend and systems integration",
+    "Software testing and automation",
+    "Cloud fundamentals",
+    "Release engineering",
+    "Developer productivity",
+    "Release Confidence Infrastructure",
+  ],
+  communityImpact:
+    "Leadership and service have shaped how I communicate, organize, and build with responsibility.",
+} as const;
+
 export const experienceCategoryLabels: Record<ExperienceTimelineCategory, string> = {
   education: "Education",
   training: "Training",

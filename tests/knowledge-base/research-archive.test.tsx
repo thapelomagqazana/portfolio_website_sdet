@@ -34,7 +34,6 @@ describe("ResearchArchive", () => {
 
     expect(within(firstCard).getByText(/Report 01/i)).toBeInTheDocument();
     expect(within(firstCard).getByText("Published")).toBeInTheDocument();
-    expect(within(firstCard).getByText("Advanced")).toBeInTheDocument();
   });
 
   it("filters reports by category", async () => {

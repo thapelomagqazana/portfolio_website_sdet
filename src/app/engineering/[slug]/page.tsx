@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { articleCategoryLabels, difficultyLabels } from "@/data/knowledge-base";
 import { getAllArticles, getArticleBySlug, getRelatedArticles } from "@/lib/articles";
+import { buildArticleMetadata } from "@/lib/seo";
+import { buildArticleJsonLd, buildBreadcrumbJsonLd } from "@/lib/structured-data";
 
 type PageProps = {
   readonly params: Promise<{
@@ -25,22 +28,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  return {
-    title: `${article.title} | Engineering Intelligence`,
+  return buildArticleMetadata({
+    title: article.title,
     description: article.description,
-    keywords: [...article.tags],
-    openGraph: {
-      title: article.title,
-      description: article.description,
-      type: "article",
-      publishedTime: article.publishedAt,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: article.title,
-      description: article.description,
-    },
-  };
+    path: `/engineering/${article.slug}`,
+    publishedTime: article.publishedAt,
+    keywords: article.tags,
+  });
 }
 
 export default async function EngineeringArticlePage({ params }: PageProps) {
@@ -50,13 +44,37 @@ export default async function EngineeringArticlePage({ params }: PageProps) {
   if (!article) notFound();
 
   const ArticleContent = await import(`../../../../content/articles/${article.slug}.mdx`).then(
-    (module) => module.default
+    (articleModule) => articleModule.default
   );
 
   const related = getRelatedArticles(article);
 
+  const articleJsonLd = buildArticleJsonLd({
+    headline: article.title,
+    description: article.description,
+    url: `/engineering/${article.slug}`,
+    publishedAt: article.publishedAt,
+    keywords: article.tags,
+  });
+
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "Engineering Intelligence", path: "/#engineering-intelligence" },
+    { name: article.title, path: `/engineering/${article.slug}` },
+  ]);
+
   return (
     <main className="px-4 py-20 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
       <article className="mx-auto max-w-4xl">
         <header>
           <p className="text-accent-green font-mono text-xs tracking-[0.24em] uppercase">
@@ -105,9 +123,13 @@ export default async function EngineeringArticlePage({ params }: PageProps) {
                 <p className="text-accent-blue font-mono text-[10px] tracking-[0.2em] uppercase">
                   {articleCategoryLabels[item.category]}
                 </p>
-                <p className="font-display text-text-primary mt-2 text-sm font-bold">
+
+                <Link
+                  href={`/engineering/${item.slug}`}
+                  className="font-display text-text-primary hover:text-accent-blue mt-2 block text-sm font-bold transition"
+                >
                   {item.title}
-                </p>
+                </Link>
               </li>
             ))}
           </ul>

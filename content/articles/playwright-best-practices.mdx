@@ -26,13 +26,13 @@ Playwright is one of the strongest tools for modern browser testing, but the val
 
 Reliable UI automation requires:
 
-* stable selectors,
-* clear assertions,
-* isolated test data,
-* deterministic waiting,
-* simple user journeys,
-* readable failure output,
-* and good CI discipline.
+- stable selectors,
+- clear assertions,
+- isolated test data,
+- deterministic waiting,
+- simple user journeys,
+- readable failure output,
+- and good CI discipline.
 
 A bad Playwright test is not just a failing test. It is bad engineering evidence.
 
@@ -54,11 +54,11 @@ The better starting point is to ask:
 
 For example:
 
-* Can a user sign in?
-* Can a user create an account?
-* Can a customer complete checkout?
-* Can an engineer generate a report?
-* Can an admin update important settings?
+- Can a user sign in?
+- Can a user create an account?
+- Can a customer complete checkout?
+- Can an engineer generate a report?
+- Can an admin update important settings?
 
 Playwright tests should focus first on workflows that carry business or product risk.
 
@@ -201,11 +201,11 @@ A test failure should help the engineer understand what went wrong.
 
 Playwright already provides useful tools for this:
 
-* screenshots,
-* traces,
-* videos,
-* console logs,
-* network inspection.
+- screenshots,
+- traces,
+- videos,
+- console logs,
+- network inspection.
 
 Use them properly in CI.
 
@@ -275,11 +275,11 @@ In a release confidence system, Playwright becomes an evidence producer.
 
 It answers questions like:
 
-* Did the critical user journeys pass?
-* Which tests failed?
-* Were failures retried?
-* Are traces available?
-* Can the report be reviewed later?
+- Did the critical user journeys pass?
+- Which tests failed?
+- Were failures retried?
+- Are traces available?
+- Can the report be reviewed later?
 
 This is exactly where BrikByteOS fits.
 
@@ -295,13 +295,13 @@ The result is a stronger release decision.
 
 Before adding a Playwright test, ask:
 
-* Does this journey matter to users?
-* Would this failure block or weaken a release?
-* Can the test run independently?
-* Are the selectors stable?
-* Does the test wait for state instead of time?
-* Will the failure output help the next engineer?
-* Should this be a UI test, or would a lower-level test be better?
+- Does this journey matter to users?
+- Would this failure block or weaken a release?
+- Can the test run independently?
+- Are the selectors stable?
+- Does the test wait for state instead of time?
+- Will the failure output help the next engineer?
+- Should this be a UI test, or would a lower-level test be better?
 
 These questions keep the suite disciplined.
 
@@ -311,13 +311,13 @@ They also prevent UI automation from becoming a dumping ground for every possibl
 
 ## Key Takeaways
 
-* Playwright tests should focus on critical user journeys.
-* Stable selectors reduce maintenance cost.
-* Arbitrary timeouts create flaky tests.
-* Independent tests are easier to debug.
-* UI tests should verify behaviour, not implementation.
-* CI results should be treated as release evidence.
-* Playwright is strongest when used as part of a layered quality strategy.
+- Playwright tests should focus on critical user journeys.
+- Stable selectors reduce maintenance cost.
+- Arbitrary timeouts create flaky tests.
+- Independent tests are easier to debug.
+- UI tests should verify behaviour, not implementation.
+- CI results should be treated as release evidence.
+- Playwright is strongest when used as part of a layered quality strategy.
 
 <ArticleCallout>
 
@@ -328,6 +328,6 @@ A reliable Playwright test is not just automation. It is engineering evidence th
 </ArticleCallout>
 
 <ArticleQuote
-quote="Good UI automation should not make engineers nervous. It should make release decisions clearer."
-by="Thapelo Magqazana"
+  quote="Good UI automation should not make engineers nervous. It should make release decisions clearer."
+  by="Thapelo Magqazana"
 />

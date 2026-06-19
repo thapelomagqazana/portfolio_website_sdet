@@ -22,14 +22,14 @@ export const missionStatement = {
  * BrikByteOS/release-confidence positioning.
  */
 export const engineeringPrinciples = [
-  "Evidence over assumptions",
-  "Automation over repetition",
-  "Quality gates over guesswork",
-  "Traceability over confusion",
-  "Release confidence over release anxiety",
+  "Quality is engineered, not inspected at the end.",
+  "Evidence beats assumption.",
+  "Automation should reduce uncertainty, not create noise.",
+  "Release confidence is a systems problem.",
+  "Good engineering makes decisions reviewable.",
 ] as const;
 
 /**
  * Principle rotation timing in milliseconds.
  */
-export const MISSION_PRINCIPLE_ROTATION_MS = 2200;
+export const MISSION_PRINCIPLE_ROTATION_MS = 3200;

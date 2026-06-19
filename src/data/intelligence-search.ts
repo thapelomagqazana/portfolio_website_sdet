@@ -53,6 +53,51 @@ export const intelligenceSearchConfig = {
 
 export const intelligenceSearchIndex: readonly SearchEntity[] = [
   {
+    id: "article-what-makes-releases-fail",
+    title: "What Makes Releases Fail?",
+    description:
+      "A field guide on release failure, missing evidence, quality blind spots, and why release confidence matters.",
+    category: "article",
+    href: "/engineering/what-makes-releases-fail",
+    keywords: ["release failure", "release confidence", "ci/cd", "quality evidence"],
+  },
+  {
+    id: "article-quality-gates-explained",
+    title: "Quality Gates Explained",
+    description:
+      "A first-principles explanation of quality gates as engineering decision systems, not checklists.",
+    category: "article",
+    href: "/engineering/quality-gates-explained",
+    keywords: ["quality gates", "policy", "automation", "release risk"],
+  },
+  {
+    id: "article-building-brikbyteos",
+    title: "Building BrikByteOS",
+    description:
+      "The engineering story behind BrikByteOS, Release Confidence Infrastructure, and evidence-backed deployment decisions.",
+    category: "brikbyteos",
+    href: "/engineering/building-brikbyteos",
+    keywords: ["brikbyteos", "release confidence", "architecture", "evidence normalization"],
+  },
+  {
+    id: "article-testing-is-not-quality",
+    title: "Testing Is Not Quality",
+    description:
+      "Why testing produces evidence, but quality engineering decides what that evidence means.",
+    category: "article",
+    href: "/engineering/testing-is-not-quality",
+    keywords: ["software testing", "quality engineering", "automation", "observability"],
+  },
+  {
+    id: "article-playwright-vs-cypress",
+    title: "Playwright vs Cypress",
+    description: "A balanced engineering comparison of Playwright and Cypress.",
+    category: "article",
+    href: "/engineering/playwright-vs-cypress",
+    keywords: ["playwright", "cypress", "test automation", "browser testing"],
+  },
+
+  {
     id: "article-release-confidence",
     title: "Release Confidence: From Feeling to Evidence",
     description:
@@ -95,6 +140,7 @@ export const intelligenceSearchIndex: readonly SearchEntity[] = [
     href: "/engineering/brikbyteos-introduction",
     keywords: ["brikbyteos", "release confidence", "evidence pipeline"],
   },
+
   {
     id: "research-evidence-reports",
     title: "Evidence Reports",
@@ -111,6 +157,7 @@ export const intelligenceSearchIndex: readonly SearchEntity[] = [
     href: "/engineering/playwright-best-practices",
     keywords: ["automation", "ci", "testing", "quality engineering"],
   },
+
   {
     id: "project-brikbyteos",
     title: "BrikByteOS",
@@ -137,6 +184,7 @@ export const intelligenceSearchIndex: readonly SearchEntity[] = [
     href: "#projects",
     keywords: ["java", "backend", "sockets", "sqlite", "testing"],
   },
+
   {
     id: "experience-quality-engineering",
     title: "Quality Engineering Growth",
@@ -154,6 +202,7 @@ export const intelligenceSearchIndex: readonly SearchEntity[] = [
     href: "#experience",
     keywords: ["steinweg bridge", "alula technologies", "professional experience"],
   },
+
   {
     id: "skill-playwright",
     title: "Playwright",

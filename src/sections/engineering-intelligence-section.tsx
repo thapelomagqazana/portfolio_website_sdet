@@ -1,7 +1,15 @@
 import { ResearchArchive } from "@/components/articles/research-archive";
-import { engineeringIntelligenceCopy } from "@/data/knowledge-base";
 import { IntelligenceSearch } from "@/components/search/intelligence-search";
+import { engineeringIntelligenceCopy } from "@/data/knowledge-base";
 
+/**
+ * Engineering Intelligence section.
+ *
+ * Presents the portfolio knowledge system as an engineering intelligence hub:
+ * - global intelligence search
+ * - structured research archive
+ * - long-form engineering articles
+ */
 export function EngineeringIntelligenceSection() {
   return (
     <section
@@ -11,7 +19,7 @@ export function EngineeringIntelligenceSection() {
       data-testid="engineering-intelligence-section"
     >
       <div className="mx-auto max-w-7xl">
-        <div className="max-w-3xl">
+        <header className="max-w-3xl">
           <p className="text-accent-green font-mono text-xs tracking-[0.3em] uppercase">
             {engineeringIntelligenceCopy.eyebrow}
           </p>
@@ -26,9 +34,12 @@ export function EngineeringIntelligenceSection() {
           <p className="text-text-secondary mt-5 text-base leading-8">
             {engineeringIntelligenceCopy.description}
           </p>
+        </header>
+
+        <div className="mt-10">
+          <IntelligenceSearch />
         </div>
 
-        <IntelligenceSearch />
         <ResearchArchive />
       </div>
     </section>
