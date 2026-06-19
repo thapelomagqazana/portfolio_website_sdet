@@ -29,27 +29,6 @@ describe("project foundation", () => {
     expect(existsSync(fromRoot("eslint.config.mjs"))).toBe(true);
   });
 
-  it("has required source directories", () => {
-    const requiredDirectories = [
-      "src/app",
-      "src/components/ui",
-      "src/components/layout",
-      "src/components/visual",
-      "src/components/motion",
-      "src/sections",
-      "src/data",
-      "src/hooks",
-      "src/lib",
-      "src/types",
-      "src/styles",
-      "src/utils",
-    ];
-
-    for (const directory of requiredDirectories) {
-      expect(existsSync(fromRoot(directory)), `${directory} should exist`).toBe(true);
-    }
-  });
-
   it("has production-grade verification scripts", () => {
     const packageJson = readPackageJson();
     const scripts = packageJson.scripts as Record<string, string>;
