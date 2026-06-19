@@ -19,7 +19,7 @@ This portfolio demonstrates my work as a **Software Development Engineer in Test
 - Software Architecture
 - Systems Thinking
 - Release Confidence
-- BrikByteOS
+- BrikByteOS.
 
 Instead of presenting projects as isolated examples, the portfolio presents an engineering narrative that explains how software quality, architecture, testing, and release confidence fit together.
 
