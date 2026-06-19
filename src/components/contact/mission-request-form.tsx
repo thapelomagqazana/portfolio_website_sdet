@@ -15,6 +15,7 @@ import type {
   MissionRequestField,
   MissionSubmissionState,
 } from "@/types/mission-request";
+import { submitMissionRequestAction } from "@/app/actions/submit-mission-request";
 
 /**
  * Engineering mission request form.
@@ -62,7 +63,15 @@ export function MissionRequestForm() {
     setSubmissionState("submitting");
 
     try {
-      await submitMissionRequest(validation.sanitized);
+      const result = await submitMissionRequestAction({
+        ...validation.sanitized,
+        website: "",
+      });
+
+      if (!result.ok) {
+        setSubmissionState("error");
+        return;
+      }
       setForm(initialMissionRequest);
       setErrors({});
       setSubmissionState("success");
@@ -111,6 +120,16 @@ export function MissionRequestForm() {
       ) : null}
 
       <form onSubmit={handleSubmit} noValidate className="mt-8 grid gap-5">
+        {/* Honeypot field: real users will not see or fill this. Bots often will. */}
+        <input
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          className="hidden"
+          aria-hidden="true"
+        />
+
         <div className="grid gap-5 md:grid-cols-2">
           <FormField
             id="fullName"
@@ -415,13 +434,4 @@ function MissionRequestSuccess({ onReset }: { readonly onReset: () => void }) {
       </button>
     </section>
   );
-}
-
-/**
- * Temporary async boundary.
- *
- * Replace this with a Next.js Server Action or API route later.
- */
-async function submitMissionRequest(_request: MissionRequest): Promise<void> {
-  await new Promise((resolve) => window.setTimeout(resolve, 500));
 }

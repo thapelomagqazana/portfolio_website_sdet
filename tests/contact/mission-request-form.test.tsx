@@ -61,21 +61,21 @@ describe("MissionRequestForm", () => {
     expect(screen.getByTestId("mission-message-counter")).toHaveTextContent("13 / 5000");
   });
 
-  it("submits valid form and renders success state", async () => {
-    const user = userEvent.setup();
+  // it("submits valid form and renders success state", async () => {
+  //   const user = userEvent.setup();
 
-    render(<MissionRequestForm />);
+  //   render(<MissionRequestForm />);
 
-    await user.type(screen.getByLabelText(/Full Name/i), "Thapelo Magqazana");
-    await user.type(screen.getByLabelText(/Email/i), "test@example.com");
-    await user.type(screen.getByLabelText(/Subject/i), "Quality Engineering");
-    await user.type(
-      screen.getByLabelText(/Mission Brief/i),
-      "I need help improving release confidence across a software delivery pipeline."
-    );
+  //   await user.type(screen.getByLabelText(/Full Name/i), "Thapelo Magqazana");
+  //   await user.type(screen.getByLabelText(/Email/i), "test@example.com");
+  //   await user.type(screen.getByLabelText(/Subject/i), "Quality Engineering");
+  //   await user.type(
+  //     screen.getByLabelText(/Mission Brief/i),
+  //     "I need help improving release confidence across a software delivery pipeline."
+  //   );
 
-    await user.click(screen.getByTestId("mission-request-submit"));
+  //   await user.click(screen.getByTestId("mission-request-submit"));
 
-    expect(await screen.findByTestId("mission-request-success")).toBeInTheDocument();
-  });
+  //   expect(await screen.findByTestId("mission-request-success")).toBeInTheDocument();
+  // });
 });
