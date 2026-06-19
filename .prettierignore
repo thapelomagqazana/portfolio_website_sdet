@@ -4,3 +4,29 @@ dist
 coverage
 pnpm-lock.yaml
 .vercel
+
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# pnpm
+.pnpm-store
+
+# build outputs
+.next
+out
+dist
+coverage
+
+# generated
+src/styles/design-system.generated.css
+
+# git
+.git
+
+# vercel
+.vercel
+
+# logs
+*.log
