@@ -78,7 +78,7 @@ export const terminalCommands: readonly ContactAction[] = [
     id: "resume",
     label: "Resume",
     command: "download --resume",
-    href: "/Thapelo-Magqazana-Resume.pdf",
+    href: "/ThapeloMagqazana_resume (1).pdf",
   },
 ] as const;
 
