@@ -66,7 +66,7 @@ export const contactActions: readonly ContactAction[] = [
     title: "Resume",
     description: "Download the latest engineering résumé.",
     command: "download --resume",
-    href: "/Thapelo-Magqazana-Resume.pdf",
+    href: "/ThapeloMagqazana_resume (1).pdf",
     external: false,
     status: "online",
   },
