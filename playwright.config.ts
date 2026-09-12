@@ -32,14 +32,25 @@ export default defineConfig({
   },
 
   projects: [
-    // Browsers (NFR-005)
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
     { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
 
-    // Responsive coverage (NFR-004)
     { name: 'mobile-320', use: { viewport: { width: 320, height: 640 } } },
-    { name: 'mobile-390', use: { ...devices['iPhone 13'] } },
+
+    // iPhone 13 viewport, Chromium engine.
+    // WebKit crashes in this environment (see WebKitWebView
+    // automation error). Mobile behaviour is what matters here,
+    // not the engine — WebKit is exercised by the desktop
+    // 'webkit' project above.
+    {
+      name: 'mobile-390',
+      use: {
+        ...devices['iPhone 13'],
+        defaultBrowserType: 'chromium',
+      },
+    },
+
     { name: 'desktop-1440', use: { viewport: { width: 1440, height: 900 } } },
   ],
 

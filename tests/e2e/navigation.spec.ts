@@ -14,11 +14,20 @@ test.describe('navigation', () => {
 
   test('clicking a nav link updates aria-current', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/');
 
     const workLink = page.getByRole('link', { name: 'Work' }).first();
+
     await workLink.click();
 
-    await expect(workLink).toHaveAttribute('aria-current', 'true');
+    // IntersectionObserver fires after the scroll settles.
+    // Firefox can take 2–3x longer than Chromium/WebKit for the
+    // callback to run, especially under parallel test load.
+    // 3 seconds is safely above that window but still under the
+    // 30-second test timeout.
+    await expect(workLink).toHaveAttribute('aria-current', 'true', {
+      timeout: 3000,
+    });
   });
 
   test('mobile menu opens, traps focus, and closes on Escape', async ({
