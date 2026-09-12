@@ -1,0 +1,226 @@
+/**
+ * Design Tokens — Thapelo Magqazana Engineering Portfolio
+ * =========================================================
+ *
+ * Single source of truth for all design decisions.
+ * Every other file (globals.css, Tailwind @theme, components)
+ * reads from these variables.
+ *
+ * Concept:   The Engineering Lab
+ * Direction: Editorial Minimalism × Developer Tooling
+ * Mantra:    Less portfolio. More proof.
+ *
+ * References:
+ *   Design System §6  — Theme (dark technical minimalism)
+ *   Design System §7  — Accent system
+ *   Design System §8  — Semantic colour system
+ *   Design System §10 — Typography (max 2 families)
+ *   Design System §11 — Type scale (fluid)
+ *   Design System §13 — Spacing (4/8-based)
+ *   Design System §16 — Border system
+ *   Design System §17 — Radius system
+ *   Design System §18 — Shadow system
+ *   Design System §32 — Motion system
+ *   Design System §33 — Motion timing
+ *   Design System §37 — Responsive range (320 → 1440+)
+ */
+
+/* =========================================================
+   P3-01 — Design Tokens (root scope)
+   ========================================================= */
+
+:root {
+  /* -------------------------------------------------------
+     P3-03 — Colour System (semantic)
+     -------------------------------------------------------
+     Colour must communicate meaning. Never use a colour
+     because it "looks nice" — use it because it means
+     something. (§8, §9)
+
+     All values chosen for WCAG 2.2 AA contrast against
+     --color-background.
+     ------------------------------------------------------- */
+
+  /* Surfaces — dark technical minimalism (§6, §19) */
+  --color-background: #0b0d0f; /* Level 0 — page          */
+  --color-surface: #111417; /* Level 1 — section       */
+  --color-surface-elevated: #171b1f; /* Level 2 — interactive   */
+  --color-surface-muted: #0e1114; /* De-emphasised surface   */
+
+  /* Foreground (§6) */
+  --color-foreground: #f2f4f5; /* Primary text            */
+  --color-foreground-muted: #a7adb3; /* Secondary text          */
+  --color-foreground-subtle: #737a82; /* Tertiary / meta         */
+
+  /* Structure (§16) */
+  --color-border: #252a30;
+  --color-border-strong: #333a42;
+
+  /* Accent — SIGNAL (§7)
+     Used for: primary CTA, links, focus, selected state.
+     Never as decoration. */
+  --color-accent: #4f8cff;
+  --color-accent-hover: #6fa0ff;
+  --color-accent-subtle: rgba(79, 140, 255, 0.12);
+
+  /* Semantic states (§8)
+     Green means passed. Amber means attention.
+     Red means failed. Nothing else. */
+  --color-success: #3fb950;
+  --color-warning: #d29922;
+  --color-error: #f85149;
+
+  /* Focus ring — must remain visible against all surfaces (§36) */
+  --color-focus: var(--color-accent);
+
+  /* -------------------------------------------------------
+     P3-04 — Spacing System
+     -------------------------------------------------------
+     4px/8px-based scale. Every margin, padding and gap
+     must use a token from this scale. (§13)
+     ------------------------------------------------------- */
+
+  --space-0: 0;
+  --space-1: 0.25rem; /*  4px */
+  --space-2: 0.5rem; /*  8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-6: 1.5rem; /* 24px */
+  --space-8: 2rem; /* 32px */
+  --space-12: 3rem; /* 48px */
+  --space-16: 4rem; /* 64px */
+  --space-24: 6rem; /* 96px */
+  --space-32: 8rem; /* 128px */
+
+  /* -------------------------------------------------------
+     P3-01 — Radius System
+     -------------------------------------------------------
+     Restrained radii. The interface should feel engineered,
+     not playful. (§17)
+     ------------------------------------------------------- */
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* -------------------------------------------------------
+     P3-01 — Shadow System
+     -------------------------------------------------------
+     Shadows are used sparingly. Primary separation comes
+     from spacing + surface colour + border. (§18)
+     ------------------------------------------------------- */
+
+  --shadow-none: none;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 12px 32px -8px rgba(0, 0, 0, 0.55);
+
+  /* -------------------------------------------------------
+     P3-01 — Transitions (Motion)
+     -------------------------------------------------------
+     Fast, subtle, purposeful, predictable. (§32, §33)
+     ------------------------------------------------------- */
+
+  --duration-instant: 80ms;
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasis: cubic-bezier(0.3, 0, 0, 1.2);
+
+  /* Composite transitions for common cases */
+  --transition-colour:
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+  --transition-focus: outline-color var(--duration-fast) var(--ease-standard);
+  --transition-opacity: opacity var(--duration-base) var(--ease-standard);
+
+  /* -------------------------------------------------------
+     P3-02 — Typography
+     -------------------------------------------------------
+     Two families maximum. Mono used sparingly. (§10)
+     ------------------------------------------------------- */
+
+  /* Font stacks — system fallbacks first for zero-CLS boot,
+     then the preferred families once loaded. */
+  --font-sans:
+    'Inter', 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  --font-mono:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
+    'Liberation Mono', monospace;
+
+  /* Fluid type scale — see Design System §11.
+     clamp(min, preferred, max) scales naturally from
+     320px to 1440px+ without media queries. */
+
+  --font-size-display: clamp(3rem, 7vw, 6rem); /* 48 → 96  */
+  --font-size-h1: clamp(2.25rem, 5vw, 3.5rem); /* 36 → 56  */
+  --font-size-h2: clamp(1.75rem, 3.5vw, 2.25rem); /* 28 → 36  */
+  --font-size-h3: clamp(1.25rem, 2.5vw, 1.5rem); /* 20 → 24  */
+  --font-size-body-lg: clamp(1.125rem, 1.5vw, 1.25rem); /* 18 → 20  */
+  --font-size-body: 1rem; /* 16       */
+  --font-size-small: 0.875rem; /* 14       */
+  --font-size-mono: 0.8125rem; /* 13       */
+  --font-size-label: 0.75rem; /* 12       */
+
+  /* Line heights — readability first */
+  --line-height-display: 1.05;
+  --line-height-heading: 1.15;
+  --line-height-body: 1.6;
+  --line-height-tight: 1.35;
+
+  /* Font weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Letter spacing */
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.04em;
+  --tracking-widest: 0.12em; /* For technical labels */
+
+  /* -------------------------------------------------------
+     P3-01 — Z-Index Scale
+     -------------------------------------------------------
+     A fixed scale prevents the "z-index 9999" arms race.
+     Every stacking context must use a token.
+     ------------------------------------------------------- */
+
+  --z-base: 0;
+  --z-raised: 10; /* Cards, elevated surfaces        */
+  --z-sticky: 100; /* Sticky headers within section   */
+  --z-header: 200; /* Site navigation                 */
+  --z-overlay: 300; /* Backdrops                       */
+  --z-modal: 400; /* Dialogs                         */
+  --z-toast: 500; /* Transient notifications         */
+  --z-tooltip: 600; /* Tooltips (top of stack)         */
+
+  /* -------------------------------------------------------
+     Layout — Content Width (§14)
+     ------------------------------------------------------- */
+
+  --content-max-width: 1280px; /* Not a token per se, but
+                                  referenced by Container. */
+
+  /* -------------------------------------------------------
+     P3-05 — Breakpoints (reference only)
+     -------------------------------------------------------
+     CSS custom properties CANNOT be used inside @media
+     queries. These values are documented here for
+     consistency and referenced in:
+       - tailwind @theme (as --breakpoint-*)
+       - JS via src/lib/tokens.ts
+     ------------------------------------------------------- */
+
+  /* mobile:  320px – 639px   */
+  /* tablet:  640px – 1023px  */
+  /* desktop: 1024px – 1439px */
+  /* wide:    1440px+         */
+}

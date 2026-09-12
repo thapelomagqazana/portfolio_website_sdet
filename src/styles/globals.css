@@ -1,0 +1,395 @@
+/**
+ * Global Styles — Thapelo Magqazana Engineering Portfolio
+ * =========================================================
+ *
+ * 1. Imports the design token layer (src/styles/tokens.css)
+ * 2. Imports Tailwind CSS v4
+ * 3. Bridges tokens into Tailwind's theme system (P3-01)
+ * 4. Applies the base layer (body, focus, motion)
+ * 5. Provides named typography classes for editorial intent
+ *
+ * Import order matters:
+ *   Tailwind first → tokens second → bridge → base layer.
+ *   Tokens must be available before the @theme block reads them.
+ *
+ * References:
+ *   Design System §5  — Visual direction
+ *   Design System §6  — Theme
+ *   Design System §10 — Typography
+ *   Design System §36 — Accessibility
+ *   NFR-002 — Accessibility
+ *   NFR-007 — Reduced motion
+ */
+
+/* =========================================================
+   Imports
+   ========================================================= */
+
+@import 'tailwindcss';
+@import './tokens.css';
+
+/* =========================================================
+   P3-01 — Tailwind v4 theme bridge
+   =========================================================
+   Maps CSS custom properties into Tailwind utility names.
+   After this block, you can write:
+     bg-background, text-foreground, border-border,
+     p-4, gap-6, rounded-md, duration-fast, z-header …
+   ========================================================= */
+
+@theme {
+  /* -------------------------------------------------------
+     P3-03 — Colours
+     -------------------------------------------------------
+     Naming convention: --color-<semantic-name>
+     Tailwind generates: bg-<name>, text-<name>, border-<name>
+     ------------------------------------------------------- */
+
+  /* Surfaces */
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-surface-elevated: var(--color-surface-elevated);
+  --color-surface-muted: var(--color-surface-muted);
+
+  /* Foreground */
+  --color-foreground: var(--color-foreground);
+  --color-foreground-muted: var(--color-foreground-muted);
+  --color-foreground-subtle: var(--color-foreground-subtle);
+
+  /* Structure */
+  --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
+
+  /* Accent */
+  --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-subtle: var(--color-accent-subtle);
+
+  /* Semantic states */
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-error: var(--color-error);
+  --color-focus: var(--color-focus);
+
+  /* -------------------------------------------------------
+     P3-02 — Typography
+     -------------------------------------------------------
+     Tailwind v4 uses:
+       --font-*  → font-<name> utility
+       --text-*  → text-<name> utility (with size + line-height)
+     ------------------------------------------------------- */
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --text-display: var(--font-size-display);
+  --text-h1: var(--font-size-h1);
+  --text-h2: var(--font-size-h2);
+  --text-h3: var(--font-size-h3);
+  --text-body-lg: var(--font-size-body-lg);
+  --text-body: var(--font-size-body);
+  --text-small: var(--font-size-small);
+  --text-mono: var(--font-size-mono);
+  --text-label: var(--font-size-label);
+
+  /* -------------------------------------------------------
+     P3-04 — Spacing
+     -------------------------------------------------------
+     Tailwind v4 derives padding, margin and gap utilities
+     from the --spacing-* namespace.
+     ------------------------------------------------------- */
+
+  --spacing-0: var(--space-0);
+  --spacing-1: var(--space-1);
+  --spacing-2: var(--space-2);
+  --spacing-3: var(--space-3);
+  --spacing-4: var(--space-4);
+  --spacing-6: var(--space-6);
+  --spacing-8: var(--space-8);
+  --spacing-12: var(--space-12);
+  --spacing-16: var(--space-16);
+  --spacing-24: var(--space-24);
+  --spacing-32: var(--space-32);
+
+  /* -------------------------------------------------------
+     Radius
+     ------------------------------------------------------- */
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-full: var(--radius-full);
+
+  /* -------------------------------------------------------
+     Shadows
+     ------------------------------------------------------- */
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+
+  /* -------------------------------------------------------
+     Motion
+     ------------------------------------------------------- */
+
+  --duration-instant: var(--duration-instant);
+  --duration-fast: var(--duration-fast);
+  --duration-base: var(--duration-base);
+  --duration-slow: var(--duration-slow);
+
+  --ease-standard: var(--ease-standard);
+  --ease-emphasis: var(--ease-emphasis);
+
+  /* -------------------------------------------------------
+     P3-05 — Breakpoints
+     -------------------------------------------------------
+     Tailwind v4 reads --breakpoint-* automatically and
+     generates responsive utilities like sm:, md:, lg:.
+     Names chosen to match our documented scale
+     (mobile / tablet / desktop / wide).
+     ------------------------------------------------------- */
+
+  --breakpoint-sm: 640px; /* tablet  starts */
+  --breakpoint-md: 768px; /* tablet  mid    */
+  --breakpoint-lg: 1024px; /* desktop starts */
+  --breakpoint-xl: 1280px; /* desktop wide   */
+  --breakpoint-2xl: 1440px; /* wide    starts */
+}
+
+/* =========================================================
+   Base layer
+   ========================================================= */
+
+@layer base {
+  /* -------------------------------------------------------
+     Document defaults
+     ------------------------------------------------------- */
+
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    font-weight: var(--font-weight-regular);
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* -------------------------------------------------------
+     Selection — accent-toned, low-noise (§7)
+     ------------------------------------------------------- */
+
+  ::selection {
+    background: var(--color-accent-subtle);
+    color: var(--color-foreground);
+  }
+
+  /* -------------------------------------------------------
+     Focus — always visible for keyboard users
+     -------------------------------------------------------
+     NFR-006, Design System §36.
+     Never remove focus styling without an accessible
+     replacement. The :focus-visible pseudo-class shows
+     the ring only for keyboard navigation, not mouse.
+     ------------------------------------------------------- */
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Mouse clicks should not show the focus ring */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* -------------------------------------------------------
+     Headings — semantic defaults (§12)
+     -------------------------------------------------------
+     Components may override font-size via .text-h1 etc.
+     The base establishes weight and spacing so headings
+     are never "reset to plain text" by mistake.
+     ------------------------------------------------------- */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-heading);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  /* -------------------------------------------------------
+     Paragraphs — moderate rhythm
+     ------------------------------------------------------- */
+
+  p {
+    margin: 0;
+  }
+
+  /* -------------------------------------------------------
+     Code — mono family, not paragraph-wide (§10, §12)
+     ------------------------------------------------------- */
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-mono);
+    letter-spacing: var(--tracking-normal);
+  }
+
+  /* -------------------------------------------------------
+     Links — inherit colour unless explicitly styled
+     -------------------------------------------------------
+     Component styles decide actual link appearance.
+     The base only prevents the browser default blue.
+     ------------------------------------------------------- */
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* -------------------------------------------------------
+     Images — prevent layout shift (NFR-001)
+     ------------------------------------------------------- */
+
+  img,
+  svg,
+  video,
+  canvas,
+  picture {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* -------------------------------------------------------
+     Buttons — inherit font, reset appearance
+     ------------------------------------------------------- */
+
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  /* -------------------------------------------------------
+     Reduced motion — NFR-007, Design System §34
+     -------------------------------------------------------
+     Disables non-essential motion. Preserves state
+     changes that happen via colour/opacity so meaning
+     is not lost when animation is off.
+     ------------------------------------------------------- */
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* =========================================================
+   Typography component classes (P3-02)
+   =========================================================
+   Named classes make editorial intent explicit in components.
+   Use these instead of ad-hoc text-[..] arbitrary values.
+   ========================================================= */
+
+@layer components {
+  /* Display — hero-scale statements only (§11) */
+  .text-display {
+    font-size: var(--font-size-display);
+    line-height: var(--line-height-display);
+    letter-spacing: var(--tracking-tight);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* H1 — page primary heading */
+  .text-h1 {
+    font-size: var(--font-size-h1);
+    line-height: var(--line-height-heading);
+    letter-spacing: var(--tracking-tight);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* H2 — section heading */
+  .text-h2 {
+    font-size: var(--font-size-h2);
+    line-height: var(--line-height-heading);
+    letter-spacing: var(--tracking-tight);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  /* H3 — subsection heading */
+  .text-h3 {
+    font-size: var(--font-size-h3);
+    line-height: var(--line-height-heading);
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* Body large — lead paragraphs */
+  .text-body-lg {
+    font-size: var(--font-size-body-lg);
+    line-height: var(--line-height-body);
+  }
+
+  /* Body — default reading size */
+  .text-body {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+  }
+
+  /* Small — metadata, captions */
+  .text-small {
+    font-size: var(--font-size-small);
+    line-height: var(--line-height-body);
+  }
+
+  /* Mono — technical text, sparingly (§10, §12) */
+  .text-mono {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-mono);
+    letter-spacing: var(--tracking-normal);
+  }
+
+  /* Label — uppercase system labels for eyebrows and status.
+     Used by: hero eyebrow, project tags, proof strip. */
+  .text-label {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-label);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-foreground-subtle);
+  }
+}

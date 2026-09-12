@@ -15,9 +15,37 @@ export default defineConfig([
     'node_modules',
   ]),
 
-  // 1. React app source — type-aware
+  // 1. Test files — Vitest globals; relax no-unsafe-* rules
+  {
+    files: ['src/**/*.{test,spec}.{ts,tsx}', 'src/tests/**/*.{ts,tsx}'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommendedTypeChecked,
+      eslintConfigPrettier,
+    ],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+      parserOptions: {
+        project: ['./tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+    },
+  },
+
+  // 2. React app source — full strict rules, excludes test files
   {
     files: ['src/**/*.{ts,tsx}'],
+    ignores: ['src/**/*.{test,spec}.{ts,tsx}', 'src/tests/**/*.{ts,tsx}'],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommendedTypeChecked,
@@ -42,7 +70,7 @@ export default defineConfig([
     },
   },
 
-  // 2. TypeScript config files — type-aware
+  // 3. TypeScript config files — type-aware
   {
     files: ['vite.config.ts', 'playwright.config.ts'],
     extends: [
@@ -62,7 +90,7 @@ export default defineConfig([
     },
   },
 
-  // 3. JavaScript config files — NOT type-aware
+  // 4. JavaScript config files — NOT type-aware
   {
     files: ['*.config.js', 'postcss.config.js'],
     extends: [js.configs.recommended, eslintConfigPrettier],
@@ -72,7 +100,7 @@ export default defineConfig([
     },
   },
 
-  // 4. E2E tests — type-aware
+  // 5. E2E tests — type-aware
   {
     files: ['tests/**/*.{ts,tsx}'],
     extends: [
