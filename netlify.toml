@@ -1,0 +1,53 @@
+# netlify.toml — Thapelo Magqazana Engineering Portfolio
+#
+# Continuous deployment config for Netlify.
+#
+# The site is a static Vite build. All quality gates run in
+# GitHub Actions (see .github/workflows/ci.yml) before this
+# Netlify build is triggered.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22.13.1"
+  NPM_FLAGS = "--no-audit --no-fund"
+
+# SPA-style fallback. Vite produces a single index.html and
+# no client-side routing exists today, but this keeps deep links
+# from 404ing if routes are added later.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Security headers (NFR-010)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Cache hashed build assets aggressively. Vite fingerprints
+# filenames in dist/assets/, so these are content-addressed
+# and safe to cache for a year.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Fonts shipped by Vite land here; same reasoning.
+[[headers]]
+  for = "/*.woff2"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# The HTML entry point must never be cached, so new deploys
+# are picked up immediately.
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
