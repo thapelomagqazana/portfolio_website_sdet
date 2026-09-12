@@ -19,6 +19,7 @@
  *   Design System §36 — Accessibility
  *   NFR-002 — Accessibility
  *   NFR-007 — Reduced motion
+ *   P5-03   — Theme toggle (light / dark / system)
  */
 
 /* =========================================================
@@ -43,6 +44,10 @@
      -------------------------------------------------------
      Naming convention: --color-<semantic-name>
      Tailwind generates: bg-<name>, text-<name>, border-<name>
+
+     Values point at the CSS variables in tokens.css, so the
+     theme swap (data-theme="light") works transparently for
+     every utility class.
      ------------------------------------------------------- */
 
   /* Surfaces */
@@ -73,10 +78,6 @@
 
   /* -------------------------------------------------------
      P3-02 — Typography
-     -------------------------------------------------------
-     Tailwind v4 uses:
-       --font-*  → font-<name> utility
-       --text-*  → text-<name> utility (with size + line-height)
      ------------------------------------------------------- */
 
   --font-sans: var(--font-sans);
@@ -94,9 +95,6 @@
 
   /* -------------------------------------------------------
      P3-04 — Spacing
-     -------------------------------------------------------
-     Tailwind v4 derives padding, margin and gap utilities
-     from the --spacing-* namespace.
      ------------------------------------------------------- */
 
   --spacing-0: var(--space-0);
@@ -142,11 +140,6 @@
 
   /* -------------------------------------------------------
      P3-05 — Breakpoints
-     -------------------------------------------------------
-     Tailwind v4 reads --breakpoint-* automatically and
-     generates responsive utilities like sm:, md:, lg:.
-     Names chosen to match our documented scale
-     (mobile / tablet / desktop / wide).
      ------------------------------------------------------- */
 
   --breakpoint-sm: 640px; /* tablet  starts */
@@ -172,6 +165,12 @@
     -webkit-text-size-adjust: 100%;
   }
 
+  /* P5-03 — light theme hint for native UI
+     (scrollbars, form controls, autofill) */
+  html[data-theme='light'] {
+    color-scheme: light;
+  }
+
   body {
     margin: 0;
     background: var(--color-background);
@@ -184,6 +183,12 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+
+    /* P5-03 — Smooth colour change on theme toggle.
+       Uses token durations (fast, subtle, purposeful). */
+    transition:
+      background-color var(--duration-base) var(--ease-standard),
+      color var(--duration-base) var(--ease-standard);
   }
 
   /* -------------------------------------------------------
@@ -199,9 +204,6 @@
      Focus — always visible for keyboard users
      -------------------------------------------------------
      NFR-006, Design System §36.
-     Never remove focus styling without an accessible
-     replacement. The :focus-visible pseudo-class shows
-     the ring only for keyboard navigation, not mouse.
      ------------------------------------------------------- */
 
   :focus-visible {
@@ -210,17 +212,12 @@
     border-radius: var(--radius-sm);
   }
 
-  /* Mouse clicks should not show the focus ring */
   :focus:not(:focus-visible) {
     outline: none;
   }
 
   /* -------------------------------------------------------
      Headings — semantic defaults (§12)
-     -------------------------------------------------------
-     Components may override font-size via .text-h1 etc.
-     The base establishes weight and spacing so headings
-     are never "reset to plain text" by mistake.
      ------------------------------------------------------- */
 
   h1,
@@ -234,10 +231,6 @@
     line-height: var(--line-height-heading);
     letter-spacing: var(--tracking-tight);
   }
-
-  /* -------------------------------------------------------
-     Paragraphs — moderate rhythm
-     ------------------------------------------------------- */
 
   p {
     margin: 0;
@@ -258,9 +251,6 @@
 
   /* -------------------------------------------------------
      Links — inherit colour unless explicitly styled
-     -------------------------------------------------------
-     Component styles decide actual link appearance.
-     The base only prevents the browser default blue.
      ------------------------------------------------------- */
 
   a {
@@ -301,11 +291,19 @@
      Disables non-essential motion. Preserves state
      changes that happen via colour/opacity so meaning
      is not lost when animation is off.
+
+     This block also overrides the body theme transition
+     added above (P5-03), ensuring theme swaps are
+     instant for users who opt out of motion.
      ------------------------------------------------------- */
 
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
+    }
+
+    body {
+      transition: none;
     }
 
     *,
@@ -335,7 +333,6 @@
     font-weight: var(--font-weight-semibold);
   }
 
-  /* H1 — page primary heading */
   .text-h1 {
     font-size: var(--font-size-h1);
     line-height: var(--line-height-heading);
@@ -343,7 +340,6 @@
     font-weight: var(--font-weight-semibold);
   }
 
-  /* H2 — section heading */
   .text-h2 {
     font-size: var(--font-size-h2);
     line-height: var(--line-height-heading);
@@ -351,40 +347,33 @@
     font-weight: var(--font-weight-semibold);
   }
 
-  /* H3 — subsection heading */
   .text-h3 {
     font-size: var(--font-size-h3);
     line-height: var(--line-height-heading);
     font-weight: var(--font-weight-medium);
   }
 
-  /* Body large — lead paragraphs */
   .text-body-lg {
     font-size: var(--font-size-body-lg);
     line-height: var(--line-height-body);
   }
 
-  /* Body — default reading size */
   .text-body {
     font-size: var(--font-size-body);
     line-height: var(--line-height-body);
   }
 
-  /* Small — metadata, captions */
   .text-small {
     font-size: var(--font-size-small);
     line-height: var(--line-height-body);
   }
 
-  /* Mono — technical text, sparingly (§10, §12) */
   .text-mono {
     font-family: var(--font-mono);
     font-size: var(--font-size-mono);
     letter-spacing: var(--tracking-normal);
   }
 
-  /* Label — uppercase system labels for eyebrows and status.
-     Used by: hero eyebrow, project tags, proof strip. */
   .text-label {
     font-family: var(--font-mono);
     font-size: var(--font-size-label);

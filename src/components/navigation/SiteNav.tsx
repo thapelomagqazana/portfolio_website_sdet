@@ -3,13 +3,15 @@ import { navItems } from '@/content/navigation';
 import { useActiveSection } from '@/hooks/useActiveSection';
 import { Nav } from './Nav';
 import { MobileMenu } from './MobileMenu';
+import { ThemeToggle } from './ThemeToggle';
 
 /**
  * SiteNav — nav content for the header landmark.
  *
- * Renders the logo, desktop nav and mobile menu. Does NOT
- * render a <header> element — that's owned by AppShell, which
- * wraps this content in its own <Header> landmark.
+ * Renders the logo, desktop nav, theme toggle and mobile menu.
+ * Does NOT render a <header> element — that's owned by
+ * AppShell, which wraps this content in its own <Header>
+ * landmark.
  *
  * Design System §23 — Navigation remains simple.
  * NFR-006 — Keyboard accessible.
@@ -28,8 +30,16 @@ export function SiteNav() {
         THAPELO MAGQAZANA
       </a>
 
-      <Nav activeSection={activeSection} className="hidden md:block" />
-      <MobileMenu activeSection={activeSection} />
+      <div className="flex items-center gap-4">
+        <Nav activeSection={activeSection} className="hidden md:block" />
+
+        {/* Theme toggle — visible from sm upward. On smaller
+            viewports the same control lives inside the mobile
+            drawer (see MobileMenu.tsx). */}
+        <ThemeToggle className="hidden sm:inline-flex" />
+
+        <MobileMenu activeSection={activeSection} />
+      </div>
     </Container>
   );
 }

@@ -5,6 +5,7 @@ import { navItems } from '@/content/navigation';
 import { useEscapeKey } from '@/hooks/useEscapeKey';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { NavLink } from './NavLink';
+import { ThemeToggle } from './ThemeToggle';
 
 /**
  * MobileMenu — accessible hamburger drawer.
@@ -15,6 +16,10 @@ import { NavLink } from './NavLink';
  *   - Focus returns to the trigger on close
  *   - Focus is trapped inside the drawer while open
  *   - Active section is visible
+ *
+ * Task P5-03 integration:
+ *   - Theme toggle available inside the drawer for viewports
+ *     below `sm`, where the header toggle is hidden
  *
  * Design System §23 — Same five items as desktop.
  * Design System §35 — Escape dismisses overlays.
@@ -125,6 +130,13 @@ export function MobileMenu({ activeSection }: MobileMenuProps) {
                 </li>
               ))}
             </ul>
+
+            {/* Theme toggle — mirrors the header toggle for
+                viewports below `sm` where the header copy is hidden. */}
+            <div className="mt-6 border-t border-border pt-6">
+              <p className="text-label mb-3">THEME</p>
+              <ThemeToggle />
+            </div>
           </nav>
         </div>
       </div>

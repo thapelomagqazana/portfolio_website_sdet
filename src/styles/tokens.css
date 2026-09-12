@@ -224,3 +224,53 @@
   /* desktop: 1024px – 1439px */
   /* wide:    1440px+         */
 }
+
+/* =========================================================
+   P5-03 — Light theme overrides
+   =========================================================
+   Activated when <html> has data-theme="light".
+
+   Dark remains the default theme (Design System §6).
+   These values are tuned for WCAG 2.2 AA contrast against
+   the light background, matching the dark tokens 1:1 so no
+   component needs theme-aware branching.
+
+   The data-theme attribute is written by:
+     - the inline script in index.html (before first paint)
+     - the useTheme hook (after hydration)
+   ========================================================= */
+
+[data-theme='light'] {
+  /* Surfaces — light editorial */
+  --color-background: #fafafa; /* Level 0 — page        */
+  --color-surface: #f2f2f3; /* Level 1 — section     */
+  --color-surface-elevated: #e8e8ea; /* Level 2 — interactive */
+  --color-surface-muted: #f5f5f6; /* De-emphasised surface */
+
+  /* Foreground — near-black on light */
+  --color-foreground: #0b0d0f; /* Primary text          */
+  --color-foreground-muted: #4a5158; /* Secondary text        */
+  --color-foreground-subtle: #737a82; /* Tertiary / meta       */
+
+  /* Structure */
+  --color-border: #e0e1e3;
+  --color-border-strong: #c4c6ca;
+
+  /* Accent — darker for AA contrast on light backgrounds */
+  --color-accent: #1e5fd9;
+  --color-accent-hover: #174cab;
+  --color-accent-subtle: rgba(30, 95, 217, 0.1);
+
+  /* Semantic states — tuned for light backgrounds */
+  --color-success: #1a7f37;
+  --color-warning: #9a6700;
+  --color-error: #cf222e;
+
+  /* Focus ring stays aligned with accent */
+  --color-focus: var(--color-accent);
+
+  /* Shadows — darker values for light surfaces */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 32px -8px rgba(0, 0, 0, 0.12);
+}
