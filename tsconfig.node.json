@@ -21,9 +21,5 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": [
-    "vite.config.ts",
-    "playwright.config.ts",
-    "postcss.config.js"
-  ]
+  "include": ["vite.config.ts", "playwright.config.ts", "postcss.config.js"]
 }

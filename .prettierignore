@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+build/
+
+# Test output
+coverage/
+playwright-report/
+test-results/
+.vitest/
+blob-report/
+
+# Lockfiles — managed by npm, not Prettier
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Generated / minified
+*.min.js
+*.min.css
+
+# Docs that may use intentional formatting
+docs/*.md
+LICENSE
+CHANGELOG.md
+
+# Coverage and HTML reports
+*.html
+!src/**/*.html
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+
+# CI
+.github/
+
+# Public assets
+public/

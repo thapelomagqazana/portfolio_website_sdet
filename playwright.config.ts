@@ -34,12 +34,12 @@ export default defineConfig({
   projects: [
     // Browsers (NFR-005)
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-    { name: 'firefox',  use: { ...devices['Desktop Firefox'] } },
-    { name: 'webkit',   use: { ...devices['Desktop Safari'] } },
+    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
 
     // Responsive coverage (NFR-004)
-    { name: 'mobile-320',   use: { viewport: { width: 320, height: 640 } } },
-    { name: 'mobile-390',   use: { ...devices['iPhone 13'] } },
+    { name: 'mobile-320', use: { viewport: { width: 320, height: 640 } } },
+    { name: 'mobile-390', use: { ...devices['iPhone 13'] } },
     { name: 'desktop-1440', use: { viewport: { width: 1440, height: 900 } } },
   ],
 

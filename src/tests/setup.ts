@@ -8,7 +8,7 @@ afterEach(() => {
 
 // jsdom lacks matchMedia — needed for reduced-motion tests (NFR-007)
 if (typeof window !== 'undefined' && !window.matchMedia) {
-  window.matchMedia = ((query: string) => ({
+  window.matchMedia = (query: string): MediaQueryList => ({
     matches: false,
     media: query,
     onchange: null,
@@ -17,5 +17,5 @@ if (typeof window !== 'undefined' && !window.matchMedia) {
     addListener: () => {},
     removeListener: () => {},
     dispatchEvent: () => false,
-  })) as unknown as typeof window.matchMedia;
+  });
 }
