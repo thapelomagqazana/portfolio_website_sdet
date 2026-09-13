@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { AriaAttributes, ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { Container } from './Container';
 import type { ContainerSize } from './Container';
@@ -11,6 +11,24 @@ import type { ContainerSize } from './Container';
  *
  * Wrap each page section in `<Section>` to guarantee consistent
  * spacing and accessibility landmarks.
+ *
+ * Two ways to name a section:
+ *
+ *   1. Pass `heading` — Section renders an <h2> and wires
+ *      aria-labelledby to it automatically:
+ *
+ *        <Section id="work" heading="Selected Work">
+ *
+ *   2. Pass `aria-labelledby` directly — for sections where
+ *      the heading lives inside the layout (e.g., a two-column
+ *      grid, custom typography, or an externally-owned <h2>):
+ *
+ *        <Section aria-labelledby="about-heading">
+ *          <h2 id="about-heading">…</h2>
+ *
+ * A `<section>` without an accessible name is not exposed as
+ * a `region` to assistive tech. Always use one of the two
+ * approaches above.
  */
 export type SectionSpacing = 'sm' | 'md' | 'lg' | 'xl';
 export type SectionSurface = 'background' | 'surface' | 'elevated';
@@ -18,8 +36,17 @@ export type SectionSurface = 'background' | 'surface' | 'elevated';
 export interface SectionProps {
   /** Anchor id — used for in-page navigation (#work, #about). */
   id?: string;
-  /** Visible section heading text; also used for aria-labelledby. */
+  /**
+   * Visible section heading text. When provided, Section renders
+   * an <h2> and wires aria-labelledby to it automatically.
+   */
   heading?: string;
+  /**
+   * ID of an element that names this section. Use this when the
+   * heading is rendered by the caller instead of via `heading`.
+   * Ignored if `heading` is also provided.
+   */
+  'aria-labelledby'?: AriaAttributes['aria-labelledby'];
   /** Vertical padding scale. */
   spacing?: SectionSpacing;
   /** Surface level. Defaults to page background. */
@@ -48,23 +75,28 @@ const surfaceClass: Record<SectionSurface, string> = {
 export function Section({
   id,
   heading,
+  'aria-labelledby': ariaLabelledBy,
   spacing = 'lg',
   surface = 'background',
   containerSize = 'default',
   className,
   children,
 }: SectionProps) {
-  const headingId = heading ? `${id ?? 'section'}-heading` : undefined;
+  const internalHeadingId = heading ? `${id ?? 'section'}-heading` : undefined;
+  const resolvedLabelledBy = internalHeadingId ?? ariaLabelledBy;
 
   return (
     <section
       id={id}
-      aria-labelledby={headingId}
+      aria-labelledby={resolvedLabelledBy}
       className={cn(spacingClass[spacing], surfaceClass[surface], className)}
     >
       <Container size={containerSize}>
         {heading ? (
-          <h2 id={headingId} className="text-h2 mb-12 sm:mb-16 text-foreground">
+          <h2
+            id={internalHeadingId}
+            className="text-h2 mb-12 sm:mb-16 text-foreground"
+          >
             {heading}
           </h2>
         ) : null}
