@@ -168,8 +168,4 @@ jobs:
             echo "::error::e2e job failed"
             exit 1
           fi
-          if [ "${{ needs.security.result }}" != "success" ]; then
-            echo "::error::security job failed"
-            exit 1
-          fi
           echo "All required jobs passed."

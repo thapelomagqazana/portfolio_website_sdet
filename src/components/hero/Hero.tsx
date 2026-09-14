@@ -14,11 +14,20 @@ import { ProofStrip } from './ProofStrip';
  * Task P6-02: CTA cluster (via HeroActions)
  * Task P6-03: proof strip (via ProofStrip)
  *
+ * Motion:
+ *   data-hero-reveal="1"…"5" on each element drives a
+ *   staggered fade-up on mount (see src/styles/motion.css).
+ *   The stagger is 80ms per step — the hero assembles in
+ *   reading order over ~640ms.
+ *
+ *   Under prefers-reduced-motion, the animation is skipped
+ *   entirely and every element is visible immediately.
+ *   No JS is required for the animation; the site works
+ *   identically without it.
+ *
  * Design System §24 — Hero is primarily typographic.
  * Design System §14 — Constrained content width.
- *
- * The hero is intentionally text-first. No decorative imagery;
- * the strongest visual asset is the writing itself.
+ * Design System §32 — Motion communicates, does not decorate.
  */
 export function Hero() {
   return (
@@ -29,22 +38,32 @@ export function Hero() {
     >
       <Container>
         <div className="max-w-4xl">
-          <Eyebrow className="mb-6">
+          <Eyebrow className="mb-6" data-hero-reveal="1">
             QA ENGINEER · TEST AUTOMATION · SOFTWARE QUALITY
           </Eyebrow>
 
-          <Heading level={1} visual="display" id="hero-heading">
+          <Heading
+            level={1}
+            visual="display"
+            id="hero-heading"
+            data-hero-reveal="2"
+          >
             I build, test and automate software for confidence.
           </Heading>
 
-          <Text size="body-lg" tone="muted" className="mt-8 max-w-prose">
+          <Text
+            size="body-lg"
+            tone="muted"
+            className="mt-8 max-w-prose"
+            data-hero-reveal="3"
+          >
             QA Engineer focused on API, UI and CI/CD testing.
           </Text>
 
-          <HeroActions className="mt-10" />
-        </div>
+          <HeroActions className="mt-10" data-hero-reveal="4" />
 
-        <ProofStrip className="mt-20 sm:mt-28" />
+          <ProofStrip className="mt-20 sm:mt-28" data-hero-reveal="5" />
+        </div>
       </Container>
     </section>
   );

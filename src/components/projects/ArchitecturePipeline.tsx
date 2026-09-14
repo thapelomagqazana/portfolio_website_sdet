@@ -1,5 +1,7 @@
+import type { CSSProperties } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/cn';
+import { useReveal } from '@/hooks/useReveal';
 import { brikbytePipeline } from '@/content/brikbyteos';
 
 /**
@@ -9,6 +11,15 @@ import { brikbytePipeline } from '@/content/brikbyteos';
  *   Command → Execution Engine → Test / Security Signals →
  *   Normalized Results → Evidence Bundle → Policy Gate →
  *   Release Decision
+ *
+ * Motion (P22 effect 8):
+ *   Each stage carries data-stage and a --stage-index custom
+ *   property. When the pipeline enters the viewport, motion.css
+ *   brightens the stages in sequence (80ms apart), so the
+ *   pipeline visibly executes as the reader arrives.
+ *
+ *   Under reduced motion, all stages render immediately at
+ *   full opacity.
  *
  * Design System §29 — Signal → Evidence → Quality → Confidence
  * is the recurring visual system. This component renders the
@@ -21,13 +32,22 @@ export interface ArchitecturePipelineProps {
 }
 
 export function ArchitecturePipeline({ className }: ArchitecturePipelineProps) {
+  const ref = useReveal<HTMLOListElement>();
+
   return (
     <ol
+      ref={ref}
+      data-flow
       aria-label="BrikByteOS execution pipeline"
       className={cn('flex flex-col gap-1', className)}
     >
       {brikbytePipeline.map((stage, index) => (
-        <li key={stage.label} className="flex flex-col">
+        <li
+          key={stage.label}
+          data-stage
+          style={{ '--stage-index': index } as CSSProperties}
+          className="flex flex-col"
+        >
           <div
             className={cn(
               'grid gap-1 rounded-md border border-border bg-surface px-4 py-3',

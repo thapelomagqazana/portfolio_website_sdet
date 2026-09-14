@@ -1,4 +1,4 @@
-import type { ElementType, ReactNode } from 'react';
+import type { ElementType, HTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 
 /**
@@ -6,12 +6,18 @@ import { cn } from '@/lib/cn';
  *
  * Design System §10 — Two type families maximum.
  * Design System §12 — Short, readable, conversational.
+ *
+ * Extends HTMLAttributes<HTMLElement> so callers can pass
+ * data-* attributes (e.g. data-hero-reveal for the motion
+ * system), aria-* attributes and standard HTML props. All
+ * unrecognised props are forwarded to the rendered element.
  */
 export type TextSize = 'body-lg' | 'body' | 'small';
 export type TextTone = 'default' | 'muted' | 'subtle' | 'accent';
 export type TextFamily = 'sans' | 'mono';
 
-export interface TextProps {
+export interface TextProps extends HTMLAttributes<HTMLElement> {
+  /** Element type to render. Defaults to 'p'. */
   as?: ElementType;
   size?: TextSize;
   tone?: TextTone;
@@ -45,6 +51,7 @@ export function Text({
   family = 'sans',
   className,
   children,
+  ...rest
 }: TextProps) {
   return (
     <Component
@@ -54,6 +61,7 @@ export function Text({
         familyClass[family],
         className,
       )}
+      {...rest}
     >
       {children}
     </Component>

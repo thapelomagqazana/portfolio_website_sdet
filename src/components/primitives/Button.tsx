@@ -9,6 +9,14 @@ import type { ButtonVariant, ButtonSize } from './buttonStyles';
  * Design System §22 — CTA design rules.
  * NFR-006 — Keyboard accessible; visible focus ring.
  *
+ * Motion:
+ *   Primary buttons automatically receive data-cta, so the
+ *   hover-lift and press-scale in src/styles/motion.css apply
+ *   without callers having to remember (P22 effect 6).
+ *   Secondary and tertiary buttons do not lift — the visual
+ *   hierarchy is preserved (only the strongest action gets
+ *   the physical affordance).
+ *
  * This file exports only the component so Fast Refresh
  * continues to work. `buttonStyles` and the variant/size
  * types live in ./buttonStyles.ts and are re-exported
@@ -36,6 +44,7 @@ export function Button({
   return (
     <button
       type={type}
+      data-cta={variant === 'primary' ? '' : undefined}
       className={buttonStyles(variant, size, className)}
       {...rest}
     >

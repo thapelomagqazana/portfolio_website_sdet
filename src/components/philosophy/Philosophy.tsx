@@ -1,4 +1,5 @@
 import { Section } from '@/components/layout';
+import { useReveal } from '@/hooks/useReveal';
 import { principles, philosophyClosing } from '@/content/philosophy';
 import { Principle } from './Principle';
 
@@ -15,29 +16,38 @@ import { Principle } from './Principle';
  * portfolio from a conventional CV. It shows *how* the author
  * thinks, not just what they've done.
  *
+ * Motion:
+ *   The whole section fades up on scroll entry (P22 effect 1).
+ *   The four principles and the closing statement reveal
+ *   together.
+ *
  * Layout: 2-column grid on tablet+, single column on mobile.
  * Each principle sits in its own column with a top border,
  * forming a clean editorial rhythm.
  */
 export function Philosophy() {
+  const ref = useReveal<HTMLDivElement>();
+
   return (
     <Section id="philosophy" aria-labelledby="philosophy-heading" spacing="xl">
-      <header className="mb-12 max-w-2xl">
-        <p className="text-label mb-4">ENGINEERING PHILOSOPHY</p>
-        <h2 id="philosophy-heading" className="text-h2">
-          How I think about quality.
-        </h2>
-      </header>
+      <div ref={ref} data-reveal="false">
+        <header className="mb-12 max-w-2xl">
+          <p className="text-label mb-4">ENGINEERING PHILOSOPHY</p>
+          <h2 id="philosophy-heading" className="text-h2">
+            How I think about quality.
+          </h2>
+        </header>
 
-      <ol className="grid gap-x-12 gap-y-10 md:grid-cols-2">
-        {principles.map((principle) => (
-          <Principle key={principle.number} principle={principle} />
-        ))}
-      </ol>
+        <ol className="grid gap-x-12 gap-y-10 md:grid-cols-2">
+          {principles.map((principle) => (
+            <Principle key={principle.number} principle={principle} />
+          ))}
+        </ol>
 
-      <p className="mt-16 border-t border-border pt-8 text-h3 text-foreground">
-        {philosophyClosing}
-      </p>
+        <p className="mt-16 border-t border-border pt-8 text-h3 text-foreground">
+          {philosophyClosing}
+        </p>
+      </div>
     </Section>
   );
 }

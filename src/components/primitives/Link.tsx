@@ -9,6 +9,13 @@ import type { ButtonVariant, ButtonSize } from './buttonStyles';
  * Design System §21 — Matches Button hierarchy when styled as CTA.
  * Design System §36 — Meaningful link text; distinguishable external.
  *
+ * Motion:
+ *   CTA variants map to a button variant. When the mapped
+ *   variant is "primary", the anchor receives data-cta, so the
+ *   hover-lift in src/styles/motion.css applies (P22 effect 6).
+ *   Inline links and secondary/tertiary CTAs do not lift —
+ *   the visual hierarchy from Design System §21 is preserved.
+ *
  * External links automatically receive `target="_blank"`,
  * `rel="noopener noreferrer"` and an accessible label suffix.
  */
@@ -41,8 +48,8 @@ export function Link({
 }: LinkProps) {
   const isExternal = typeof href === 'string' && /^https?:\/\//.test(href);
 
-  const externalProps = isExternal
-    ? { target: '_blank', rel: 'noopener noreferrer' as const }
+  const externalProps: AnchorHTMLAttributes<HTMLAnchorElement> = isExternal
+    ? { target: '_blank', rel: 'noopener noreferrer' }
     : {};
 
   const resolvedClass =
@@ -50,8 +57,16 @@ export function Link({
       ? cn(inlineClass, className)
       : buttonStyles(ctaVariantMap[variant], ctaSize, className);
 
+  const isPrimaryCta = variant === 'cta-primary';
+
   return (
-    <a href={href} className={resolvedClass} {...externalProps} {...rest}>
+    <a
+      href={href}
+      data-cta={isPrimaryCta ? '' : undefined}
+      className={resolvedClass}
+      {...externalProps}
+      {...rest}
+    >
       {children}
       {isExternal ? (
         <span className="sr-only"> (opens in a new tab)</span>

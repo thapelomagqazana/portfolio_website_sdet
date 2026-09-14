@@ -1,0 +1,131 @@
+/**
+ * Motion system — Thapelo Magqazana Engineering Portfolio
+ *
+ * All motion is:
+ *   - Progressive enhancement (site works without it)
+ *   - Respects prefers-reduced-motion (NFR-007)
+ *   - Capped at 320ms (§33)
+ *   - Purposeful, not decorative (§32)
+ *
+ * Effects:
+ *   1. Section reveal        [data-reveal]
+ *   2. Hero entrance         [data-hero-reveal]
+ *   3. CTA hover lift        [data-cta]
+ *   4. Pipeline trace        [data-flow] > [data-stage]
+ *   5. Terminal line reveal  [data-terminal] > [data-terminal-line]
+ *
+ * Reduced motion disables all of them at once — see the
+ * first media query block.
+ */
+
+/* =========================================================
+   Reduced motion — disable everything at the source
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-hero-reveal],
+  [data-terminal-line] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  [data-flow] [data-stage] {
+    opacity: 1 !important;
+    transition: none !important;
+    transition-delay: 0ms !important;
+  }
+}
+
+/* =========================================================
+   Motion allowed — all effects enabled
+   ========================================================= */
+@media (prefers-reduced-motion: no-preference) {
+  /* -------------------------------------------------------
+     1. Section reveal — fade-up on scroll
+     ------------------------------------------------------- */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity var(--duration-slow) var(--ease-standard),
+      transform var(--duration-slow) var(--ease-standard);
+  }
+  [data-reveal][data-revealed='true'] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* -------------------------------------------------------
+     2. Hero entrance — staggered fade-up on mount
+     ------------------------------------------------------- */
+  [data-hero-reveal] {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: hero-rise var(--duration-slow) var(--ease-standard) forwards;
+  }
+  [data-hero-reveal='1'] {
+    animation-delay: 0ms;
+  }
+  [data-hero-reveal='2'] {
+    animation-delay: 80ms;
+  }
+  [data-hero-reveal='3'] {
+    animation-delay: 160ms;
+  }
+  [data-hero-reveal='4'] {
+    animation-delay: 240ms;
+  }
+  [data-hero-reveal='5'] {
+    animation-delay: 320ms;
+  }
+
+  /* -------------------------------------------------------
+     3. CTA hover lift
+     ------------------------------------------------------- */
+  [data-cta] {
+    transition:
+      background-color var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast) var(--ease-standard),
+      color var(--duration-fast) var(--ease-standard),
+      transform var(--duration-fast) var(--ease-standard);
+  }
+  [data-cta]:hover {
+    transform: translateY(-1px);
+  }
+  [data-cta]:active {
+    transform: translateY(0) scale(0.99);
+  }
+
+  /* -------------------------------------------------------
+     4. Pipeline signal trace — stages appear in sequence
+     ------------------------------------------------------- */
+  [data-flow] [data-stage] {
+    opacity: 0.4;
+    transition: opacity var(--duration-slow) var(--ease-standard);
+  }
+  [data-flow][data-revealed='true'] [data-stage] {
+    opacity: 1;
+    transition-delay: calc(var(--stage-index, 0) * 80ms);
+  }
+
+  /* -------------------------------------------------------
+     5. Terminal line reveal — output appears line by line
+     ------------------------------------------------------- */
+  [data-terminal-line] {
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+  [data-terminal][data-revealed='true'] [data-terminal-line] {
+    opacity: 1;
+    transition-delay: calc(var(--line-index, 0) * 60ms);
+  }
+}
+
+@keyframes hero-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

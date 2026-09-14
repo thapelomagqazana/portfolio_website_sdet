@@ -1,4 +1,5 @@
 import { Section } from '@/components/layout';
+import { useReveal } from '@/hooks/useReveal';
 import { skillGroups } from '@/content/skills';
 import { SkillGroup } from './SkillGroup';
 
@@ -12,12 +13,20 @@ import { SkillGroup } from './SkillGroup';
  * Content Inventory §8 — Capabilities presented as a
  *   categorised list, not a self-rated hierarchy.
  *
- * The section heading lives inside a custom <header> (with an
- * eyebrow above it), so Section's built-in `heading` prop is
- * not usable. We name the section with an explicit
- * aria-labelledby pointing at the <h2>.
+ * Motion:
+ *   The section fades up on scroll entry (P22 effect 1).
+ *   Individual SkillGroup cards are not wrapped — the four
+ *   groups reveal together as one capability statement.
+ *
+ * Accessibility:
+ *   The section heading lives inside a custom <header> (with
+ *   an eyebrow above it), so Section's built-in `heading`
+ *   prop is not usable. We name the section with an explicit
+ *   aria-labelledby pointing at the <h2>.
  */
 export function Skills() {
+  const ref = useReveal<HTMLDivElement>();
+
   return (
     <Section
       id="skills"
@@ -25,17 +34,19 @@ export function Skills() {
       spacing="xl"
       surface="surface"
     >
-      <header className="mb-12 max-w-2xl">
-        <p className="text-label mb-4">TECHNICAL CAPABILITY</p>
-        <h2 id="skills-heading" className="text-h2">
-          What I work with, grouped by purpose.
-        </h2>
-      </header>
+      <div ref={ref} data-reveal="false">
+        <header className="mb-12 max-w-2xl">
+          <p className="text-label mb-4">TECHNICAL CAPABILITY</p>
+          <h2 id="skills-heading" className="text-h2">
+            What I work with, grouped by purpose.
+          </h2>
+        </header>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        {skillGroups.map((group) => (
-          <SkillGroup key={group.id} group={group} />
-        ))}
+        <div className="grid gap-6 md:grid-cols-2">
+          {skillGroups.map((group) => (
+            <SkillGroup key={group.id} group={group} />
+          ))}
+        </div>
       </div>
     </Section>
   );

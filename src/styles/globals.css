@@ -29,6 +29,7 @@
 @import 'tailwindcss';
 @import './tokens.css';
 @import './print.css';
+@import './motion.css';
 
 /* =========================================================
    P3-01 — Tailwind v4 theme bridge

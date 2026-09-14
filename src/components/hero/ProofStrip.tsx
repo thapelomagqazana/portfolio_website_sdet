@@ -1,3 +1,4 @@
+import type { HTMLAttributes } from 'react';
 import { cn } from '@/lib/cn';
 import { proofItems } from '@/content/proof';
 
@@ -15,6 +16,11 @@ import { proofItems } from '@/content/proof';
  * Design System §25 — Numbers must be factually supported.
  * Design System §30 — No decorative animation.
  *
+ * Motion:
+ *   Forwards arbitrary HTML attributes so Hero can pass
+ *   data-hero-reveal="5" — the final step in the staggered
+ *   hero entrance (see src/styles/motion.css).
+ *
  * Accessibility note:
  *   ARIA's `list` role does NOT support an accessible name,
  *   so `aria-label` on a <dl> is ignored. To give the
@@ -23,17 +29,18 @@ import { proofItems } from '@/content/proof';
  *   the `region` role and accepts a name; the <dl> inside
  *   remains a plain list.
  */
-export interface ProofStripProps {
+export interface ProofStripProps extends HTMLAttributes<HTMLElement> {
   className?: string;
 }
 
-export function ProofStrip({ className }: ProofStripProps) {
+export function ProofStrip({ className, ...rest }: ProofStripProps) {
   const labelId = 'proof-strip-label';
 
   return (
     <section
       aria-labelledby={labelId}
       className={cn('border-t border-border pt-8', className)}
+      {...rest}
     >
       {/* Visually hidden but screen-reader accessible.
           Provides the accessible name for the region. */}

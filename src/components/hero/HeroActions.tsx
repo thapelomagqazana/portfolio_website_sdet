@@ -1,3 +1,4 @@
+import type { HTMLAttributes } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { LinkedinIcon } from '@/components/icons/BrandIcons';
 import { cn } from '@/lib/cn';
@@ -19,28 +20,38 @@ import { heroPrimaryCta, heroSecondaryCta } from '@/content/ctas';
  *
  * Design System §21, §22 — Button hierarchy.
  *
+ * Motion:
+ *   - Each CTA carries data-cta. The motion system in
+ *     src/styles/motion.css applies a 1px lift on hover and
+ *     a subtle press on :active (P22 effect 6).
+ *   - The outer wrapper accepts data-hero-reveal="4" from
+ *     Hero so the CTA cluster enters as part of the hero's
+ *     staggered entrance.
+ *
  * Icon sources:
  *   - Lucide for UI icons (ArrowRight)
  *   - Local BrandIcons for brand logos (LinkedIn) — Lucide v1
  *     removed brand icons and Simple Icons dropped LinkedIn
  *     following a trademark request.
  */
-export interface HeroActionsProps {
+export interface HeroActionsProps extends HTMLAttributes<HTMLDivElement> {
   className?: string;
 }
 
-export function HeroActions({ className }: HeroActionsProps) {
+export function HeroActions({ className, ...rest }: HeroActionsProps) {
   return (
     <div
       className={cn(
         'flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4',
         className,
       )}
+      {...rest}
     >
       <Link
         href={heroPrimaryCta.destination}
         variant="cta-primary"
         ctaSize="lg"
+        data-cta
       >
         {heroPrimaryCta.label}
         <ArrowRight aria-hidden="true" size={18} />
@@ -50,6 +61,7 @@ export function HeroActions({ className }: HeroActionsProps) {
         href={heroSecondaryCta.destination}
         variant="cta-secondary"
         ctaSize="lg"
+        data-cta
       >
         <LinkedinIcon size={18} />
         {heroSecondaryCta.label}

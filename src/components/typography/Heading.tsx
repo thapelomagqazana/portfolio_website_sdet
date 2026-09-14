@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 
 /**
@@ -7,11 +7,16 @@ import { cn } from '@/lib/cn';
  * Design System §11 — Type scale (fluid, clamp-based).
  * Design System §12 — Headings short, strong, specific.
  * NFR-002 — Logical heading hierarchy (no skipped levels).
+ *
+ * Extends HTMLAttributes<HTMLHeadingElement> so callers can
+ * pass data-* attributes (e.g. data-hero-reveal for the motion
+ * system), aria-* attributes and standard heading props. All
+ * unrecognised props are forwarded to the underlying tag.
  */
 export type HeadingLevel = 1 | 2 | 3;
 export type HeadingVisual = 'display' | 'h1' | 'h2' | 'h3';
 
-export interface HeadingProps {
+export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
   /** Semantic level — determines the rendered tag (h1/h2/h3). */
   level: HeadingLevel;
   /** Visual scale. Defaults to match the level. */
@@ -47,12 +52,17 @@ export function Heading({
   id,
   className,
   children,
+  ...rest
 }: HeadingProps) {
   const Tag = tagFor[level];
   const resolvedVisual = visual ?? defaultVisual[level];
 
   return (
-    <Tag id={id} className={cn(visualClass[resolvedVisual], className)}>
+    <Tag
+      id={id}
+      className={cn(visualClass[resolvedVisual], className)}
+      {...rest}
+    >
       {children}
     </Tag>
   );
