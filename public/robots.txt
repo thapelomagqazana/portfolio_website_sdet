@@ -1,17 +1,20 @@
 # robots.txt — Thapelo Magqazana Engineering Portfolio
 #
-# References:
-#   NFR-003 — SEO foundation
-#   Design System §42 — Evidence over decoration
+# NFR-003 — SEO.
 #
-# Allows all crawlers to index all public pages.
-# Sitemap URL will be finalized once the Netlify domain is confirmed.
+# The portfolio uses a hash-based client-side router. Search
+# engines treat hash fragments as part of a single page, so
+# only the root URL is indexable. This file reflects that
+# reality: the sitemap lists one URL.
+#
+# If the router is later migrated to the History API, add the
+# additional routes to sitemap.xml and leave this file as-is.
 
 User-agent: *
 Allow: /
 
-# Explicitly allow major crawlers (belt-and-suspenders for hosts that
-# default-deny unlisted agents)
+# Major crawlers — explicitly allowed for defence in depth.
+# Some hosts apply stricter default policies to unlisted agents.
 User-agent: Googlebot
 Allow: /
 
@@ -24,8 +27,11 @@ Allow: /
 User-agent: LinkedInBot
 Allow: /
 
-# Block AI training crawlers that don't provide professional value.
-# These are opt-out directives; well-behaved crawlers honour them.
+User-agent: Slackbot
+Allow: /
+
+# Block AI training crawlers that don't provide professional
+# value and would only consume bandwidth.
 User-agent: GPTBot
 Disallow: /
 
@@ -41,5 +47,4 @@ Disallow: /
 User-agent: Claude-Web
 Disallow: /
 
-# Sitemap — update the domain once Netlify deployment is live
-Sitemap: https://thapelo-magqazana.netlify.app/sitemap.xml
+Sitemap: https://thapelomagqazana.dev/sitemap.xml

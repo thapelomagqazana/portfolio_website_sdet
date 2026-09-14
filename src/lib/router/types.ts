@@ -25,11 +25,12 @@ export interface RouteProps {
   /**
    * Path this entry matches, normalized with a leading slash.
    *
-   *   "/"             → home
-   *   "/work/qinis"   → QINIS case study
+   *   "/"               → home
+   *   "/work/qinis"     → QINIS case study
+   *   "/insights/:slug" → note detail page (dynamic segment)
    *
-   * Matching is exact (no partial prefix matching). Add
-   * wildcard support in the router if that becomes necessary.
+   * A single dynamic segment is supported, identified by a
+   * leading colon (e.g. `:slug`). Matching is otherwise exact.
    */
   path: string;
   /** Content rendered when the route matches. */
@@ -37,13 +38,48 @@ export interface RouteProps {
 }
 
 /**
+ * RouteMatch — parameters extracted from a dynamic route.
+ *
+ *   Pattern:  "/insights/:slug"
+ *   Path:     "/insights/qinis-lessons"
+ *   Params:   { slug: "qinis-lessons" }
+ *
+ * The router passes this object to each route's `element`
+ * render function.
+ */
+export type RouteParams = Record<string, string>;
+
+/**
+ * RouteElement — the render function for a route.
+ *
+ * Called with the matched params (empty object when the path
+ * has no dynamic segments). Returns the React tree to render.
+ *
+ * Using a function instead of a `ReactNode` allows dynamic
+ * routes to receive their params without the router needing
+ * to know about React state.
+ */
+export type RouteElement = (params: RouteParams) => ReactNode;
+
+/**
  * RouterProps — props for the top-level `<Router>`.
  */
 export interface RouterProps {
   /**
-   * All routes the router can render. Order matters for any
-   * future prefix-matching behaviour; today, exact matches
-   * are the only supported case.
+   * All routes the router can render. Order matters: the
+   * first match wins. Place exact paths before dynamic
+   * segments that would otherwise swallow them.
+   *
+   *   ✓ Good order:
+   *     "/"
+   *     "/work/qinis"
+   *     "/work/brikbyteos"
+   *     "/insights"
+   *     "/insights/:slug"
+   *
+   *   ✗ Bad order:
+   *     "/insights/:slug"   ← would match "/insights"
+   *     "/insights"
    */
   routes: RouteEntry[];
   /**
@@ -62,8 +98,16 @@ export interface RouterProps {
  * a unique path.
  */
 export interface RouteEntry {
-  /** Route path, e.g. "/work/qinis". */
+  /**
+   * Route path, e.g. "/work/qinis" or "/insights/:slug".
+   *
+   * Segments beginning with `:` are dynamic and their values
+   * are passed to `element` as params.
+   */
   path: string;
-  /** Element rendered when the path matches. */
-  element: ReactNode;
+  /**
+   * Render function called when the path matches. Receives
+   * the extracted params (empty object for static routes).
+   */
+  element: RouteElement;
 }

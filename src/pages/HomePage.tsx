@@ -1,14 +1,35 @@
 import { AppShell, Container, Section } from '@/components/layout';
 import { SiteNav } from '@/components/navigation';
+import { RouteLink } from '@/lib/router';
 import { Hero } from '@/components/hero';
 import { About } from '@/components/about';
 import { SelectedWork } from '@/components/work';
+import { Experience } from '@/components/experience';
+import { Skills } from '@/components/skills';
+import { Certifications, Education } from '@/components/certifications';
+import { Philosophy } from '@/components/philosophy';
+import { Journey } from '@/components/journey';
+import { Contact } from '@/components/contact';
 
 /**
  * HomePage — the portfolio landing page.
  *
  * Composes every section in the narrative order defined
  * in Content Inventory §22.
+ *
+ * Sections wired:
+ *   Hero             (P6-01..03)
+ *   About            (P7-01..02)
+ *   Selected Work    (P8-01..09)
+ *   Experience       (P9-01..02)
+ *   Skills           (P10-01)
+ *   Certifications   (P11-01)
+ *   Education        (P11-02)
+ *   Philosophy       (P12-01)
+ *   Journey          (P13-01..02)
+ *   Insights link    (P14-03 — dedicated page at /insights)
+ *
+ * Remaining stub: Contact (P7-06).
  */
 export function HomePage() {
   return (
@@ -27,31 +48,30 @@ export function HomePage() {
       <Hero />
       <About />
       <SelectedWork />
+      <Experience />
+      <Skills />
+      <Certifications />
+      <Education />
+      <Philosophy />
+      <Journey />
 
-      {/* Remaining stub sections */}
-      <Section id="experience" heading="Experience" spacing="lg">
-        <p className="text-body text-foreground-muted">
-          Experience entries arrive in P7-04.
-        </p>
+      {/* Insights — link to the dedicated /insights index */}
+      <Section id="insights" aria-labelledby="insights-heading" spacing="lg">
+        <header className="mb-8 max-w-2xl">
+          <p className="text-label mb-4">ENGINEERING NOTES</p>
+          <h2 id="insights-heading" className="text-h2">
+            Notes on quality, automation and engineering discipline.
+          </h2>
+        </header>
+        <RouteLink
+          to="/insights"
+          className="inline-flex items-center gap-2 text-body font-medium text-accent hover:text-accent-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus rounded-sm"
+        >
+          Read the notes
+        </RouteLink>
       </Section>
 
-      <Section id="career" heading="Career Journey" spacing="lg">
-        <p className="text-body text-foreground-muted">
-          The career timeline arrives in P7-05.
-        </p>
-      </Section>
-
-      <Section id="insights" heading="Insights" spacing="lg">
-        <p className="text-body text-foreground-muted">
-          Engineering Notes arrive in a later phase.
-        </p>
-      </Section>
-
-      <Section id="contact" heading="Contact" spacing="lg">
-        <p className="text-body text-foreground-muted">
-          Contact links arrive in P7-06.
-        </p>
-      </Section>
+      <Contact />
     </AppShell>
   );
 }

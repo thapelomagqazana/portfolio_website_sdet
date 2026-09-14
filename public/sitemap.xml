@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  sitemap.xml — Thapelo Magqazana Engineering Portfolio
+
+  NFR-003 — SEO.
+
+  Only the root URL is listed. The portfolio uses a hash-based
+  client-side router (#/work/qinis, #/insights, etc.), and
+  search engines do not treat hash fragments as separate pages.
+  Listing hash URLs in a sitemap would be ignored at best.
+
+  If the router is later migrated to the History API, add
+  additional <url> entries for each top-level route.
+-->
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+>
+  <url>
+    <loc>https://thapelomagqazana.dev/</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>

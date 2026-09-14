@@ -7,6 +7,7 @@ import {
   TerminalDemo,
 } from '@/components/projects';
 import { RouteLink } from '@/lib/router';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { brikbyteCaseStudy, brikbyteos } from '@/content/brikbyteos';
 
 /**
@@ -24,9 +25,17 @@ import { brikbyteCaseStudy, brikbyteos } from '@/content/brikbyteos';
  *   Lessons
  *   GitHub
  *
+ * Task P18 — Per-route document metadata via useDocumentMeta.
+ * The hook updates <title>, meta description, canonical and
+ * og:url while the page is mounted, and restores the previous
+ * values on unmount.
+ *
  * Design System §26 — Case study, not portfolio thumbnail.
  * Design System §28 — Terminal moment as evidence.
  */
+
+const CANONICAL_URL = 'https://thapelo-magqazana.netlify.app/#/work/brikbyteos';
+
 const BRIKBYTE_TECH: readonly string[] = [
   'Go',
   'CLI',
@@ -36,6 +45,13 @@ const BRIKBYTE_TECH: readonly string[] = [
 ] as const;
 
 export function BrikBytePage() {
+  useDocumentMeta({
+    title: 'BrikByteOS — Case Study | Thapelo Magqazana',
+    description:
+      'An open-source Release Confidence CLI bringing testing, security, quality signals and evidence-based quality gates into software delivery.',
+    canonical: CANONICAL_URL,
+  });
+
   return (
     <AppShell
       header={<SiteNav />}

@@ -20,7 +20,11 @@ test.describe('hero', () => {
   });
 
   test('secondary CTA is external and safe', async ({ page }) => {
-    const linkedin = page.getByRole('link', { name: /linkedin/i });
+    // Scope to the hero region. The Contact section also has a
+    // LinkedIn link with the same accessible name.
+    const hero = page.locator('#about');
+
+    const linkedin = hero.getByRole('link', { name: /linkedin/i });
     await expect(linkedin).toHaveAttribute('target', '_blank');
     await expect(linkedin).toHaveAttribute('rel', /noopener/);
   });
@@ -39,11 +43,19 @@ test.describe('hero', () => {
   });
 
   test('proof strip is visible and static', async ({ page }) => {
-    await expect(page.getByText('2+ Years')).toBeVisible();
-    await expect(page.getByText('ISTQB®')).toBeVisible();
-    await expect(page.getByText('Azure')).toBeVisible();
+    // Scope to the hero proof strip. The term "ISTQB®" also
+    // appears in the Certifications section, causing a
+    // strict-mode violation under an unscoped query.
+    const proofStrip = page.getByRole('region', {
+      name: /professional proof points/i,
+    });
 
-    // No aria-live region in the hero — no counters, no announcements.
-    await expect(page.locator('section#about [aria-live]')).toHaveCount(0);
+    await expect(proofStrip.getByText('2+ Years')).toBeVisible();
+    await expect(proofStrip.getByText('ISTQB®')).toBeVisible();
+    await expect(proofStrip.getByText('Azure')).toBeVisible();
+
+    // No aria-live region in the proof strip — no counters,
+    // no announcements.
+    await expect(proofStrip.locator('[aria-live]')).toHaveCount(0);
   });
 });

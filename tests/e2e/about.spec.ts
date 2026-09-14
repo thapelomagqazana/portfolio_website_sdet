@@ -27,10 +27,6 @@ test.describe('about', () => {
   });
 
   test('CTA scrolls to the Career Journey section', async ({ page }) => {
-    // Emulate reduced motion so globals.css sets
-    // scroll-behavior: auto. Otherwise the smooth-scroll animation
-    // can still be running when toBeVisible() fires, causing a
-    // false negative because the target heading is off-screen.
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
 
@@ -41,13 +37,16 @@ test.describe('about', () => {
 
     await cta.click();
 
-    // URL updates immediately on hash navigation.
     await expect(page).toHaveURL(/#career$/);
 
-    // With smooth scroll disabled, the target is already in the
-    // viewport by the time the URL assertion passes.
+    // The Journey section renders with id="career" and its <h2>
+    // reads "From construction to quality engineering." — see
+    // src/components/journey/Journey.tsx.
     await expect(
-      page.getByRole('heading', { level: 2, name: /career journey/i }),
+      page.getByRole('heading', {
+        level: 2,
+        name: /from construction to quality engineering/i,
+      }),
     ).toBeVisible();
   });
 

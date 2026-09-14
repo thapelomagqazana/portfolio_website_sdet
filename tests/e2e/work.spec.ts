@@ -4,11 +4,16 @@ test.describe('selected work — QINIS', () => {
   test('renders the QINIS card on the homepage', async ({ page }) => {
     await page.goto('/');
 
+    // Scope to the Selected Work card. "QINIS" also appears as
+    // an <h3> in the Experience timeline (#experience-qinis),
+    // causing a strict-mode violation under an unscoped query.
+    const card = page.locator('#qinis');
+
     await expect(
-      page.getByRole('heading', { level: 3, name: 'QINIS' }),
+      card.getByRole('heading', { level: 3, name: 'QINIS' }),
     ).toBeVisible();
     await expect(
-      page.getByText(/engineering intelligence for software quality/i),
+      card.getByText(/engineering intelligence for software quality/i),
     ).toBeVisible();
   });
 

@@ -1,4 +1,5 @@
 import { useRoute } from './useRoute';
+import { matchPath } from './match';
 import type { RouteProps, RouterProps } from './types';
 
 /**
@@ -10,16 +11,19 @@ import type { RouteProps, RouterProps } from './types';
  *   - Deep-linkable without a 404 redirect
  *
  * Routes:
- *   #/            → HomePage
- *   #/work/qinis  → QinisPage
+ *   #/                → HomePage
+ *   #/work/qinis      → QINIS case study
+ *   #/work/brikbyteos → BrikByteOS case study
+ *   #/insights        → Engineering Notes index
+ *   #/insights/:slug  → individual note
  *
- * Not a general-purpose router. If the site grows past ~5 routes
- * or needs nested layouts with data loaders, replace with
- * react-router-dom.
+ * Not a general-purpose router. If the site grows past ~10
+ * routes or needs nested layouts with data loaders, replace
+ * with react-router-dom.
  *
- * This file exports only components. The `useRoute` hook and
- * shared types live in ./useRoute.ts and ./types.ts so Fast
- * Refresh continues to work.
+ * This file exports only components. The hook, matcher, and
+ * shared types live in ./useRoute.ts, ./match.ts and
+ * ./types.ts so Fast Refresh continues to work.
  */
 
 /**
@@ -36,8 +40,17 @@ export function Route({ children }: RouteProps) {
 export function Router({ routes, fallback }: RouterProps) {
   const path = useRoute();
 
-  const match = routes.find((r) => r.path === path);
-  if (match) return <>{match.element}</>;
+  // First match wins. Place exact paths before dynamic
+  // segments that could otherwise swallow them:
+  //   "/insights"        before  "/insights/:slug"
+  //   "/work/qinis"      before  "/work/:slug"
+  for (const route of routes) {
+    const params = matchPath(route.path, path);
+    if (params) {
+      return <>{route.element(params)}</>;
+    }
+  }
+
   if (fallback) return <>{fallback}</>;
 
   return (

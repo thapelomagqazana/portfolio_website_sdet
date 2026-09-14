@@ -1,9 +1,9 @@
 import { ArrowLeft } from 'lucide-react';
 import { AppShell, Container, Section } from '@/components/layout';
 import { SiteNav } from '@/components/navigation';
-import { ArchitectureFlow } from '@/components/projects';
-import { ProjectTag } from '@/components/projects';
+import { ArchitectureFlow, ProjectTag } from '@/components/projects';
 import { RouteLink } from '@/lib/router';
+import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { qinis, qinisCaseStudy, qinisTech } from '@/content/qinis';
 
 /**
@@ -20,10 +20,22 @@ import { qinis, qinisCaseStudy, qinisTech } from '@/content/qinis';
  *   Lessons
  *   Repository
  *
+ * Task P18 — Per-route document metadata via useDocumentMeta.
+ *
  * Design System §26 — Case study, not portfolio thumbnail.
  * Design System §43 — Artifact → Context → Interpretation.
  */
+
+const CANONICAL_URL = 'https://thapelo-magqazana.netlify.app/#/work/qinis';
+
 export function QinisPage() {
+  useDocumentMeta({
+    title: 'QINIS — Case Study | Thapelo Magqazana',
+    description:
+      'Engineering intelligence for software quality and release confidence. An ongoing engineering project by Thapelo Magqazana.',
+    canonical: CANONICAL_URL,
+  });
+
   // Order the sections exactly as specified in P8-05.
   const sections = qinisCaseStudy;
 
