@@ -1,26 +1,8 @@
-import { BadgeCheck, ExternalLink } from 'lucide-react';
+import { BadgeCheck, Clock3, ExternalLink } from 'lucide-react';
 import { Section } from '@/components/layout';
 import { useReveal } from '@/hooks/useReveal';
 import { certifications } from '@/content/credentials';
 
-/**
- * Certifications — external validation block.
- *
- * Task P11-01:
- *   ISTQB® Certified Tester — Foundation Level
- *   Microsoft Certified: Azure Fundamentals (AZ-900)
- *
- * Content Inventory §9 — Display credential name, issuer and
- * verification link when available. Never display planned
- * certifications as obtained.
- *
- * Motion:
- *   The whole section fades up on scroll entry (P22 effect 1).
- *   The header and credential grid reveal together.
- *
- * Design System §42 — Evidence over decoration. No certificate
- * images, no badge walls — just the facts.
- */
 export function Certifications() {
   const ref = useReveal<HTMLDivElement>();
 
@@ -57,6 +39,13 @@ export function Certifications() {
                   <p className="mt-1 text-small text-foreground-muted">
                     {cert.issuer}
                   </p>
+
+                  {cert.status === 'passed-pending-publication' ? (
+                    <p className="mt-3 inline-flex items-center gap-1.5 rounded-sm border border-border bg-surface px-2 py-0.5 font-mono text-mono text-foreground-subtle">
+                      <Clock3 aria-hidden="true" size={12} />
+                      Exam passed — certificate pending publication
+                    </p>
+                  ) : null}
 
                   {cert.credentialId ? (
                     <p className="mt-3 font-mono text-mono text-foreground-subtle">

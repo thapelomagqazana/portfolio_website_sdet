@@ -26,18 +26,44 @@ export interface Certification {
   verifyUrl?: string;
 }
 
+/* ---------- P11-01: Certifications ---------- */
+
+export interface Certification {
+  /** Stable id for anchors and test ids. */
+  id: string;
+  /** Certification name. */
+  name: string;
+  /** Issuing organisation. */
+  issuer: string;
+  /** Optional credential identifier. Omit if unknown. */
+  credentialId?: string;
+  /** Optional verification URL. Omit if unknown. */
+  verifyUrl?: string;
+  /**
+   * Optional lifecycle status. Omit for fully-issued credentials.
+   * Use when a credential is passed but not yet published, or
+   * when a credential is in progress (never present those as obtained).
+   */
+  status?: 'passed-pending-publication';
+}
+
 export const certifications: readonly Certification[] = [
   {
     id: 'istqb-ctfl',
     name: 'ISTQB® Certified Tester — Foundation Level',
     issuer: 'ISTQB®',
-    // credentialId and verifyUrl omitted — add when confirmed
+    // Exam passed; formal letter received. Certificate pending
+    // publication on the ISTQB® successful-candidate registry.
+    // credentialId and verifyUrl omitted — add when published.
+    status: 'passed-pending-publication',
   },
   {
     id: 'azure-az-900',
     name: 'Microsoft Certified: Azure Fundamentals',
     issuer: 'Microsoft',
-    // credentialId and verifyUrl omitted — add when confirmed
+    credentialId: '609db8f154ce1e51',
+    verifyUrl:
+      'https://learn.microsoft.com/en-us/users/thapelomagqazana-7919/credentials/609db8f154ce1e51',
   },
 ] as const;
 
